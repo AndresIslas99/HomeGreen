@@ -40,6 +40,9 @@ producción sin pasar su checklist. Las compras exactas y enlaces están en
 5. **Siembra:** distribuir uniforme, atomizar, tapar con segunda charola invertida CON peso
    encima (2–4 kg) — el peso fuerza raíces parejas.
 6. **Oscuridad:** 2–4 días (rábano/brócoli 2–3; girasol/chícharo 3–4). Atomizar 1–2×/día.
+   En diciembre–febrero la germinación se alarga 30–50 % (noches de 5–9 °C): usar tapete
+   térmico o el punto más cálido de la casa; en jun–sep sembrar ~10 % menos denso (la
+   humedad de 70–89 % enmohece la densidad que en marzo funciona).
 7. **Destape a luz indirecta:** riego ya solo POR ABAJO (charola sin drenaje debajo, agua
    entre las dos) — mojar el follaje a partir de aquí es invitar al moho.
 8. **Cosecha (día 8–12):** tijera limpia justo sobre el sustrato, de preferencia en la
@@ -109,16 +112,20 @@ producción sin pasar su checklist. Las compras exactas y enlaces están en
 ## Fase 2 — NFT de hierbas + dosificación v2 (2–3 fines de semana)
 
 ### 2.1 Construcción de líneas NFT
-1. Tubo PVC hidráulico 4": perforar con sierra copa del diámetro de la canastilla (para
-   canastilla de 2" ≈ sierra copa de 48–51 mm; **comprar canastillas ANTES de perforar** y
-   probar en un retazo). Separación entre centros: 20 cm albahaca/arúgula, 15 cm cilantro.
+1. Tubo PVC **sanitario** 4" blanco (Amanco, $415/tramo — NO hidráulico cédula 40 a $1,401:
+   el NFT corre sin presión y el blanco refleja calor). Perforar con sierra copa del diámetro
+   del CUERPO de la canastilla bajo el labio — **comprar canastillas ANTES de perforar**,
+   medir y probar en un retazo (una canastilla "de 2 pulgadas" pide barreno de 1-¾"–1-⅞" /
+   44–48 mm, nunca 2" exactas: se cae). Separación entre centros: 20 cm albahaca/arúgula,
+   15 cm cilantro. Desbarbar cada hoyo (las rebabas atoran raíces y flujo).
 2. Pendiente de cada línea: **2–3 %** (2–3 cm por metro). Soportes cada ≤ 1.5 m para evitar
    panza (agua estancada a media línea = raíces podridas).
 3. Retorno por gravedad a depósito de 200–450 L, tapado y aislado del sol (la temperatura
    de solución ideal es 18–22 °C; arriba de 25 °C cae el oxígeno disuelto).
-4. Bomba (periférica 0.5 HP o sumergible equivalente) → filtro malla 120 → manifold con
-   válvula de compuerta por línea: caudal objetivo **1–2 L/min por línea** (se ajusta a ojo
-   con botella de 1 L y cronómetro).
+4. Bomba **sumergible 3000–4500 LPH** (65 W ≈ $45/mes de luz corriendo 24/7; la periférica
+   0.5 HP del plan original consume 370 W ≈ $260/mes — dejarla solo para trasiego
+   cisterna→tinaco) → filtro malla 120 → manifold con válvula de compuerta por línea:
+   caudal objetivo **1–2 L/min por línea** (se ajusta con botella de 1 L y cronómetro).
 5. Germinación aparte en espuma agrícola/lana de roca; trasplante a canastilla cuando la
    raíz asoma (10–14 días albahaca).
 

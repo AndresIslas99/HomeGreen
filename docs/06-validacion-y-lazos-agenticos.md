@@ -238,6 +238,8 @@ suficiente; QR después si dan ganas).
 
 - **Diario:** 10 min — excepciones del dashboard, inspección visual, bitácora.
 - **Semanal:** KPIs L2 + informe del agente L3 + máximo un experimento V6 activo.
-- **Quincenal:** calibración de sondas pH/EC con buffers 4.0/6.86 (en el calendario, con
-  alarma de HA; una sonda sin calibrar es un generador de números aleatorios).
+- **Quincenal:** calibración de sondas pH/EC con buffers 4.0/6.86 y solución patrón EC
+  1.413 mS/cm (en el calendario, con alarma de HA; una sonda sin calibrar es un generador
+  de números aleatorios). Presupuesto honesto: ~$1,050/año incluyendo sonda de repuesto
+  anual, no los $400 del plan original.
 - **Por fase:** gate L4 con sus números, commiteado antes de gastar un peso en la siguiente.

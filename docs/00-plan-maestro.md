@@ -56,15 +56,26 @@ La parte que decide todo (semanas 3–6) — smoke test comercial **V4**:
   con nebulizadores, Home Assistant en Raspberry/mini-PC. Riego, ventilación y alarmas
   automáticos. BOM: [`bom/fase1.csv`](../bom/fase1.csv). Antes de producción: dry-run **V3**.
 - **Producción objetivo:** 25–35 charolas/semana vendidas (siembras lunes y jueves).
-- **Precios de referencia CDMX:** ver [01 §Mercado](01-proveedores-cdmx.md) — se validan
-  contra mercado real, no contra el plan.
+- **Precios corregidos con mercado real 2026** (ver [01 §7](01-proveedores-cdmx.md)):
+  charola viva girasol/chícharo **$90–120 lista** ($70–80 en volumen; el $60–90 del plan
+  original solo como promo del primer mes); variedades finas $130–180; clamshell 100 g a
+  restaurante $50–90 (el "$250–450/kg" del plan estaba 2–3× barato para microgreens).
+- **Segundo canal desde Fase 1:** suscripción semanal a hogares (modelo MIJARDIIN, ~$260/sem
+  por 3 clamshells); 10 hogares ≈ $10k/mes extra y desriesga la dependencia de 4–5
+  restaurantes.
+- **Realidad presupuestal:** la Fase 1 completa con racks de verdad ($2,000–2,600 c/u, no
+  $1,200–1,800), iluminación T8 y UPS sale en **$31–42k** (BOM detallada:
+  [`bom/fase1.csv`](../bom/fase1.csv)); el rango $18–28k del plan original era optimista.
 
 ## Fase 2 — Túnel NFT de hierbas + automatización v2 (Meses 5–9)
 
-- **Cultivos:** albahaca genovesa y morada, hierbabuena, cilantro, arúgula.
-- **Sistema:** 6–8 líneas NFT de PVC 4" DIY (~$350/línea vs $1,500 comercial), bomba con
-  retorno, filtro malla 120, depósito 200–450 L aislado del sol, germinación en espuma
-  agrícola. Construcción: [03 §Fase 2](03-instalacion.md).
+- **Cultivos:** albahaca **Nufar** (resistente a fusarium) + genovesa y morada, hierbabuena,
+  cilantro, arúgula. Precio: por manojo/pieza ($20–35 B2B premium), no por kilo.
+- **Sistema:** 6–8 líneas NFT de PVC **sanitario** 4" DIY (~$310–380/línea, confirmado, vs
+  ~$1,156/línea comercial), **bomba sumergible 65 W** (no periférica de 370 W: $45 vs
+  $260/mes de luz), filtro malla 120, depósito 200 L grado alimenticio aislado del sol,
+  germinación en espuma agrícola nacional ($0.32/planta). Construcción:
+  [03 §Fase 2](03-instalacion.md).
 - **Automatización v2:** sondas pH y EC, 3 peristálticas (A, B, pH−), solenoides,
   ESP32-CAM, sensor de flujo. Control por histéresis con tiempo de mezcla; interlocks por
   nivel. BOM: [`bom/fase2.csv`](../bom/fase2.csv).
