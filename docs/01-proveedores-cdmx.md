@@ -36,8 +36,15 @@ exactas por fase están en los BOM: [`bom/fase0.csv`](../bom/fase0.csv) ·
 | Clamshells | 100 pzas PET 8 oz por ML para arrancar; al escalar, fabricante en Iztapalapa (Burbumoldes/Etesa) | ~$2.50–4.50/pza aprox. | [búsqueda](https://listado.mercadolibre.com.mx/clamshell) · [Burbumoldes](https://burbumoldes-blister.com/empaques-blister-clamshells.html) |
 | Etiquetas | Tiraje chico 200–500 con imprenta CDMX | ~$400–800 aprox. | [Dushi](https://www.imprentacdmx.com/servicios-de-impresion/impresion-de-etiquetas-adhesivas/) · [Pop México](https://popmexico.com.mx/collections/etiquetas-adhesivas) |
 
-**Costo variable por charola de girasol optimizado: $5.50–6.70** (semilla CEDA + coco + agua)
-contra venta de $90–120 → margen bruto >90 %.
+**Costo variable por charola de girasol optimizado: ~$9** (semilla CEDA + coco + agua +
+desinfección + etiqueta) contra venta de $90–120 → margen bruto ~90 %. Hallazgos
+posteriores que completan el abasto nacional (fichas en
+[research/recetas-produccion-economia.md](research/recetas-produccion-economia.md)):
+Hydroenv también vende **girasol forrajero $300/kg, cilantro $450/kg, amaranto nacional
+$300/kg** (ojo: criollo de grano, probablemente micro VERDE — validar color) y **arúgula
+$2,800/kg** (4.7× el precio internacional: solo para arrancar). ⚠️ **El chícharo a $340/kg
+NO es negocio** (lleva 275 g/charola = $93.50 solo de semilla): conseguir arvejón grado
+alimento en CEDA (~$40–60/kg) antes de sembrarlo — ver [08-recetas](08-recetas-y-economia-unitaria.md).
 
 ## 2. Estructura del túnel → [informe completo](research/estructura-invernadero.md)
 
@@ -52,8 +59,10 @@ aguas ≈ **$10,700–15,300** todo incluido.
 | Malla antigranizo | Por metro (no rollo): Capi Agrícola $40/m (3.7 m ancho) o confección a medida ICAPSA/HTA | ~$1,400–1,600 para 40 m lineales | [Capi Agrícola](https://www.capiagricola.com.mx/product/malla-antigranizo-negra-3-70-m-x-metro/) · [ICAPSA](https://www.icapsa.com.mx/pagina-del-producto/malla-antigranizo) |
 | Racks | Husky 5 niveles 183×91.4×45.7 cm, 362.9 kg/repisa (forrar entrepaños de MDF) | $2,019 c/u | [Home Depot](https://www.homedepot.com.mx/p/husky-estante-de-5-niveles-de-acero-183-x-914-x-457-cm-negro-zrop361872-5llb-150281) |
 
-⚠️ **Corrección al plan original:** el proveedor "Hunab" no existe — es **Hanlob** (mallas,
-Querétaro, [hanlob.com.mx](https://hanlob.com.mx/)). Y el presupuesto de racks era irreal:
+⚠️ **Corrección al plan original:** el proveedor "Hunab" no existe — el nombre real es
+**Hanlob** (mallas, Querétaro, [hanlob.com.mx](https://hanlob.com.mx/)), pero su catálogo
+público solo muestra malla sombra, no antigranizo (verificado): la antigranizo se compra
+con Capi Agrícola / ICAPSA / Hydroenv. Y el presupuesto de racks era irreal:
 $2,000–2,600/rack real, no $1,200–1,800 (esos son racks de 30–50 kg/nivel que se oxidan).
 
 ## 3. Electrónica y automatización → [informe completo](research/electronica-automatizacion.md)
@@ -120,6 +129,27 @@ Iluminación: **tubos T8 18 W 6500K estándar ($121 c/u, [JWJ](https://jwjlight.
 [ML](https://listado.mercadolibre.com.mx/tapete-termico-germinacion)) para germinar dic–feb.
 Malla sombra 35 % ($129/m, [Hydroenv](https://hydroenv.com.mx/producto/malla-sombra-por-metro-al-35-de-3-7-m-de-ancho/))
 solo marzo–mayo.
+
+## 6b. Inocuidad: sanitizantes y laboratorios → [informe completo](research/inocuidad-operativa.md)
+
+Sanitización de semilla: agua oxigenada 3 % de farmacia (~$40) para el protocolo estándar;
+hipoclorito de calcio 65 % 1 kg (~$250 aprox., [ML](https://listado.mercadolibre.com.mx/hipoclorito-de-calcio))
+para el estándar duro de 20,000 ppm. Laboratorios de análisis microbiológico:
+**[Quibimex](https://laboratorioquibimex.com/)** (Iztapalapa, acreditado EMA, WhatsApp
+56 1002 6942 — el informe con membrete que abre puertas de hotel) y
+**[LANISAF-Chapingo](https://lanisaf.chapingo.mx/)** (E. coli en agua **$542–607/muestra
+verificado** — el monitoreo económico recurrente). Presupuesto anual de muestreo:
+~$6,000–10,000. Autocontrol barato: placas Petrifilm (~$40–70/placa aprox.).
+
+## 6c. Respaldo eléctrico y seguridad → [informe completo](research/electrico-respaldo-seguridad.md)
+
+**Batería LiFePO4 12.8 V 100 Ah Epcom $4,459** (verificado,
+[Cyberpuerta](https://www.cyberpuerta.mx/index.php?cl=search&searchparam=bateria+LiFePO4));
+bombas diafragma 12 V ×2 (~$900–1,800 el par, [ML](https://listado.mercadolibre.com.mx/bomba-diafragma-12v));
+panel 100 W Ugreen $1,049 + controlador EPEVER LS2024B $599 (Cyberpuerta); UPS DataShield
+DS-600 $1,189 para el cerebro; **breaker GFCI Square D QO120GFI $1,159 o contacto GFCI $389**
+(Home Depot), tapa intemperie ~$249, varilla copperweld + conector ~$400–800. Paquete
+completo: $8,500–14,500 — partida obligatoria de Fase 2.
 
 ## 7. Mercado y precios de venta → [informe completo](research/mercado-precios.md)
 

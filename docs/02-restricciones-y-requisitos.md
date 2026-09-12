@@ -70,8 +70,14 @@ Hierbabuena, cilantro y arúgula: cero problema (el cilantro agradece el fresco)
 3. **Retención 1.25 %:** los restaurantes persona moral retienen 1.25 % de ISR a un RESICO
    PF **salvo** que el CFDI lleve la leyenda de exención del art. 113-E noveno párrafo
    (regla 3.13.26 RMF). Configurarla en el facturador desde el día 1.
-4. La factura es el contrato: formalizar con el administrador del restaurante, no con el
-   chef (rotación de chefs = riesgo #4 del plan).
+4. **PUE vs PPD:** factura PUE solo si el pago cae en el mismo mes; cualquier crédito que
+   cruce de mes va como PPD y obliga al **complemento de pago (REP)** a más tardar el día 5
+   del mes siguiente al cobro (un REP mensual agrupado por cliente basta; la multa por no
+   emitirlo es de $22,300–127,530 por comprobante). En RESICO el ISR se causa sobre lo
+   **cobrado**, no lo facturado. Política de cobro completa y machote de acuerdo de
+   suministro: [research/cobranza-b2b.md](research/cobranza-b2b.md).
+5. La factura es el contrato: formalizar con el administrador del restaurante, no con el
+   chef (rotación de chefs = riesgo #4 del plan). Remisión firmada en cada entrega.
 
 ## 4. Sanitario y legal (carga real: casi cero, bien jugado)
 

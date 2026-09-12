@@ -18,8 +18,10 @@ cada avance de fase.
 | [03-instalacion.md](docs/03-instalacion.md) | Procedimiento de instalación paso a paso por fase |
 | [04-herramientas.md](docs/04-herramientas.md) | Herramientas necesarias, precios y dónde |
 | [05-aprendizaje.md](docs/05-aprendizaje.md) | Tutoriales, canales, libros y cursos para tener criterio |
-| [06-validacion-y-lazos-agenticos.md](docs/06-validacion-y-lazos-agenticos.md) | Métodos de validación V1–V9 y lazos de control L0–L4 |
+| [06-validacion-y-lazos-agenticos.md](docs/06-validacion-y-lazos-agenticos.md) | Métodos de validación V1–V11 y lazos de control L0–L4 |
 | [07-puntos-ciegos-y-riesgos.md](docs/07-puntos-ciegos-y-riesgos.md) | Todo lo que el plan original no estaba considerando |
+| [08-recetas-y-economia-unitaria.md](docs/08-recetas-y-economia-unitaria.md) | Recetas por especie y economía por charola (qué sembrar y a qué precio) |
+| [docs/research/](docs/research/) | Los 17 informes de investigación completos (12-sep-2026) |
 | [bom/](bom/) | Listas de materiales (BOM) por fase, en CSV |
 
 ## Filosofía

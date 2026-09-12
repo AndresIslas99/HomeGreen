@@ -32,7 +32,7 @@ y [research/libros-cursos.md](research/libros-cursos.md).
 |---|---|---|
 | **On The Grow** — playlist de tutoriales por variedad (girasol, chícharo, rábano, brócoli) | LA escuela de producción; experimentos comparativos de densidad/peso/blackout | [playlist](https://www.youtube.com/playlist?list=PLkEXI0BumyG5OBbqj_wXM6gnPB6gJ4alW) |
 | On The Grow — guía escrita de charolas 10×20 + guías PDF gratuitas | Tasas de siembra por charola (el dato operativo más valioso), consulta rápida | [guía](https://onthegrow.net/blogs/microgreens/how-to-grow-microgreens-10x20-trays-complete-guide) · [índice](https://onthegrow.net/blogs/microgreens/best-microgreen-growing-advice-resources-on-the-grow) |
-| **Donny Greens** — playlist de negocio + video de venta a restaurantes | On The Grow enseña a cultivar; **Donny enseña a VENDER** (entrega semanal a chefs, 7 años viviendo de ello). Ver ANTES de la primera ronda de visitas | [playlist](https://www.youtube.com/playlist?list=PLA09_1g6En1FVnk3eu93LeIVCFNjqSTu0) · [video](https://www.youtube.com/watch?v=b-j0V90kU_k) |
+| **Donny Greens** — playlist de negocio + video de venta a restaurantes | On The Grow enseña a cultivar; **Donny enseña a VENDER** (entrega semanal a chefs, 7 años viviendo de ello). Ver ANTES de la primera ronda de visitas | [playlist](https://www.youtube.com/playlist?list=PLA09_1g6En1FVnk3eu93LeIVCFNjqSTu0) · [video](https://www.youtube.com/watch?v=MoSDSE8j7k8) |
 | Curtis Stone — "My 3 Most Profitable Microgreens" | Decidir el mix de variedades por margen | [video](https://www.youtube.com/watch?v=KO-OuqbR3EE) |
 | En español (complemento) | TvAgro: [Cultivo y Comercialización de Microvegetales](https://www.youtube.com/watch?v=sO2FXdSysrY) | |
 

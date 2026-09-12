@@ -32,10 +32,15 @@ cortado.
 En NFT las raíces cuelgan en una película de agua: estrés en 1–2 h sin flujo, daño serio en
 4+ h. Un corte nocturno de 6 h puede costar las 6–8 líneas (2–4 semanas de ingreso).
 
-- **Un UPS de PC no sirve** (con bomba de 450 W dura 4–8 minutos). La solución correcta:
-  **circuito hidráulico en 12 V DC** — bomba DC de bajo consumo + batería AGM 24 Ah
-  (Steren BR-1224, $1,044) + cargador flotante + relevador de transferencia controlado por
-  ESP32 → **6–8 h de autonomía por ~$2,500** (12–15 h con 2 baterías).
+- **Un UPS de PC no sirve** (con bomba de 450 W dura 4–8 minutos y ni siquiera arranca el
+  motor). La solución correcta: **arquitectura DC-first** — bomba de diafragma 12 V 40–60 W
+  colgada de una batería en flotación permanente. Con **LiFePO4 100 Ah (Epcom $4,459,
+  verificado)**: 28–30 h continuas o ~2.5 días en modo 15/15; variante austera con AGM
+  24 Ah (~$2,500–2,900) para cortes ≤7 h, ampliable después. Paquete completo respaldo +
+  seguridad eléctrica (GFCI, tierra física, gabinetes IP65, electricista): **$8,500–14,500**
+  — partida obligatoria de Fase 2, detallada en
+  [research/electrico-respaldo-seguridad.md](research/electrico-respaldo-seguridad.md) y
+  [03 §2.3](03-instalacion.md).
 - Mini-UPS ($529) para módem + cerebro: sin internet no hay alarmas.
 - Tras cada corte el sistema debe **auto-recuperarse** (ESPHome/HA arrancan solos) y el
   watchdog "bomba sin flujo tras restauración" (YF-S201) avisa al teléfono.
@@ -90,13 +95,25 @@ año**: $3,000–5,000/año + 30–40 h/año permanentes de labor comercial. Mit
 formalizar con administrador/dueño, pedir 1 referido a cada chef contento (baja el CAC
 ~70 %), WhatsApp Business con catálogo vivo.
 
-## 8. Cobranza B2B
+## 8. Cobranza B2B — vender no es cobrar
 
-Los restaurantes pagan a crédito típico de 15–45 días y las quiebras del sector son altas:
-definir condiciones ANTES del primer pedido (contado el primer mes —la oferta gancho del
-plan lo permite—, luego crédito a 15 días con tope de saldo; factura CFDI como contrato;
-parar entregas a 2 facturas vencidas). *(Se ampliará con la investigación de huecos en
-curso.)*
+El estándar foodservice es crédito de 15–45 días y el proveedor chico es el último de la
+fila; el jugador CDMX establecido (MIJARDIIN) lo evita cobrando suscripción prepagada.
+Política por fase, machote de acuerdo de suministro de 1 página, señales de alerta de
+restaurantes que no van a pagar y protocolo de cobranza escalonado (7/14/45 días) en
+[research/cobranza-b2b.md](research/cobranza-b2b.md). Lo no negociable:
+
+- **Fase 0: SPEI contra entrega, cero excepciones** — estás validando que *pagan*, no que
+  *quieren*. Fase 1: factura semanal, pago a 7 días. Crédito a 15 días solo GANADO (8+
+  semanas puntuales) y con tope de 2 semanas de pedidos. 30 días solo cadenas/hoteles con
+  contrato.
+- **Remisión firmada en CADA entrega** (sin firma de recepción no hay deuda demostrable) y
+  ningún cliente >25–30 % de las ventas: el peor impago posible debe costar <$3,000.
+- 1 factura vencida >7 días → siguiente entrega solo de contado; 2 vencidas → pausa total.
+  El apalancamiento real del proveedor de perecederos es la continuidad, no el abogado.
+- **Fiscal:** PUE solo si pagan en el mismo mes; crédito que cruza de mes = PPD + REP
+  mensual agrupado los días 1–5 (multa por no emitir REP: $22,300–127,530 por comprobante).
+  En RESICO el ISR se causa sobre lo COBRADO: la factura emitida no es ingreso.
 
 ## 9. Vecinos, condominio y uso del patio — verificar ANTES de invertir en Fase 1
 
@@ -131,8 +148,9 @@ un chef si algo sale mal (el sector acumula 7 recalls en EUA: producto crudo lis
 A 25–35 charolas/semana el sustrato usado se acumula rápido; mal manejado atrae fungus
 gnats (la misma plaga que se combate con Gnatrol) y en CDMX la separación de orgánicos es
 obligatoria. Ruta corta: composta propia en tambo (alimenta las camas de Fase 3), regalarlo
-a huertos comunitarios de la red SHU, o composta de la alcaldía. *(Se ampliará con la
-investigación de huecos en curso.)*
+a huertos comunitarios (contactos vía la Escuela de Huertos Urbanos de SEDEMA), o entregarlo separado a la recolección de orgánicos
+de la alcaldía. Regla operativa: el sustrato usado sale del área de producción el mismo
+día de cosecha (charola con fusarium: a la basura en bolsa cerrada, nunca a la composta).
 
 ## 13. Burnout del fundador único: el riesgo estructural
 

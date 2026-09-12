@@ -148,7 +148,7 @@ de que no se movieron los postes.
 
 ---
 
-## Métodos de validación V1–V9
+## Métodos de validación V1–V11
 
 Protocolos concretos, cada uno de una página mental: qué, cómo, criterio de aceptación.
 
@@ -211,6 +211,19 @@ automatización tiene un hueco o el proceso tiene un desperdicio** — se ataca 
 caro en tiempo antes de escalar volumen. (Es la validación que casi nadie hace y la razón
 #1 de burnout en microgranjas.)
 
+### V10 — Simulacro de retiro (mock recall)
+Una vez al año: elegir un lote al azar y demostrar en **< 2 horas** a qué clientes llegó y
+de qué costal de semilla salió, con los registros de la bitácora. Documentarlo. Es la
+pregunta estándar de auditoría de hoteles y la prueba de que la trazabilidad funciona de
+verdad (formato de lote y campos por charola en
+[research/inocuidad-operativa.md](research/inocuidad-operativa.md)).
+
+### V11 — Simulacro mensual de apagón
+Botar el breaker del patio 10 minutos, una vez al mes: la bomba NFT debe seguir corriendo
+desde batería, deben llegar las alertas de "corte de CFE" y, al restaurar, no debe haber
+falso "sin flujo". Un respaldo que no se prueba mensualmente es un respaldo que falla el
+día del corte real. (Arquitectura DC-first: [03 §2.3](03-instalacion.md).)
+
 ---
 
 ## Esquema de datos (la bitácora es el sensor de L2–L4)
@@ -220,8 +233,14 @@ Un CSV (o Google Sheet exportada) versionado en este repo, una fila por evento:
 ```csv
 # bitacora/produccion.csv
 siembra_id,fecha_siembra,variedad,lote_semilla,densidad_g,dias_oscuridad,fecha_cosecha,rendimiento_g,merma_pct,destino,precio_mxn,observaciones
-2026-09-15-GIR-01,2026-09-15,girasol,HE-L240811,110,3,2026-09-24,420,5,RestA,80,primer lote proveedor nuevo
+GIR-260915-S001-R1N2,2026-09-15,girasol,S001,135,3,2026-09-24,420,5,RestA,105,primer lote proveedor nuevo; sanitizado H2O2 3%
 ```
+
+Formato de `siembra_id` (legible por humanos, rastreable en minutos hacia atrás y hacia
+adelante): `VAR-AAMMDD-Slote-posición` — p. ej. `GIR-260915-S001-R1N2` = girasol, sembrado
+15-sep-2026, costal de semilla S001 (ligado en un registro aparte al proveedor, su lote y su
+COA), rack 1 nivel 2. El mismo código va en masking tape sobre la charola y se copia a la
+etiqueta al empacar.
 
 ```csv
 # bitacora/ventas.csv
