@@ -71,7 +71,7 @@ nodo puede corregirlo (riego, dosis), HA no lo toca; si HA lo detecta pero no lo
 
 | Componente | Dónde corre | Versión | Archivos en el repo |
 |---|---|---|---|
-| **ESPHome** (firmware) | En cada ESP32; se compila desde el add-on de HA o desde tu laptop | ≥ 2025.1 (`min_version` en cada YAML); los YAML de este repo se validaron con `esphome config` en ESPHome 2026.6.5 | [`firmware/esphome/`](https://github.com/AndresIslas99/HomeGreen/tree/main/firmware/esphome): `nodo-riego-v1.yaml`, `nodo-ambiente.yaml`, `nodo-nft-v2.yaml`, `secrets.example.yaml` → [Firmware](firmware.md) |
+| **ESPHome** (firmware) | En cada ESP32; se compila desde el add-on de HA o desde tu laptop | ≥ 2025.1 (`min_version` en cada YAML); los YAML de este repo se validaron con `esphome config` y compilaron completos con `esphome compile` en ESPHome 2026.6.5 (ESP-IDF 5.5.4) | [`firmware/esphome/`](https://github.com/AndresIslas99/HomeGreen/tree/main/firmware/esphome): `nodo-riego-v1.yaml`, `nodo-ambiente.yaml`, `nodo-nft-v2.yaml`, `secrets.example.yaml` → [Firmware](firmware.md) |
 | **Home Assistant OS** | Mini PC o Raspberry Pi 5 dentro de casa, en UPS | La estable vigente cuando instales `[POR VERIFICAR: anota en la bitácora la versión instalada y la de cada actualización]` | [`firmware/homeassistant/`](https://github.com/AndresIslas99/HomeGreen/tree/main/firmware/homeassistant): `automations.yaml`, `dashboard-huerto.yaml`, `configuration-snippets.yaml` → [Home Assistant](home-assistant.md) |
 | Add-on **ESPHome** | Dentro de HA (compila y flashea por OTA desde el navegador) | La que ofrezca la tienda de add-ons | — |
 | `recorder` + estadísticas de largo plazo | HA | — | Retención en [datos.md §3](../diseno/datos.md) |

@@ -19,8 +19,12 @@ vez y por OTA después, calibrar cada sensor, cambiar setpoints y arreglar lo qu
 | [`nodo-nft-v2.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/nodo-nft-v2.yaml) | 2 | Gabinete B del NFT, en el **bus de batería** | pH/EC calibrados con compensación de temperatura; dosificación por histéresis con tiempo muerto de mezcla (A → B → pH−) e interlocks por nivel, bomba y flujo; watchdog "bomba ON sin flujo" que arranca el respaldo; detector de red CFE; voltaje de batería; modo ahorro 15/15; llenado y purga con tiempo máximo; timeout de 30 s en cada peristáltica | F3 de la fusiblera del bus 12.8 V → buck 5 V |
 | [`secrets.example.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/secrets.example.yaml) | — | Se copia a `secrets.yaml` (no se sube a Git) | Wi-Fi, clave API por nodo, contraseña OTA, red de rescate | — |
 
-Los tres se validaron con `esphome config` en ESPHome 2026.6.5 y exigen `min_version: 2025.1.0`.
-Framework `esp-idf`, board `esp32dev` (DevKit V1 de 30 pines, [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)).
+Los tres se validaron con `esphome config` **y compilaron completos** con `esphome compile` en
+ESPHome 2026.6.5 (ESP-IDF 5.5.4, toolchain xtensa 14.2): riego 52.7 % de flash / 16.5 % de RAM,
+NFT 52.3 % / 16.9 %, ambiente 50.3 % / 14.3 %. Exigen `min_version: 2025.1.0`. Framework `esp-idf`,
+board `esp32dev` (DevKit V1 de 30 pines, [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)).
+Lo que **no** está probado todavía es el comportamiento en la placa real: eso lo hacen las pruebas
+de la sección "Probar sin plantas" y el dry-run V3.
 Los nombres de las entidades que exponen están en [datos.md §2](../diseno/datos.md).
 
 ## Tabla de pines por nodo
@@ -76,8 +80,8 @@ y [electrico.md](../diseno/electrico.md). Si cambias uno, cámbialo en los tres.
 | 13 | MOSFET | Solenoide purga SV-2 (½" NC) | `switch`, timeout `purga_max_min` | |
 | 32 | Relé K1 (contacto **NC**) | Bomba NFT principal P-1 | `switch` `inverted: false`, `RESTORE_DEFAULT_ON` | GPIO alto = relé sin excitar = NC cerrado = **bomba corriendo**; sin ESP32 la bomba corre |
 | 14 | Relé K2 (contacto NO) | Bomba NFT respaldo P-2 | `switch` `inverted: true`, `RESTORE_DEFAULT_OFF` | El pulso de arranque de GPIO14 solo parpadea el respaldo |
-| 16 | Entrada | Flotador "tambo alto" (LT-2) | `binary_sensor` `INPUT_PULLUP` | `[POR VERIFICAR: LT-2 no está en bom/fase2; flotador con contacto o segundo JSN-SR04T]` |
-| 17 | Entrada | Flotador "tambo bajo" (LT-2) | `binary_sensor` `INPUT_PULLUP`, `delayed_on/off: 10s` | Sin flotador, el interlock de nivel queda desactivado |
+| 16 | Entrada | Flotador "tambo alto" (LT-2) | `binary_sensor` `INPUT_PULLUP`, `inverted: true` | Contacto entre GPIO y GND que **cierra cuando la boya sube** (lleno) `[POR VERIFICAR: LT-2 no está en bom/fase2; flotador con contacto o segundo JSN-SR04T]` |
+| 17 | Entrada | Flotador "tambo bajo" (LT-2) | `binary_sensor` `INPUT_PULLUP`, `inverted: true`, `delayed_on/off: 10s` | Contacto que **cierra cuando la boya cae** (nivel bajo). Sin flotador, los dos pines leen "abierto" y el interlock de nivel queda desactivado |
 | VIN | 5 V | Buck desde F3 del bus | — | |
 
 !!! note "Diferencia con la tabla de electrico.md"

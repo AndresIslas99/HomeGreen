@@ -1,0 +1,22 @@
+fecha,cliente,producto,cantidad,precio_unit_mxn,entregado_a_tiempo,feedback
+2026-10-02,RestA,muestra charola girasol,1,0,si,MUESTRA: al chef le gusto el tamano de hoja; pide cotizacion
+2026-10-02,RestB,muestra charola rabano,1,0,si,MUESTRA: quiere probar arugula tambien
+2026-10-06,RestC,muestra charola girasol,1,0,si,MUESTRA: solo para brunch de domingo
+2026-10-06,RestD,muestra charola arugula,1,0,si,MUESTRA: no contesto el WhatsApp
+2026-10-09,RestA,charola girasol,2,105,si,buen tamano; pide rabano cada semana
+2026-10-09,RestA,charola rabano,1,155,si,
+2026-10-13,RestB,charola arugula,1,150,si,chef quiere probar rabano
+2026-10-16,RestA,charola girasol,1,105,si,
+2026-10-16,RestA,charola rabano,1,155,si,tallo un poco largo
+2026-10-16,RestB,charola girasol,1,105,si,
+2026-10-16,RestB,charola rabano,1,155,si,perfecto
+2026-10-16,RestC,charola girasol,1,105,si,solo para el brunch; avisa si repite
+2026-10-20,RestB,charola arugula,1,150,si,
+2026-10-23,RestA,charola girasol,2,105,no,llegue 40 min tarde: trafico en Insurgentes; chef molesto
+2026-10-23,RestA,charola rabano,1,155,no,
+2026-10-23,RestB,charola rabano,1,155,si,tallo largo otra vez: bajar 1 dia de oscuridad
+2026-10-27,RestB,charola arugula,1,150,si,pregunta por amaranto rojo
+2026-10-30,RestA,charola girasol,1,105,si,quiere 3 la proxima semana
+2026-10-30,RestA,charola rabano,1,155,si,
+2026-10-30,RestB,charola girasol,1,105,si,
+2026-10-30,RestB,charola girasol,2,0,no,RECHAZADO sin capacidad: pidio 3 y solo habia 1

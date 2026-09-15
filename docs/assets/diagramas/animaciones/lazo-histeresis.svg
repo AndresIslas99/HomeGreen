@@ -47,7 +47,7 @@
 <text x="198" y="250" class="sm">OFF (el sustrato se seca despacio)</text>
 <circle r="5" fill="#2e7d32" stroke="#ffffff" stroke-width="1.5"><animateMotion dur="24.0s" repeatCount="indefinite" calcMode="linear" keyTimes="0.0000;0.1957;0.2348;0.4783;0.5174;0.7609;0.8000;1.0000" keyPoints="0.0000;0.1366;0.2555;0.4417;0.5606;0.7467;0.8656;1.0000"><mpath xlink:href="#trA"/></animateMotion></circle>
 <path d="M190,126 q0,-14 10,-18" fill="none" stroke="#1f2937" stroke-width="1"/>
-<text x="204" y="106" class="sm">1 ciclo = 1 nebulización (máx. N ciclos/h)</text>
+<text x="204" y="106" class="sm">1 ciclo = 1 nebulización (máx. 4 ciclos/h · fijar en V3)</text>
 <defs><clipPath id="revB"><rect x="600" y="80" width="0" height="220"><animate attributeName="width" values="10;270" dur="24.0s" repeatCount="indefinite"/></rect></clipPath><path id="trB" d="M610,144.8 L640,144.8 L668,164.0 L700,173.6 L735,176.8 L840,157.6 L846,157.6 L870,168.8"/></defs>
 <text x="590" y="72" class="lb b">B · pH del NFT: dosis fija + tiempo muerto + re-medir</text>
 <rect x="600" y="164.0" width="280" height="64.0" fill="#f0fdf4"/>
@@ -82,10 +82,10 @@
 <text x="55" y="332" class="lb b">Regla de histéresis (riego, ventilación)</text>
 <text x="55" y="350" class="sm">ON bajo el límite inferior; OFF sobre el</text>
 <text x="55" y="366" class="sm">superior; entre ambos no se actúa.</text>
-<text x="55" y="382" class="sm">Riego: banda por etapa (germinación /</text>
-<text x="55" y="398" class="sm">desarrollo), máx. N ciclos/h.</text>
-<text x="55" y="414" class="sm">Ventilación: HR &gt; 70 % ON; HR &lt; 75 % y</text>
-<text x="55" y="430" class="sm">T &lt; 28 °C OFF; +10 min/h en lluvias.</text>
+<text x="55" y="382" class="sm">Riego: 60–80 % germinación · 45–70 % desarrollo</text>
+<text x="55" y="398" class="sm">(fijar en V3) · máx. 4 ciclos/h de 120 s.</text>
+<text x="55" y="414" class="sm">Ventilación: ON si HR &gt; 75 % o T &gt; 28 °C;</text>
+<text x="55" y="430" class="sm">OFF si HR &lt; 70 % y T &lt; 26 °C · 10 min/h jun–sep.</text>
 <rect x="320" y="314" width="270" height="132" rx="4" class="boxa"/>
 <text x="330" y="332" class="lb b">Regla de dosificación (pH y EC)</text>
 <text x="330" y="350" class="sm">Dosis fija pequeña → esperar 10–15 min de</text>
@@ -106,6 +106,6 @@
 <rect x="200" y="454" width="14" height="12" fill="#2e7d32"/><text x="220" y="464" class="sm">actuador ON</text>
 <rect x="310" y="454" width="14" height="12" fill="#b45309"/><text x="330" y="464" class="sm">dosis</text>
 <rect x="390" y="454" width="14" height="12" fill="url(#hatch)" stroke="#b45309" stroke-width="0.8"/><text x="410" y="464" class="sm">tiempo muerto de mezcla</text>
-<text x="45" y="481" class="sm">Fuente: referencia/06-validacion-y-lazos-agenticos.md §L0 · 03-instalacion.md §2.2 · YAML en firmware/esphome y firmware/homeassistant</text>
+<text x="45" y="481" class="sm">Fuente: referencia/06 §L0 · 03-instalacion §2.2 · valores iniciales en firmware/esphome/nodo-riego-v1.yaml y nodo-nft-v2.yaml</text>
 <text x="880" y="496" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>
 </svg>

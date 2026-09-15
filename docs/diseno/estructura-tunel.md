@@ -180,16 +180,23 @@ agregue 1–2 cm por pieza si va a escuadrar en campo.
 
 ### Cuántos tramos de 6 m comprar
 
-El mínimo teórico (metros ÷ 6) no incluye el desperdicio de corte. La segunda columna es un
-empaquetado real por tramo (primer ajuste decreciente, 3 mm de kerf por corte); el detalle
-tramo por tramo sale con el script del [README de CAD](https://github.com/AndresIslas99/HomeGreen/blob/main/hardware/cad/README.md).
+El mínimo teórico (metros ÷ 6) no incluye el desperdicio de corte. Las columnas de "tramos
+reales" las calcula el propio modelo: empaqueta las piezas en tramos por primer ajuste
+decreciente con 3 mm de kerf por corte y lo imprime en consola (`ECHO: "PTR 1 1/2: tramos
+REALES de 6 m …"`) con el detalle de qué piezas salen de cada tramo, para tramos de 6.00 m y
+de 6.10 m, porque el PTR llega en 6.0–6.10 m según el proveedor
+([research/estructura-invernadero.md](../research/estructura-invernadero.md)). Cómo leerlo:
+[README de CAD](https://github.com/AndresIslas99/HomeGreen/blob/main/hardware/cad/README.md).
 
-| Perfil | Túnel | Mínimo teórico | Tramos reales (kerf 3 mm) | Lo que dice el BOM / informe |
-|---|---|---|---|---|
-| PTR 1½" cal. 14 | 3 × 6 m | 10 | **11** (10 si el dintel de 0.9 m sale del sobrante de PTR 1") | 15 tramos en [bom/fase1.csv](../referencia/bom.md); 14–16 en el informe (que mete ahí también largueros y contravientos) |
-| PTR 1" | 3 × 6 m | 7 | **7** | 4 tramos "aprox." en bom/fase1.csv → **[POR VERIFICAR: al cotizar, subir la línea de PTR 1" a 7 tramos o hacer los 4 tirantes de 3.5 m en redondo liso, como admite el informe]** |
-| PTR 1½" cal. 14 | 5 × 6 m (total) | 14 | **16** | 20–24 en el informe (todo en 1½") |
-| PTR 1" | 5 × 6 m (total) | 10 | **10** | — |
+| Perfil | Túnel | Mínimo teórico | Tramos reales de 6.00 m | Tramos reales de 6.10 m | Lo que dice el BOM / informe |
+|---|---|---|---|---|---|
+| PTR 1½" cal. 14 | 3 × 6 m | 10 | **11** (el 11.º lleva solo el dintel de 0.9 m: hazlo en PTR 1" con el sobrante del tramo de postes de malla y son 10) | **10** | 15 tramos en [bom/fase1.csv](../referencia/bom.md); 14–16 en el informe (que mete ahí también largueros y contravientos) |
+| PTR 1" | 3 × 6 m | 7 | **7** | **7** | 4 tramos "aprox." en bom/fase1.csv → **[POR VERIFICAR: al cotizar, subir la línea de PTR 1" a 7 tramos o hacer los 4 tirantes de 3.5 m en redondo liso, como admite el informe]** |
+| PTR 1½" cal. 14 | 5 × 6 m (total) | 14 | **16** | **15** | 20–24 en el informe (todo en 1½") |
+| PTR 1" | 5 × 6 m (total) | 10 | **10** | **10** | — |
+
+Antes de comprar, pregunta al proveedor el largo real del tramo: entre 6.00 y 6.10 m hay un
+tramo de PTR 1½" de diferencia (~$383) en cada túnel.
 
 Costo del acero con precios de la fuente de verdad (aritmética, no cotización): 3 × 6 m →
 11 × $382.85 = **$4,211** de PTR 1½" (Sodimac, 5+ piezas) + 7 × ~$275 ≈ **$1,925 aprox.** de

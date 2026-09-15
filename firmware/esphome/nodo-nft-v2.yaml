@@ -34,8 +34,8 @@
 #    GPIO13  MOSFET    solenoide purga   SV-2 (½" NC)
 #    GPIO32  relé K1   bomba NFT principal P-1 por contacto NC (reposo = bomba ON)
 #    GPIO14  relé K2   bomba NFT respaldo  P-2 por contacto NO
-#    GPIO16  entrada   flotador "tambo alto"  (LT-2, opcional; INPUT_PULLUP)
-#    GPIO17  entrada   flotador "tambo bajo"  (LT-2, opcional; INPUT_PULLUP)
+#    GPIO16  entrada   flotador "tambo alto"  (LT-2, opcional; INPUT_PULLUP, cierra a GND = lleno)
+#    GPIO17  entrada   flotador "tambo bajo"  (LT-2, opcional; INPUT_PULLUP, cierra a GND = bajo)
 #  Por qué GPIO32 para la principal y GPIO14 para el respaldo: GPIO14 emite un
 #  pulso al arrancar el ESP32; en K2 (NO, normalmente apagado) ese pulso es un
 #  parpadeo inofensivo del respaldo; en K1 sería un corte breve de la principal.
@@ -67,8 +67,18 @@ esphome:
           const uint32_t ahora = millis();
           id(dosis_ventana_inicio_ms) = ahora;
           id(bomba_arranque_ms) = ahora;     // gracia para el watchdog de flujo tras un reinicio
-          ESP_LOGI("boot", "Nodo NFT v2 listo. Bomba principal=%s, red CFE=%s",
-                   id(bomba_nft).state ? "ON" : "OFF", id(red_cfe_presente).state ? "presente" : "AUSENTE");
+          id(corte_inicio_ms) = ahora;       // referencia si el nodo arranca ya en batería
+          ESP_LOGI("boot", "Nodo NFT v2 listo. Bomba principal=%s", id(bomba_nft).state ? "ON" : "OFF");
+      # El detector de red tiene delayed_on: 5s; esperamos a que se asiente antes de
+      # decidir si arrancamos en batería (reinicio en medio de un corte, simulacro V11).
+      - delay: 10s
+      - lambda: |-
+          if (!id(red_cfe_presente).state) {
+            id(en_corte) = true;
+            ESP_LOGW("boot", "Arranque SIN red CFE: NFT en bateria (%.2f V)", id(voltaje_bateria_nft).state);
+          } else {
+            ESP_LOGI("boot", "Red CFE presente");
+          }
 
 esp32:
   board: esp32dev
@@ -847,24 +857,32 @@ binary_sensor:
     on_press:                         # volvió la luz
       - lambda: |-
           if (id(en_corte)) {
-            const float min = (millis() - id(corte_inicio_ms)) / 60000.0f;
+            const float minutos = (millis() - id(corte_inicio_ms)) / 60000.0f;
             id(en_corte) = false;
-            id(duracion_ultimo_corte).publish_state(min);
-            ESP_LOGI("cfe", "Regreso CFE tras %.0f min", min);
+            id(duracion_ultimo_corte).publish_state(minutos);
+            ESP_LOGI("cfe", "Regreso CFE tras %.0f min", minutos);
           }
 
   # Nivel del tambo (LT-2) con flotadores [POR VERIFICAR: sensor no definido en bom/fase2].
-  # Cableado supuesto: flotador tipo boya con contacto que CIERRA a GND cuando hay agua
-  # en su altura (INPUT_PULLUP → 0 = agua). Si tu flotador cierra al revés, cambia inverted.
-  # Sin flotador conectado, el pull-up deja "bajo = false" y "alto = false": el
-  # interlock de nivel queda desactivado y el llenado solo lo detiene el tiempo máximo.
+  # Cableado supuesto: dos flotadores tipo boya con contacto, cada uno entre su GPIO y GND
+  # (INPUT_PULLUP: contacto abierto = 1, cerrado = 0), montados para que el contacto
+  # CIERRE cuando la condición que vigilan es verdadera:
+  #   · "tambo bajo" (GPIO17): boya en la altura mínima, montada al revés → cierra
+  #     cuando la boya CAE (no hay agua) = nivel bajo.
+  #   · "tambo alto" (GPIO16): boya en la altura máxima → cierra cuando la boya SUBE
+  #     (hay agua) = tambo lleno.
+  # Con inverted: true en los dos, "0 = activo". Si tu flotador cierra al revés, gíralo
+  # (la mayoría se puede montar en ambos sentidos) o cambia inverted a false en ese pin.
+  # Sin flotador conectado, el pull-up deja los dos pines en 1 → "bajo" = false y
+  # "alto" = false: el interlock de nivel queda desactivado y el llenado solo lo detiene
+  # el tiempo máximo (no dejes el nodo así en producción).
   - platform: gpio
     pin:
       number: GPIO17
       mode:
         input: true
         pullup: true
-      inverted: false                  # 1 (sin agua a esa altura) = tambo bajo
+      inverted: true                   # 0 (contacto cerrado: boya caída) = tambo bajo
     name: "Nivel tambo bajo"
     id: nivel_tambo_bajo
     device_class: problem
@@ -877,7 +895,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-      inverted: true                   # 0 (agua a esa altura) = tambo alto
+      inverted: true                   # 0 (contacto cerrado: boya arriba) = tambo alto
     name: "Nivel tambo alto"
     id: nivel_tambo_alto
     filters:

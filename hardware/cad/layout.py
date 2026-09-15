@@ -425,7 +425,7 @@ COLADERA = (9.6, 0.4)             # esquina noreste (supuesto de la wiki)
 TOMA = (9.75, 7.92)               # llave existente en la pared de la casa
 CONTACTO = (7.05, 7.97)           # contacto existente bajo el cobertizo -> WR GFCI in-use en F1
 CONTACTO2 = (9.0, 7.97)           # 2.o contacto GFCI (refrigerador) en F2
-CDC = (5.6, 8.08, 0.6, 0.3)       # centro de carga (interior de la casa)
+CDC = (5.45, 8.08, 0.95, 0.32)    # centro de carga (interior de la casa)
 CEREBRO = (1.4, 8.08, 2.3, 0.3)   # mini-PC HA + router + UPS (interior)
 VARILLA = (5.5, 7.7)              # varilla de tierra (el electricista fija el punto real)
 COBERTIZO = (6.4, 6.3, 3.5, 1.7)  # alero existente (supuesto) 3.5 x 1.7 m
@@ -523,7 +523,7 @@ def base_comun(p: Plano):
     p.mtext(x + w - 0.05, y + 0.16, f"COBERTIZO existente (supuesto) {fmt(w)}×{fmt(h)} m", size=9.5, fill=GRAY, anchor="end")
     cx, cy, cw, ch = CDC
     p.mrect(cx, cy, cw, ch, fill=WHITE, stroke=AMBER, sw=1.5)
-    p.mtext(cx + cw / 2, cy + 0.2, "centro de carga", size=9, fill=AMBER, anchor="middle")
+    p.mtext(cx + cw / 2, cy + 0.13, "centro de carga", size=9, fill=AMBER, anchor="middle")
     bx, by, bw, bh = CEREBRO
     p.mrect(bx, by, bw, bh, fill=WHITE, stroke=AMBER, sw=1.2, dash=DOT)
     p.mtext(bx + bw / 2, by + 0.2, "cerebro (interior): mini-PC HA + router + UPS", size=9.5, fill=AMBER, anchor="middle")
@@ -532,7 +532,7 @@ def base_comun(p: Plano):
 def seguridad_electrica(p: Plano):
     """QO120GFI, contacto WR in-use, varilla de tierra y GAB-A (desde Fase 1)."""
     cx, cy, cw, ch = CDC
-    p.mtext(cx + cw / 2, cy - 0.06, "+ QO120GFI 20 A", size=9, fill=AMBER, anchor="middle", weight="bold")
+    p.mtext(cx + cw / 2, cy + 0.26, "+ QO120GFI 20 A", size=9, fill=AMBER, anchor="middle", weight="bold")
     p.contacto(*CONTACTO)
     vx, vy = VARILLA
     p.mcircle(vx, vy, 0.07, fill=WHITE, stroke=AMBER, sw=1.5)
@@ -900,7 +900,8 @@ def fase3():
     p.mpoly([CAM_POSTE, (CAM_POSTE[0] - 0.9, CAM_POSTE[1] + 0.6), (CAM_POSTE[0] - 0.6, CAM_POSTE[1] + 1.3)], stroke=AMBER, sw=0.8, dash=DOT, fill=AMBER_BG, close=True)
     p.mtext(CAM_POSTE[0] + 0.1, CAM_POSTE[1] - 0.06, "cámara fija (poste 2 m)", size=8.5, fill=AMBER)
     p.mline(COMPOSTA[0] + 0.3, COMPOSTA[1] - 0.15, CAMA3[0], CAMA3[1] + 0.8, stroke=GREEN, sw=1.2, dash=DOT, marker="arrGreen")
-    p.dim_h(tx + tw, CAMA1[0], 6.27, "0.30", size=8)
+    p.dim_h(tx + tw, CAMA1[0], 6.27, "", size=8)
+    p.mtext(CAMA1[0] + 0.04, 6.3, "0.30", size=8)
     p.dim_h(CAMA1[0] + CAMA1[2], CAMA2[0], 6.27, "0.95 pasillo", size=8.5)
     p.dim_v(ty + th, CAMA3[1], 0.8, "0.70", size=8.5)
     p.dim_h(tx, tx + tw, 0.4, "6.00", size=9)
@@ -933,72 +934,98 @@ def fase3():
 # ----------------------------------------------------------------------------- alzado del rack
 K = 4.0  # px por cm (1:10)
 
-RACK_H, RACK_W, RACK_D = 183.0, 91.4, 45.7   # cm (Husky 5 niveles, Home Depot $2,019)
+RACK_H, RACK_W, RACK_D = 183.0, 91.4, 45.7   # cm (Husky 5 niveles, Home Depot $2,019; 362.9 kg/repisa)
 SHELF_T = 2.5                                # espesor del entrepano MDF + forro [POR VERIFICAR en caja]
-SHELF_TOPS = (10.0, 53.0, 96.0, 139.0, 182.0)  # cara superior de N1..N5 desde el piso (ajustables)
+SHELF_TOPS = (10.0, 53.0, 96.0, 139.0, 182.0)  # cara superior de N1..N5 desde el piso (paso 43 cm; ajustable)
 TRAY_W, TRAY_L, TRAY_H = 25.4, 50.8, 6.0     # charola 1020 (doble: perforada dentro de lisa)
-TUBE_L, TUBE_D = 120.0, 2.6                  # T8 LED 18 W 120 cm
-CANOPY = {2: 8.0, 3: 5.0, 4: 2.0}            # altura del dosel dibujada por nivel en luz (cm); N1 y N5 van tapados
+TUBE_L, TUBE_D = 120.0, 2.6                  # T8 LED 18 W 120 cm (JWJ, bom/fase1)
+CANOPY = {1: 9.0, 2: 8.0, 3: 5.0, 4: 2.0}    # altura del dosel dibujada por nivel en luz (cm); N5 va tapado
+DARK = "#374151"
+SHELF = "#d1d5db"
+WEIGHT = "#9ca3af"
+TUBE_BG = "#fef3c7"
+
+# Flujo de charolas por nivel (SOP 03 §0.3; zonas 03 §0.2: superior = oscuridad, medios = desarrollo).
+FLOW = {
+    5: ["① SIEMBRA día 0 → N5 OSCURIDAD (arriba = más cálido):", "3 pilas de 2–3 charolas tapadas con peso 2–4 kg,", "2–4 días; atomizar a mano 1–2×/día"],
+    4: ["② DESTAPE día 2–4 → N4 brote: luz indirecta + T8 12–14 h;", "desde aquí riego SOLO por abajo (perforada dentro de lisa)"],
+    3: ["③ DESARROLLO día 4–8 → N3: tallo y cotiledón abiertos"],
+    2: ["④ ACABADO día 8–10 → N2: color y densidad finales"],
+    1: ["⑤ COSECHA día 8–12 → N1 (abajo = más fresco): suspender riego", "12–24 h antes; tijera sobre el sustrato la mañana de la entrega"],
+}
 
 
 def rack_alzado():
     W, H = 1600, 1040
     s = SVG(W, H, "Alzado · Rack Husky 183×91×46 cm · 5 niveles · escala 1:10",
-            "charolas 10×20 (25.4×50.8 cm) · 3 por nivel · T8 18 W ×2 por nivel N1–N4 · nebulizadores N1–N4 · oscuridad arriba (N5) · recién sembradas abajo (N1) · cotas en cm")
+            "charolas 10×20 (25.4×50.8 cm) · 3 por nivel · T8 18 W ×2 por nivel N1–N4 · nebulizadores N1–N4 · oscuridad arriba (N5) · cosecha abajo (N1) · cotas en cm")
     floor = 930.0
 
     def yc(cm):
         return floor - cm * K
 
+    def charola(x, top, w, fill=WHITE, sw=1.4):
+        """Charola doble (perforada dentro de lisa) vista de canto: contorno + labio interior."""
+        s.rect(x, yc(top + TRAY_H), w * K, TRAY_H * K, fill=fill, stroke=GREEN, sw=sw)
+        s.rect(x + 1.0 * K, yc(top + TRAY_H - 0.6), (w - 2.0) * K, (TRAY_H - 1.6) * K, fill="#f1f8e9", stroke=GREEN, sw=0.8)
+
+    def pila_tapada(x, top, w):
+        """Dos charolas apiladas (la de arriba invertida) + peso de 2-4 kg (N5)."""
+        for st in range(2):
+            s.rect(x, yc(top + TRAY_H * (st + 1)), w * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.2)
+        s.rect(x + w * 0.25 * K, yc(top + 2 * TRAY_H + 5), w * 0.5 * K, 5 * K, fill=WEIGHT, stroke=INK, sw=1)
+        s.text(x + w * 0.5 * K, yc(top + 2 * TRAY_H + 1.5), "peso 2–4 kg", size=8, anchor="middle", fill=WHITE)
+
+    def boquilla(bx, ny):
+        s.polyline([(bx - 4, ny), (bx + 4, ny), (bx, ny + 9)], fill=BLUE, stroke=BLUE, sw=1, close=True)
+        for dx in (-10, 0, 10):
+            s.line(bx, ny + 10, bx + dx, ny + 22, stroke=BLUE, sw=0.7, dash="2 2")
+
     # ---------------- vista frontal
     x0 = 130.0
     wpx = RACK_W * K
     s.text(x0, 86, "VISTA FRONTAL (desde el pasillo)", size=12, weight="bold")
+    s.text(x0 - 80, 97, "N5 = OSCURIDAD (arriba, más cálido): cubierta opaca, pilas tapadas con peso · N1–N4 en luz (T8 + nebulizadores)", size=9.5, weight="bold")
+    s.text(x0 - 80, 109, "Verano (> 27 °C en N5): invierte — tapadas en N1 (el más fresco) y cosecha en N2 (03 §0.2).", size=9.5, fill=GRAY)
     s.line(x0 - 80, floor, x0 + wpx + 120, floor, sw=2)
-    s.text(x0 - 80, floor + 16, "piso nivelado + bloques de 15 cm bajo las patas (charola desnivelada = encharcamiento = moho; los bloques dan pendiente al drenaje)", size=9.5, fill=GRAY)
+    s.text(x0 - 80, floor + 16, "piso nivelado (nivel de burbuja, calzar patas) + bloques macizos de 15 cm bajo las patas: dan pendiente a la manguera de drenaje (charola desnivelada = encharcamiento = moho)", size=9.5, fill=GRAY)
     s.rect(x0 - 6, floor - 4 * K, wpx + 12, 4 * K, fill=BLUE_BG, stroke=BLUE, sw=1.2)
     s.text(x0 + wpx + 16, floor - 4, "charola colectora → manguera → coladera", size=10, fill=BLUE)
     for px in (x0, x0 + wpx - 3.5 * K):
         s.rect(px, yc(RACK_H), 3.5 * K, RACK_H * K, fill=LIGHT, stroke=INK, sw=1.5)
     gap = (RACK_W - 3 * TRAY_W) / 4
     for i, top in enumerate(SHELF_TOPS, 1):
-        s.rect(x0, yc(top), wpx, SHELF_T * K, fill="#d1d5db", stroke=INK, sw=1.5)
+        s.rect(x0, yc(top), wpx, SHELF_T * K, fill=SHELF, stroke=INK, sw=1.5)
         s.text(x0 - 12, yc(top) + 4, f"N{i}", size=12, weight="bold", anchor="end")
-        if 2 <= i <= 4:
-            for k in range(3):
-                tx = x0 + (gap + k * (TRAY_W + gap)) * K
-                s.rect(tx, yc(top + TRAY_H), TRAY_W * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.4)
-                s.rect(tx + 1.0 * K, yc(top + TRAY_H - 0.6), (TRAY_W - 2.0) * K, (TRAY_H - 1.6) * K, fill="#f1f8e9", stroke=GREEN, sw=0.8)
+        for k in range(3):
+            tx = x0 + (gap + k * (TRAY_W + gap)) * K
+            if i <= 4:
+                charola(tx, top, TRAY_W)
                 c = CANOPY[i]
                 s.rect(tx + 0.8 * K, yc(top + TRAY_H + c), (TRAY_W - 1.6) * K, c * K, fill="url(#hatchGreen)", stroke=GREEN, sw=0.8)
-        else:
-            for k in range(3):
-                tx = x0 + (gap + k * (TRAY_W + gap)) * K
-                for st in range(2):
-                    s.rect(tx, yc(top + TRAY_H * (st + 1)), TRAY_W * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.2)
-                s.rect(tx + 6 * K, yc(top + 2 * TRAY_H + 5), 13 * K, 5 * K, fill="#9ca3af", stroke=INK, sw=1)
-                s.text(tx + 12.5 * K, yc(top + 2 * TRAY_H + 1.5), "peso 2–4 kg", size=8, anchor="middle", fill=WHITE)
+            else:
+                pila_tapada(tx, top, TRAY_W)
         if i <= 4:
+            # sensor capacitivo en la charola testigo (la primera) de cada nivel en luz
             tx = x0 + gap * K
             s.line(tx + 4 * K, yc(top + TRAY_H + 6), tx + 4 * K, yc(top + 1), stroke=AMBER, sw=2.5)
             s.text(tx + 5 * K, yc(top + TRAY_H + 5), f"MT-{i}", size=8.5, fill=AMBER)
+            # T8 x2 bajo el entrepano de arriba + linea de nebulizadores
             nxt = SHELF_TOPS[i] - SHELF_T
             ty = yc(nxt - 3.0)
             tl = x0 + wpx / 2 - TUBE_L * K / 2
-            s.rect(tl, ty, TUBE_L * K, TUBE_D * K, fill="#fef3c7", stroke=AMBER, sw=1.4, rx=5)
+            s.rect(tl, ty, TUBE_L * K, TUBE_D * K, fill=TUBE_BG, stroke=AMBER, sw=1.4, rx=5)
+            s.text(tl + TUBE_L * K + 6, ty + 9, "T8 ×2", size=8.5, fill=AMBER)
             ny = ty + TUBE_D * K + 2.0 * K
             s.line(x0, ny, x0 + wpx, ny, stroke=BLUE, sw=1.6)
             for q in (0.25, 0.75):
-                bx = x0 + wpx * q
-                s.polyline([(bx - 4, ny), (bx + 4, ny), (bx, ny + 9)], fill=BLUE, stroke=BLUE, sw=1, close=True)
-                for dx in (-10, 0, 10):
-                    s.line(bx, ny + 10, bx + dx, ny + 22, stroke=BLUE, sw=0.7, dash="2 2")
-            if i == 1:
-                s.text(tl + TUBE_L * K + 6, ty + 9, "T8 de N1 apagados mientras haya charolas tapadas", size=8.5, fill=AMBER)
-    s.rect(x0 - 6, yc(SHELF_TOPS[4] + 22), wpx + 12, 22 * K, fill="#374151", stroke=INK, sw=1.2, dash=DASH, opacity=0.18)
-    s.text(x0 - 80, yc(SHELF_TOPS[4] + 25), "N5 = OSCURIDAD (arriba = más cálido): cubierta opaca, charolas apiladas con peso 2–4 kg, 2–4 días, atomizar a mano 1–2×/día · N1 = recién sembradas (abajo = más fresco)", size=10, weight="bold")
-    s.circle(x0 + wpx + 6, yc(95), 5, fill=AMBER, stroke=AMBER)
-    s.text(x0 + wpx + 14, yc(95) + 4, "SHT31 T/HR (poste, 1.0 m)", size=9, fill=AMBER)
+                boquilla(x0 + wpx * q, ny)
+    # zona blackout
+    s.rect(x0 - 6, yc(SHELF_TOPS[4] + 21), wpx + 12, 21 * K, fill=DARK, stroke=INK, sw=1.2, dash=DASH, opacity=0.18)
+    s.text(x0 + wpx / 2, yc(SHELF_TOPS[4] + 17.5), "ZONA BLACKOUT · cubierta opaca (lona/cartón) · sin T8", size=9.5, anchor="middle", weight="bold")
+    # SHT31 en el poste izquierdo a 1.0 m
+    s.circle(x0 + wpx - 7, yc(110), 5, fill=AMBER, stroke=AMBER)
+    s.text(x0 + wpx + 14, yc(110), "SHT31 T/HR · poste · 1.1 m", size=8.5, fill=AMBER, anchor="middle", rotate=-90)
     # cotas frontales
     dx = x0 - 60
     s.line(dx, yc(0), dx, yc(RACK_H), sw=1)
@@ -1018,7 +1045,7 @@ def rack_alzado():
     by2 = floor + 56
     s.line(tl, by2, tl + TUBE_L * K, by2, stroke=AMBER, sw=1)
     s.line(tl, by2 - 5, tl, by2 + 5, stroke=AMBER, sw=1); s.line(tl + TUBE_L * K, by2 - 5, tl + TUBE_L * K, by2 + 5, stroke=AMBER, sw=1)
-    s.text(x0 + wpx / 2, by2 - 4, "T8 120 (vuela 14.3 por lado → racks separados ≥ 30 cm)", size=10, fill=AMBER, anchor="middle")
+    s.text(x0 + wpx / 2, by2 - 4, "T8 120 (vuela 14.3 por lado → racks en fila separados ≥ 30 cm)", size=10, fill=AMBER, anchor="middle")
     top3 = SHELF_TOPS[2]
     tube_bottom = SHELF_TOPS[3] - SHELF_T - 3.0 - TUBE_D
     canopy_top = top3 + TRAY_H + CANOPY[3]
@@ -1027,19 +1054,15 @@ def rack_alzado():
     for cm in (tube_bottom, canopy_top):
         s.line(xr - 5, yc(cm), xr + 5, yc(cm), stroke=AMBER, sw=1)
     s.text(xr - 6, yc((tube_bottom + canopy_top) / 2), f"luz→dosel {fmt(tube_bottom - canopy_top)}", size=9, fill=AMBER, anchor="middle", rotate=-90)
-    # flujo de charolas
+    # flujo de charolas (columna a la derecha del rack): de N5 hacia N1
     fx = x0 + wpx + 70
-    flow = {5: ["② OSCURIDAD día 1–4 → N5 (arriba, más cálido):", "apiladas con peso 2–4 kg; atomizar 1–2×/día"],
-            4: ["③ DESTAPE día 3–5 → N4: luz indirecta +", "T8 12–14 h; riego SOLO por abajo"],
-            3: ["④ N3 desarrollo (día 5–8)"],
-            2: ["⑤ N2 acabado → COSECHA día 8–12", "(tijera sobre el sustrato, la mañana de entrega)"],
-            1: ["① SIEMBRA día 0 → N1 (abajo, más fresco):", "tapada con peso; sube a N5 al día siguiente"]}
     for i, top in enumerate(SHELF_TOPS, 1):
-        s.lines(fx, yc(top + 20), flow[i], size=9.5, fill=GREEN, lh=12)
-        if i > 2:
-            s.line(fx + 6, yc(top + 16), fx + 6, yc(SHELF_TOPS[i - 2] + 26), stroke=GREEN, sw=1.2, marker="arrGreen", dash="3 3")
-    s.line(fx - 14, yc(SHELF_TOPS[0] + 24), fx - 14, yc(SHELF_TOPS[4] + 6), stroke=GREEN, sw=1.4, marker="arrGreen", dash="6 3")
-    s.text(fx - 18, yc(95), "día 1: de N1 a N5", size=9, fill=GREEN, anchor="middle", rotate=-90)
+        s.lines(fx, yc(top + 16), FLOW[i], size=9.5, fill=GREEN, lh=12)
+        if i > 1:
+            y_from = yc(top + 16) + 12 * len(FLOW[i]) - 4
+            y_to = yc(SHELF_TOPS[i - 2] + 16) - 14
+            s.line(fx + 6, y_from, fx + 6, y_to, stroke=GREEN, sw=1.2, marker="arrGreen", dash="3 3")
+    s.text(fx, floor + 30, "Cada charola BAJA un nivel por etapa.", size=9, fill=GRAY)
 
     # ---------------- vista lateral
     x1 = 860.0
@@ -1051,23 +1074,22 @@ def rack_alzado():
     s.line(x1 - 10, yc(SHELF_TOPS[0]), x1 - 10, yc(SHELF_TOPS[4] - SHELF_T - 6), stroke=BLUE, sw=2)
     s.text(x1 - 16, yc(60), "riser ½\" nebulizadores desde P-1", size=9, fill=BLUE, anchor="middle", rotate=-90)
     for i, top in enumerate(SHELF_TOPS, 1):
-        s.rect(x1, yc(top), dpx, SHELF_T * K, fill="#d1d5db", stroke=INK, sw=1.5)
-        if 2 <= i <= 4:
+        s.rect(x1, yc(top), dpx, SHELF_T * K, fill=SHELF, stroke=INK, sw=1.5)
+        if i <= 4:
             s.rect(x1 - 2.5 * K, yc(top + TRAY_H), TRAY_L * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.4)
             c = CANOPY[i]
             s.rect(x1 - 1.7 * K, yc(top + TRAY_H + c), (TRAY_L - 1.6) * K, c * K, fill="url(#hatchGreen)", stroke=GREEN, sw=0.8)
-        else:
-            for st in range(2):
-                s.rect(x1 - 2.5 * K, yc(top + TRAY_H * (st + 1)), TRAY_L * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.2)
-            s.rect(x1 + 12 * K, yc(top + 2 * TRAY_H + 5), 26 * K, 5 * K, fill="#9ca3af", stroke=INK, sw=1)
-        if i <= 4:
             nxt = SHELF_TOPS[i] - SHELF_T
             for q in (0.25, 0.75):
-                s.circle(x1 + dpx * q, yc(nxt - 3.0 - TUBE_D / 2), TUBE_D * K / 2, fill="#fef3c7", stroke=AMBER, sw=1.4)
+                s.circle(x1 + dpx * q, yc(nxt - 3.0 - TUBE_D / 2), TUBE_D * K / 2, fill=TUBE_BG, stroke=AMBER, sw=1.4)
             ny = yc(nxt - 3.0 - TUBE_D - 2.0)
             s.line(x1 - 10, ny, x1 + dpx * 0.5, ny, stroke=BLUE, sw=1.6)
             s.polyline([(x1 + dpx * 0.5 - 4, ny), (x1 + dpx * 0.5 + 4, ny), (x1 + dpx * 0.5, ny + 9)], fill=BLUE, stroke=BLUE, sw=1, close=True)
-    s.rect(x1 - 12, yc(SHELF_TOPS[4] + 22), dpx + 24, 22 * K, fill="#374151", stroke=INK, sw=1.2, dash=DASH, opacity=0.18)
+        else:
+            for st in range(2):
+                s.rect(x1 - 2.5 * K, yc(top + TRAY_H * (st + 1)), TRAY_L * K, TRAY_H * K, fill=WHITE, stroke=GREEN, sw=1.2)
+            s.rect(x1 + 12 * K, yc(top + 2 * TRAY_H + 5), 26 * K, 5 * K, fill=WEIGHT, stroke=INK, sw=1)
+    s.rect(x1 - 12, yc(SHELF_TOPS[4] + 22), dpx + 24, 22 * K, fill=DARK, stroke=INK, sw=1.2, dash=DASH, opacity=0.18)
     by = floor + 34
     s.line(x1, by, x1 + dpx, by, sw=1); s.line(x1, by - 5, x1, by + 5, sw=1); s.line(x1 + dpx, by - 5, x1 + dpx, by + 5, sw=1)
     s.text(x1 + dpx / 2, by - 4, "45.7", size=11, anchor="middle")
@@ -1075,13 +1097,13 @@ def rack_alzado():
     s.line(x1 - 2.5 * K, by2, x1 - 2.5 * K + TRAY_L * K, by2, stroke=GREEN, sw=1)
     for px in (x1 - 2.5 * K, x1 - 2.5 * K + TRAY_L * K):
         s.line(px, by2 - 5, px, by2 + 5, stroke=GREEN, sw=1)
-    s.text(x1 + dpx / 2, by2 - 4, "charola 50.8 (vuela 2.5 por lado)", size=10, fill=GREEN, anchor="middle")
+    s.text(x1 + dpx / 2, by2 - 4, "charola 50.8 (vuela 5.1: 2.5 por lado)", size=10, fill=GREEN, anchor="middle")
     s.text(x1 + dpx / 2, floor + 78, "◄ atrás (pared, riser)   ·   frente (pasillo) ►", size=9, fill=GRAY, anchor="middle")
 
     # ---------------- planta de un nivel
     x2, y2 = 1150.0, 118.0
     s.text(x2, 86, "PLANTA DE UN NIVEL (N1–N4)", size=12, weight="bold")
-    s.rect(x2, y2, wpx, dpx, fill="#d1d5db", stroke=INK, sw=1.5)
+    s.rect(x2, y2, wpx, dpx, fill=SHELF, stroke=INK, sw=1.5)
     for k in range(3):
         tx = x2 + (gap + k * (TRAY_W + gap)) * K
         s.rect(tx, y2 - 2.5 * K, TRAY_W * K, TRAY_L * K, fill="#f1f8e9", stroke=GREEN, sw=1.4)
@@ -1100,38 +1122,64 @@ def rack_alzado():
 
     # ---------------- tablas
     rows = [
-        "#CAPACIDAD (geometría, no la cifra de la investigación)",
+        "#CAPACIDAD (geometría del entrepaño, no la cifra de la investigación)",
         "· Entrepaño 91.4 × 45.7 cm; charola 1020 = 25.4 × 50.8 cm.",
-        "· Caben 3 atravesadas por nivel (76.2 de 91.4 cm; vuelan 2.5 cm",
-        "  por lado). El '8–10/nivel' de research/estructura-invernadero",
-        "  NO cabe: pide ~1.0 m² por nivel. [POR VERIFICAR con el rack armado]",
-        "· En luz (N2–N4): 9 posiciones/rack. N5 oscuridad: 3 pilas × 2–3 =",
-        "  6–9. N1 recién sembradas: 3 pilas × 2 = 6. Total ≈ 21–24 por rack.",
-        "· 3 racks (Fase 1) ≈ 27 en luz (≈ 7 d cada una) → ~27 charolas/semana",
-        "  con ciclo de 8–12 d: cierra la meta de 25–35 del plan.",
+        "· Caben 3 atravesadas por nivel (3 × 25.4 = 76.2 de 91.4 cm; vuelan",
+        "  5.1 cm). El '8–10 por nivel' de research/estructura-invernadero §d",
+        "  NO cabe: pediría ~1.0 m² por nivel [POR VERIFICAR con el rack armado].",
+        "· En luz (N1–N4): 12 posiciones/rack. N5 oscuridad: 3 pilas × 2–3 =",
+        "  6–9. Total 18–21 charolas en proceso por rack.",
+        "· 3 racks (Fase 1) = 36 en luz; con ~7 días en luz por charola (día",
+        "  3 → 10) el techo es ~36/semana: la meta de 25–35 pide ≥ 70–85 %",
+        "  de ocupación. Husky de 122 cm: 4 por nivel (16 en luz).",
         "",
         "#CARGAS",
-        "· Charola doble con coco saturado: 2.5–4 kg → nivel en luz 3 × 4 =",
-        "  12 kg; nivel tapado (N1, N5) 3 × (2 × 4 + 4) = 36 kg. Rack: 362.9 kg/repisa.",
-        "· Carga viva total ≈ 110 kg + peso propio [POR VERIFICAR en caja]:",
-        "  margen > 10× por repisa; lo que importa es rigidez y humedad.",
-        "· Forrar entrepaños de MDF con plástico o charola de drenaje.",
+        "· Charola doble con coco saturado 2.5–4 kg → nivel en luz 3 × 4 = 12 kg;",
+        "  N5 tapado 3 × (2 × 4 + 4) = 36 kg. Total ≈ 84 kg + rack [POR VERIFICAR",
+        "  peso en caja]. Repisa: 362.9 kg → margen > 10×; lo que manda es",
+        "  rigidez y humedad: forrar el MDF con plástico o charola de drenaje.",
         "",
         "#ILUMINACIÓN",
         "· 2 × T8 LED 18 W 6500 K 1,400 lm por nivel N1–N4 = 8 tubos/rack",
-        "  ($121 c/u JWJ = $968; bom/fase1 cubre UN rack: 3 racks = 24).",
-        "· 12–14 h/día por K5 (GAB-A): 8 × 18 W × 13 h ≈ 1.9 kWh/día/rack.",
+        "  ($121 c/u JWJ = $968); bom/fase1 cubre UN rack: 3 racks = 24 tubos.",
+        "· 12–14 h/día por K5 (GAB-A): 8 × 18 W × 13 h ≈ 1.9 kWh/día por rack.",
         "· Tubo a 3 cm bajo el entrepaño; luz→dosel 20–27 cm con paso de 43 cm.",
-        "  Meta: 100–200 µmol/m²s en la charola (app Photone); si falta, baja",
+        "  Meta 100–200 µmol/m²s en la charola (app Photone); si falta, baja",
         "  una posición el entrepaño de arriba [POR VERIFICAR con luxómetro].",
         "",
         "#RIEGO",
         "· Nebulizadores N1–N4 (2 boquillas/nivel) desde P-1 12 V; N5 a mano.",
         "· Tras el destape: riego SOLO por abajo (perforada dentro de lisa).",
-        "· MT-1…4 capacitivo en la charola testigo de cada nivel; SHT31 en poste.",
+        "· MT-1…4 capacitivo en la charola testigo de cada nivel (rack 3 en F1);",
+        "  SHT31 en el poste a 1.0 m; trampa amarilla 1 por rack.",
     ]
-    s.lines(1150.0, 400.0, rows, size=10.5, lh=15)
-    s.text(24, H - 10, "Fuentes: referencia/03-instalacion §0.2–0.3 · research/estructura-invernadero §d · research/clima-agronomia §8 · research/semillas-sustrato-charolas §c · diseno/hidraulico §1 · bom/fase0-1.csv. Charola 1020 = 10×20 pulgadas.", size=9.5, fill=GRAY)
+    yy = s.lines(1150.0, 400.0, rows, size=10.5, lh=15)
+    # leyenda del alzado
+    lx = 1150.0
+    ly = yy + 14
+    s.text(lx, ly, "LEYENDA", size=12, weight="bold")
+    items = [
+        ("fill", WHITE, GREEN, "charola 1020 doble (perforada dentro de lisa)"),
+        ("fill", "url(#hatchGreen)", GREEN, "dosel: brote (2 cm) → cosecha (8–9 cm)"),
+        ("fill", TUBE_BG, AMBER, "tubo LED T8 18 W 120 cm (127 V vía K5, GAB-A)"),
+        ("line", AMBER, None, "sensor MT-x capacitivo · SHT31"),
+        ("line", BLUE, None, "línea ½\" de nebulizadores (P-1 12 V) · ▼ boquilla"),
+        ("fill", BLUE_BG, BLUE, "charola colectora → manguera → coladera"),
+        ("fill", DARK, INK, "zona blackout N5 (cubierta opaca)"),
+        ("fill", WEIGHT, INK, "peso 2–4 kg sobre charola invertida"),
+        ("fill", SHELF, INK, "entrepaño MDF forrado (paso 43 cm, ≥ 30)"),
+    ]
+    yy = ly + 17
+    for kind, c1, c2, lab in items:
+        if kind == "line":
+            s.line(lx, yy - 4, lx + 30, yy - 4, stroke=c1, sw=2)
+        elif c1 == DARK:
+            s.rect(lx, yy - 11, 30, 13, fill=c1, stroke=c2, sw=1.2, opacity=0.18)
+        else:
+            s.rect(lx, yy - 11, 30, 13, fill=c1, stroke=c2, sw=1.2)
+        s.text(lx + 38, yy, lab, size=10.5)
+        yy += 16.5
+    s.text(24, H - 10, "Fuentes: referencia/03-instalacion §0.1–0.3 · research/estructura-invernadero §d · research/clima-agronomia §8 · research/semillas-sustrato-charolas §c · diseno/hidraulico §1 · diseno/electrico §1 · bom/fase0-1.csv. Charola 1020 = 10×20 pulgadas. Escala 1:10 (1 cm = 4 px).", size=9.5, fill=GRAY)
     return s
 
 

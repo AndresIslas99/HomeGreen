@@ -1,0 +1,794 @@
+# =============================================================================
+#  HomeGreen · firmware/homeassistant/dashboard-huerto.yaml
+#  Dashboard Lovelace "Huerto": cinco vistas.
+#    · Excepciones  → SOLO lo que está fuera de banda (lazo L1: 10 min al día)
+#    · Microgreens  → humedad por nivel, T/HR, tinaco, riego, luces
+#    · NFT          → pH/EC/temperatura/flujo/batería/red, dosificación, continuidad
+#    · Energía      → kWh del mes con alarma en 220 kWh/mes (07 §1)
+#    · Bitácora     → formulario mínimo (30 s por evento) + contadores de mantenimiento
+#
+#  CÓMO SE INSTALA (docs/guias/configurar-home-assistant.md):
+#    Ajustes → Paneles → Agregar panel → "Nuevo panel desde cero" → nombre "Huerto"
+#    → ábrelo → menú ⋮ → Editar panel → ⋮ → Editor de configuración sin formato →
+#    pega TODO este archivo → Guardar. Usa solo tarjetas nativas de HA (sin HACS).
+#
+#  Requiere el paquete configuration-snippets.yaml (helpers, alert.*, sensores
+#  derivados) y los nodos ESPHome integrados. Si una tarjeta sale en rojo con
+#  "Entity not found", la entidad tiene otro nombre en tu HA: corrígelo aquí y en
+#  docs/diseno/datos.md §2 (los YAML de ESPHome son la fuente de verdad).
+#  Bandas de las carátulas (gauge): pH 5.8–6.2 · EC 1.2–1.8 mS/cm · flujo ≥ 2 L/min ·
+#  batería 12.9 V · tinaco 20/40 % (06 §L0); humedad de sustrato 45–70 % desarrollo
+#  [POR VERIFICAR en el dry-run V3].
+# =============================================================================
+title: Huerto
+views:
+  # ===========================================================================
+  # 1. EXCEPCIONES — el panel del lazo L1
+  # ===========================================================================
+  - title: Excepciones
+    path: excepciones
+    icon: mdi:alert-circle-outline
+    cards:
+      - type: markdown
+        title: Fuera de banda ahora
+        content: |-
+          {% set l = state_attr('sensor.excepciones_activas', 'lista') or [] %}
+          {% if l | count == 0 %}
+          **Todo en banda.** Inspección visual de 2 min (moho, color, estiramiento), muestreo de germinación y bitácora. Nada más.
+          {% else %}
+          {% for e in l %}- **{{ e }}**
+          {% endfor %}
+          {% endif %}
+
+          _Regla: una capa solo escala problemas hacia arriba. Si el nodo ya actuó (respaldo, interlock, suspensión), aquí solo confirmas y rearmas._
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nft_emergencia
+            state: "on"
+        card:
+          type: entities
+          title: "EMERGENCIA: NFT sin flujo durante apagón"
+          state_color: true
+          entities:
+            - entity: text_sensor.estado_continuidad_nft
+            - entity: sensor.flujo_nft
+            - entity: sensor.voltaje_bateria_nft
+            - entity: sensor.tiempo_en_bateria_actual
+            - entity: switch.bomba_nft
+            - entity: switch.bomba_nft_respaldo
+            - entity: button.rearmar_alarma_de_flujo
+            - entity: alert.nft_emergencia
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nft_sin_flujo
+            state: "on"
+        card:
+          type: entities
+          title: "NFT sin flujo (respaldo activo)"
+          state_color: true
+          entities:
+            - entity: text_sensor.estado_continuidad_nft
+            - entity: sensor.flujo_nft
+            - entity: switch.bomba_nft
+            - entity: switch.bomba_nft_respaldo
+            - entity: switch.respaldo_automatico_por_flujo
+            - entity: button.rearmar_alarma_de_flujo
+            - entity: alert.nft_sin_flujo
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.red_cfe_presente
+            state: "off"
+        card:
+          type: entities
+          title: "Corte de CFE: NFT en batería"
+          state_color: true
+          entities:
+            - entity: sensor.voltaje_bateria_nft
+            - entity: sensor.tiempo_en_bateria_actual
+            - entity: sensor.autonomia_bateria_restante
+            - entity: binary_sensor.bateria_baja
+            - entity: switch.modo_ahorro_15_15
+            - entity: input_boolean.simulacro_apagon_en_curso
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.dosificacion_suspendida
+            state: "on"
+        card:
+          type: entities
+          title: "Dosificación suspendida"
+          state_color: true
+          entities:
+            - entity: text_sensor.estado_dosificacion
+            - entity: sensor.ph_nft
+            - entity: sensor.ec_nft
+            - entity: switch.sonda_confiable
+            - entity: switch.modo_calibracion
+            - entity: button.rearmar_dosificacion
+            - entity: alert.dosificacion_suspendida
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.tinaco_critico
+            state: "on"
+        card:
+          type: entities
+          title: "Tinaco crítico: riego bloqueado"
+          state_color: true
+          entities:
+            - entity: sensor.nivel_tinaco
+            - entity: sensor.nivel_tinaco_litros
+            - entity: text_sensor.estado_riego
+            - entity: number.tinaco_nivel_rearme
+            - entity: alert.tinaco_critico
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nodo_riego_caido
+            state: "on"
+        card:
+          type: entities
+          title: "Nodo de riego sin señal"
+          entities:
+            - entity: binary_sensor.nodo_riego_estado
+            - entity: sensor.nodo_riego_senal_wifi
+            - entity: text_sensor.nodo_riego_ip
+            - entity: alert.nodo_riego_caido
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nodo_nft_caido
+            state: "on"
+        card:
+          type: entities
+          title: "Nodo NFT sin señal"
+          entities:
+            - entity: binary_sensor.nodo_nft_estado
+            - entity: sensor.nodo_nft_senal_wifi
+            - entity: text_sensor.nodo_nft_ip
+            - entity: alert.nodo_nft_caido
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.riego_saturado
+            state: "on"
+        card:
+          type: entities
+          title: "Riego saturado (máximo de ciclos por hora)"
+          state_color: true
+          entities:
+            - entity: text_sensor.estado_riego
+            - entity: sensor.humedad_sustrato_n1
+            - entity: sensor.humedad_sustrato_n2
+            - entity: sensor.humedad_sustrato_n3
+            - entity: sensor.humedad_sustrato_n4
+            - entity: button.riego_rearmar_saturado
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.hr_alta
+            state: "on"
+        card:
+          type: entities
+          title: "HR alta en el túnel"
+          state_color: true
+          entities:
+            - entity: sensor.humedad_ambiente
+            - entity: sensor.temperatura_ambiente
+            - entity: sensor.punto_de_rocio_ambiente
+            - entity: switch.ventilador
+            - entity: switch.ventilacion_forzada_cada_hora
+
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.deriva_dosificacion
+            state: "on"
+        card:
+          type: entities
+          title: "Deriva de dosificación (> 2× promedio 7 días)"
+          entities:
+            - entity: sensor.ml_dosificados_dia_total
+            - entity: sensor.ml_dosificados_promedio_7d
+            - entity: sensor.ml_dosificados_hoy_a
+            - entity: sensor.ml_dosificados_hoy_b
+            - entity: sensor.ml_dosificados_hoy_ph
+
+      - type: entities
+        title: Modos y rearmes
+        state_color: true
+        entities:
+          - entity: input_boolean.modo_mantenimiento_nft
+          - entity: input_boolean.modo_mantenimiento_riego
+          - entity: input_boolean.simulacro_apagon_en_curso
+          - entity: input_boolean.notificaciones_info
+          - type: divider
+          - entity: button.rearmar_alarma_de_flujo
+          - entity: button.rearmar_dosificacion
+          - entity: button.riego_rearmar_saturado
+
+      - type: entities
+        title: Alertas repetitivas (silenciar = reconocer, no resolver)
+        state_color: true
+        entities:
+          - entity: alert.nft_emergencia
+          - entity: alert.nft_sin_flujo
+          - entity: alert.tinaco_critico
+          - entity: alert.nodo_riego_caido
+          - entity: alert.nodo_nft_caido
+          - entity: alert.dosificacion_suspendida
+
+      - type: logbook
+        title: Últimas 24 h
+        hours_to_show: 24
+        entities:
+          - binary_sensor.nft_sin_flujo
+          - binary_sensor.nft_emergencia
+          - binary_sensor.red_cfe_presente
+          - binary_sensor.bateria_baja
+          - binary_sensor.dosificacion_suspendida
+          - binary_sensor.sonda_sin_cambio_24h
+          - binary_sensor.deriva_dosificacion
+          - binary_sensor.tinaco_bajo
+          - binary_sensor.tinaco_critico
+          - binary_sensor.riego_saturado
+          - binary_sensor.hr_alta
+          - binary_sensor.riesgo_de_helada
+          - binary_sensor.nodo_riego_caido
+          - binary_sensor.nodo_nft_caido
+          - switch.bomba_nft_respaldo
+          - switch.modo_ahorro_15_15
+
+  # ===========================================================================
+  # 2. MICROGREENS — nodo de riego v1
+  # ===========================================================================
+  - title: Microgreens
+    path: microgreens
+    icon: mdi:sprout
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: Nivel 1
+            entity: sensor.humedad_sustrato_n1
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              red: 0
+              yellow: 45
+              green: 60
+          - type: gauge
+            name: Nivel 2
+            entity: sensor.humedad_sustrato_n2
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              red: 0
+              yellow: 45
+              green: 60
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: Nivel 3
+            entity: sensor.humedad_sustrato_n3
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              red: 0
+              yellow: 45
+              green: 60
+          - type: gauge
+            name: Nivel 4
+            entity: sensor.humedad_sustrato_n4
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              red: 0
+              yellow: 45
+              green: 60
+
+      - type: entities
+        title: Riego
+        state_color: true
+        entities:
+          - entity: text_sensor.estado_riego
+          - entity: switch.bomba_riego
+          - entity: switch.riego_automatico
+          - entity: sensor.humedad_sustrato_min
+          - entity: sensor.ciclos_de_riego_hoy
+          - entity: sensor.riego_minutos_hoy
+          - entity: button.riego_ciclo_manual
+          - type: divider
+          - entity: select.etapa_nivel_1
+          - entity: select.etapa_nivel_2
+          - entity: select.etapa_nivel_3
+          - entity: select.etapa_nivel_4
+
+      - type: history-graph
+        title: Humedad de sustrato (24 h)
+        hours_to_show: 24
+        entities:
+          - sensor.humedad_sustrato_n1
+          - sensor.humedad_sustrato_n2
+          - sensor.humedad_sustrato_n3
+          - sensor.humedad_sustrato_n4
+
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: Túnel °C
+            entity: sensor.temperatura_ambiente
+            min: 0
+            max: 40
+            needle: true
+            severity:
+              red: 0
+              yellow: 6
+              green: 14
+          - type: gauge
+            name: Túnel % HR
+            entity: sensor.humedad_ambiente
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              green: 0
+              yellow: 70
+              red: 75
+          - type: gauge
+            name: Tinaco
+            entity: sensor.nivel_tinaco
+            min: 0
+            max: 100
+            needle: true
+            severity:
+              red: 0
+              yellow: 20
+              green: 40
+
+      - type: entities
+        title: Ambiente y tinaco
+        state_color: true
+        entities:
+          - entity: sensor.temperatura_ambiente
+          - entity: sensor.humedad_ambiente
+          - entity: sensor.punto_de_rocio_ambiente
+          - entity: switch.ventilador
+          - entity: switch.ventilacion_automatica
+          - entity: switch.ventilacion_forzada_cada_hora
+          - entity: input_boolean.temporada_de_lluvia
+          - type: divider
+          - entity: sensor.nivel_tinaco
+          - entity: sensor.nivel_tinaco_litros
+          - entity: sensor.temperatura_tinaco
+          - entity: binary_sensor.tinaco_bajo
+          - entity: binary_sensor.tinaco_critico
+          - type: divider
+          - entity: switch.luces_t8
+          - entity: switch.luces_automaticas
+          - entity: switch.reserva_k4
+          - entity: input_boolean.tapete_termico_en_k4
+          - entity: binary_sensor.riesgo_de_helada
+
+      - type: history-graph
+        title: Ambiente (48 h)
+        hours_to_show: 48
+        entities:
+          - sensor.temperatura_ambiente
+          - sensor.humedad_ambiente
+          - sensor.punto_de_rocio_ambiente
+          - switch.ventilador
+
+      - type: history-graph
+        title: Tinaco (7 días)
+        hours_to_show: 168
+        entities:
+          - sensor.nivel_tinaco
+          - switch.bomba_riego
+
+      - type: entities
+        title: Setpoints del nodo de riego (cambio = commit en firmware/)
+        entities:
+          - entity: number.riego_humedad_min_germinacion
+          - entity: number.riego_humedad_max_germinacion
+          - entity: number.riego_humedad_min_desarrollo
+          - entity: number.riego_humedad_max_desarrollo
+          - entity: number.riego_duracion_max_ciclo
+          - entity: number.riego_ciclos_max_por_hora
+          - entity: number.riego_ciclo_manual_duracion
+          - type: divider
+          - entity: number.tinaco_nivel_minimo_interlock
+          - entity: number.tinaco_nivel_rearme
+          - entity: number.tinaco_nivel_advertencia
+          - entity: number.tinaco_altura_sensor_a_fondo
+          - entity: number.tinaco_altura_agua_max
+          - entity: number.tinaco_capacidad_nominal
+          - type: divider
+          - entity: number.ventilacion_hr_encender
+          - entity: number.ventilacion_hr_apagar
+          - entity: number.ventilacion_t_encender
+          - entity: number.ventilacion_t_apagar
+          - entity: number.ventilacion_tiempo_minimo_on
+          - entity: number.ventilacion_forzado_minutos_por_hora
+          - type: divider
+          - entity: number.luces_hora_encender
+          - entity: number.luces_hora_apagar
+          - entity: number.alarma_helada_temperatura
+
+      - type: entities
+        title: Diagnóstico del nodo de riego
+        entities:
+          - entity: binary_sensor.nodo_riego_estado
+          - entity: sensor.nodo_riego_senal_wifi
+          - entity: sensor.nodo_riego_uptime
+          - entity: text_sensor.nodo_riego_ip
+          - entity: text_sensor.nodo_riego_version_esphome
+          - entity: sensor.mt_1_voltaje
+          - entity: sensor.mt_2_voltaje
+          - entity: sensor.mt_3_voltaje
+          - entity: sensor.mt_4_voltaje
+          - entity: sensor.distancia_tinaco
+          - entity: button.nodo_riego_reiniciar
+
+  # ===========================================================================
+  # 3. NFT — nodo NFT v2
+  # ===========================================================================
+  - title: NFT
+    path: nft
+    icon: mdi:water-pump
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: pH
+            entity: sensor.ph_nft
+            min: 4
+            max: 8
+            needle: true
+            severity:
+              red: 4
+              yellow: 5.5
+              green: 5.8
+          - type: gauge
+            name: EC mS/cm
+            entity: sensor.ec_nft
+            min: 0
+            max: 3
+            needle: true
+            severity:
+              red: 0
+              yellow: 1.0
+              green: 1.2
+          - type: gauge
+            name: Solución °C
+            entity: sensor.temperatura_solucion
+            min: 10
+            max: 35
+            needle: true
+            severity:
+              green: 10
+              yellow: 23
+              red: 25
+
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: Flujo L/min
+            entity: sensor.flujo_nft
+            min: 0
+            max: 20
+            needle: true
+            severity:
+              red: 0
+              yellow: 2
+              green: 8
+          - type: gauge
+            name: Batería V
+            entity: sensor.voltaje_bateria_nft
+            min: 10
+            max: 15
+            needle: true
+            severity:
+              red: 10
+              yellow: 12.9
+              green: 13.2
+          - type: tile
+            entity: binary_sensor.red_cfe_presente
+            name: Red CFE
+
+      - type: entities
+        title: Continuidad (DC-first)
+        state_color: true
+        entities:
+          - entity: text_sensor.estado_continuidad_nft
+          - entity: switch.bomba_nft
+          - entity: switch.bomba_nft_respaldo
+          - entity: switch.respaldo_automatico_por_flujo
+          - entity: binary_sensor.nft_sin_flujo
+          - entity: binary_sensor.nft_emergencia
+          - entity: button.rearmar_alarma_de_flujo
+          - type: divider
+          - entity: binary_sensor.red_cfe_presente
+          - entity: sensor.voltaje_bateria_nft
+          - entity: binary_sensor.bateria_baja
+          - entity: switch.modo_ahorro_15_15
+          - entity: sensor.tiempo_en_bateria_actual
+          - entity: sensor.duracion_ultimo_corte
+          - entity: sensor.autonomia_bateria_restante
+          - entity: input_boolean.simulacro_apagon_en_curso
+
+      - type: entities
+        title: Dosificación (A → mezcla → B → mezcla → pH−)
+        state_color: true
+        entities:
+          - entity: text_sensor.estado_dosificacion
+          - entity: switch.dosificacion_automatica
+          - entity: switch.sonda_confiable
+          - entity: switch.modo_calibracion
+          - entity: input_boolean.modo_mantenimiento_nft
+          - entity: binary_sensor.dosificacion_suspendida
+          - entity: binary_sensor.sonda_sin_cambio_24h
+          - entity: button.rearmar_dosificacion
+          - type: divider
+          - entity: sensor.dosis_hoy
+          - entity: sensor.ml_dosificados_hoy_a
+          - entity: sensor.ml_dosificados_hoy_b
+          - entity: sensor.ml_dosificados_hoy_ph
+          - entity: sensor.ml_dosificados_dia_total
+          - entity: sensor.ml_dosificados_promedio_7d
+          - entity: binary_sensor.deriva_dosificacion
+          - type: divider
+          - entity: switch.peristaltica_a
+          - entity: switch.peristaltica_b
+          - entity: switch.peristaltica_ph
+
+      - type: entities
+        title: Tambo (cambio de solución cada 2–3 semanas)
+        state_color: true
+        entities:
+          - entity: button.purgar_tambo
+          - entity: switch.solenoide_purga
+          - entity: button.llenar_tambo
+          - entity: switch.solenoide_llenado
+          - entity: binary_sensor.nivel_tambo_bajo
+          - entity: binary_sensor.nivel_tambo_alto
+          - entity: sensor.nivel_tinaco
+          - entity: binary_sensor.solucion_caliente
+          - entity: sensor.dias_desde_cambio_de_solucion
+          - entity: sensor.agua_nft_semana
+
+      - type: history-graph
+        title: pH y EC (48 h)
+        hours_to_show: 48
+        entities:
+          - sensor.ph_nft
+          - sensor.ec_nft
+          - switch.peristaltica_a
+          - switch.peristaltica_b
+          - switch.peristaltica_ph
+
+      - type: history-graph
+        title: Flujo, batería y red (48 h)
+        hours_to_show: 48
+        entities:
+          - sensor.flujo_nft
+          - sensor.voltaje_bateria_nft
+          - binary_sensor.red_cfe_presente
+          - switch.bomba_nft_respaldo
+
+      - type: history-graph
+        title: Temperatura de la solución (7 días)
+        hours_to_show: 168
+        entities:
+          - sensor.temperatura_solucion
+          - sensor.temperatura_ambiente
+
+      - type: entities
+        title: Setpoints del nodo NFT (cambio = commit en firmware/)
+        entities:
+          - entity: number.ph_minimo
+          - entity: number.ph_maximo
+          - entity: number.ec_minima
+          - entity: number.ec_maxima
+          - type: divider
+          - entity: number.dosis_a_segundos
+          - entity: number.dosis_b_segundos
+          - entity: number.dosis_ph_segundos
+          - entity: number.dosis_tope_de_seguridad
+          - entity: number.tiempo_muerto_de_mezcla
+          - entity: number.dosis_maximas_por_dia
+          - entity: number.ph_salto_maximo_en_5_min
+          - type: divider
+          - entity: number.flujo_minimo
+          - entity: number.flujo_segundos_sin_flujo_para_alarma
+          - entity: number.flujo_gracia_tras_arranque
+          - entity: number.bateria_voltaje_bajo
+          - entity: number.modo_ahorro_minutos_on
+          - entity: number.modo_ahorro_minutos_off
+          - type: divider
+          - entity: number.llenado_tiempo_maximo
+          - entity: number.llenado_tinaco_minimo
+          - entity: number.purga_tiempo_maximo
+          - entity: number.solucion_temperatura_maxima
+
+      - type: entities
+        title: Calibración (cada 15 días; guía calibrar-sondas-ph-ec)
+        entities:
+          - entity: sensor.dias_desde_calibracion
+          - entity: binary_sensor.calibracion_vencida
+          - entity: input_button.calibracion_hecha_hoy
+          - type: divider
+          - entity: sensor.ph_voltaje
+          - entity: number.ph_calibracion_v_en_buffer_4_01
+          - entity: number.ph_calibracion_v_en_buffer_6_86
+          - entity: number.ph_calibracion_temperatura
+          - entity: sensor.ec_voltaje
+          - entity: number.ec_factor_de_calibracion_k
+          - entity: number.ec_coeficiente_de_temperatura
+          - type: divider
+          - entity: number.peristaltica_a_ml_por_segundo
+          - entity: number.peristaltica_b_ml_por_segundo
+          - entity: number.peristaltica_ph_ml_por_segundo
+          - entity: sensor.bateria_voltaje_adc
+          - entity: number.bateria_factor_divisor
+
+      - type: entities
+        title: Diagnóstico del nodo NFT
+        entities:
+          - entity: binary_sensor.nodo_nft_estado
+          - entity: sensor.nodo_nft_senal_wifi
+          - entity: sensor.nodo_nft_uptime
+          - entity: text_sensor.nodo_nft_ip
+          - entity: text_sensor.nodo_nft_version_esphome
+          - entity: sensor.volumen_nft_acumulado
+          - entity: button.nodo_nft_reiniciar
+
+  # ===========================================================================
+  # 4. ENERGÍA — vigilar el umbral DAC (250 kWh/mes de promedio móvil)
+  # ===========================================================================
+  - title: Energía
+    path: energia
+    icon: mdi:flash
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            name: Huerto este mes
+            entity: sensor.energia_huerto_mes
+            min: 0
+            max: 250
+            needle: true
+            severity:
+              green: 0
+              yellow: 150
+              red: 220
+          - type: gauge
+            name: Proyección casa + huerto
+            entity: sensor.energia_proyeccion_mes
+            min: 0
+            max: 300
+            needle: true
+            severity:
+              green: 0
+              yellow: 200
+              red: 220
+
+      - type: entities
+        title: Energía (estimada por estado de actuadores; sustituye por un contacto medidor)
+        state_color: true
+        entities:
+          - entity: sensor.potencia_huerto_estimada
+          - entity: sensor.energia_huerto_dia
+          - entity: sensor.energia_huerto_mes
+          - entity: sensor.energia_proyeccion_mes
+          - entity: binary_sensor.energia_sobre_alarma
+          - type: divider
+          - entity: input_number.energia_alarma_kwh_mes
+          - entity: input_number.consumo_base_hogar_kwh_mes
+          - entity: input_number.refrigerador_kwh_mes
+          - type: divider
+          - entity: input_number.potencia_bomba_nft_w
+          - entity: input_number.potencia_luces_t8_w
+          - entity: input_number.potencia_bomba_riego_w
+          - entity: input_number.potencia_ventilador_w
+          - entity: input_number.potencia_reserva_k4_w
+          - entity: input_number.potencia_base_huerto_w
+
+      - type: history-graph
+        title: Potencia estimada (48 h)
+        hours_to_show: 48
+        entities:
+          - sensor.potencia_huerto_estimada
+          - switch.luces_t8
+          - switch.bomba_nft
+          - switch.ventilador
+
+      - type: markdown
+        title: Por qué importa
+        content: |-
+          CDMX es tarifa 1: si el **promedio móvil de 12 meses** del recibo pasa de **250 kWh/mes**, CFE reclasifica a **DAC**
+          (de ~$1.1 a ~$6.6 por kWh más cargo fijo; el recibo se multiplica hasta 5×). Por eso la alarma está en
+          **{{ states('input_number.energia_alarma_kwh_mes') }} kWh** y el NFT usa una bomba de 12 V de 40 W (~29 kWh/mes),
+          no la periférica de 0.5 HP (~324 kWh/mes).
+
+          Para que esta vista diga la verdad: mide 7 días el consumo base de tu casa con un medidor de enchufe y escríbelo en
+          "consumo base del hogar"; lee el promedio anual en tu recibo de CFE. Si el negocio crece con LED, la salida es un
+          contrato PDBT (negocio) separado.
+
+  # ===========================================================================
+  # 5. BITÁCORA — 30 s por evento, el mismo día
+  # ===========================================================================
+  - title: Bitácora
+    path: bitacora
+    icon: mdi:notebook-edit
+    cards:
+      - type: entities
+        title: Registrar un evento (se agrega a /config/bitacora/ha-eventos.csv)
+        entities:
+          - entity: input_select.bitacora_evento
+          - entity: input_text.bitacora_siembra_id
+          - entity: input_select.bitacora_variedad
+          - entity: input_number.bitacora_cantidad
+          - entity: input_text.bitacora_observaciones
+          - type: button
+            entity: input_button.bitacora_guardar
+            name: Guardar
+            action_name: Guardar
+            tap_action:
+              action: perform-action
+              perform_action: input_button.press
+              target:
+                entity_id: input_button.bitacora_guardar
+
+      - type: markdown
+        title: Cómo llenarla
+        content: |-
+          - **siembra_id**: `VAR-AAMMDD-Slote-R1N2` (p. ej. `GIR-260915-S001-R1N2`): el mismo que va en masking tape sobre la charola.
+          - **cantidad**: gramos de semilla al sembrar, gramos cosechados al cosechar, charolas o piezas al entregar, % en merma.
+          - Cada fila guarda además pH, EC, T, HR y tinaco del momento (evidencia para el informe del domingo).
+          - El domingo copias `ha-eventos.csv` al repo y completas `bitacora/produccion.csv` / `ventas.csv` (12 y 7 columnas). Nunca "de memoria".
+
+      - type: entities
+        title: Mantenimiento programado
+        state_color: true
+        entities:
+          - entity: sensor.dias_desde_calibracion
+          - entity: input_button.calibracion_hecha_hoy
+          - entity: input_number.calibracion_intervalo_dias
+          - type: divider
+          - entity: sensor.dias_desde_cambio_de_solucion
+          - entity: input_button.cambio_solucion_hecho_hoy
+          - entity: input_number.cambio_solucion_intervalo_dias
+          - type: divider
+          - entity: sensor.dias_desde_simulacro
+          - entity: input_button.simulacro_hecho_hoy
+          - entity: input_number.simulacro_intervalo_dias
+          - type: divider
+          - entity: input_datetime.ultima_calibracion_sondas
+          - entity: input_datetime.ultimo_cambio_solucion
+          - entity: input_datetime.ultimo_simulacro_apagon
+
+      - type: logbook
+        title: Eventos registrados (7 días)
+        hours_to_show: 168
+        entities:
+          - input_button.bitacora_guardar
+          - input_datetime.ultima_calibracion_sondas
+          - input_datetime.ultimo_cambio_solucion
+          - input_datetime.ultimo_simulacro_apagon

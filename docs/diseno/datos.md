@@ -157,55 +157,92 @@ qué costal salió ([mock-recall](../guias/mock-recall.md), [validacion/v10](../
 
 ## 2. Entidades de Home Assistant
 
-Nombres que usan `firmware/esphome/*.yaml`, `firmware/homeassistant/automations.yaml`,
-`dashboard-huerto.yaml` y el export semanal. Los cinco marcados con ✔ vienen del YAML de
-[research/electrico-respaldo-seguridad §5](../research/electrico-respaldo-seguridad.md); el
-resto es la propuesta de este diseño `[POR VERIFICAR: que coincidan con los YAML de
-firmware/ y con software/firmware.md; si cambias un nombre, cámbialo en los tres lugares]`.
+Los nombres salen de `firmware/esphome/nodo-riego-v1.yaml`, `nodo-nft-v2.yaml` y
+`nodo-ambiente.yaml` (**la fuente de verdad**; tabla de pines y calibración en
+[software/firmware](../software/firmware.md)). ESPHome deriva el `entity_id` del `name` de
+cada entidad (minúsculas, espacios y guiones → `_`; por eso los YAML no llevan acentos ni
+`friendly_name`) y Home Assistant le antepone el dominio: `sensor.`, `binary_sensor.`,
+`switch.`, `number.`, `select.`, `button.`, `text_sensor.`. Si cambias un `name`, cámbialo
+también en `firmware/homeassistant/automations.yaml`, `dashboard-huerto.yaml` y en esta tabla,
+en el mismo commit `[POR VERIFICAR: confirmar en HA los entity_id exactos tras el primer
+arranque de cada nodo; los de abajo siguen la regla de derivación]`.
 
-### Nodo de riego v1 (`nodo-riego-v1`)
+### Nodo de riego v1 (`nodo-riego-v1`, Fase 1)
 
-| Entidad | Tag | Unidad | Origen | Uso |
+| Entidad (`name` en el YAML → `entity_id`) | Tag | Unidad | Pin / origen | Uso |
 |---|---|---|---|---|
-| `sensor.humedad_sustrato_n1` … `_n4` | MT-1…4 | % (ADC calibrado seco/saturado) | GPIO32–35 | Lazo de riego, gráfica por nivel |
-| `sensor.temperatura_ambiente` | — | °C | SHT31 I2C | Ventilación, alarma de helada |
-| `sensor.humedad_ambiente` | — | % HR | SHT31 | Ventilación, alarma HR 6 h |
-| `sensor.temperatura_tinaco` | TT-1 | °C | DS18B20 GPIO4 | Informativo |
-| `sensor.nivel_tinaco` | LT-1 | % (de distancia JSN-SR04T) | GPIO5/18 | Interlocks, advertencia < 40 %, crítica < 20 % |
-| `switch.bomba_riego` | P-1 (riego) | on/off | Relé K1 GPIO25 | Actuador del lazo de riego |
-| `switch.ventilador` | — | on/off | K2 GPIO26 | Ventilación |
-| `switch.luces_t8` | — | on/off | K3 GPIO27 → K5 | Fotoperiodo 12–14 h |
-| `switch.reserva_k4` | — | on/off | K4 GPIO14 | Tapete térmico dic–feb o luz nivel 5 |
-| `counter.ciclos_riego_hora` | — | ciclos | HA helper | Watchdog N ciclos/h |
+| `Humedad sustrato N1…N4` → `sensor.humedad_sustrato_n1…n4` (+ `MT-n voltaje`, diagnóstico) | MT-1…4 | % (calibrado seco/húmedo) | GPIO32–35 (ADC1) | Lazo de riego; gráfica por nivel |
+| `Temperatura ambiente`, `Humedad ambiente`, `Punto de rocio ambiente` | — | °C, % HR | SHT31 I2C GPIO21/22 | Ventilación; alarmas HR alta 6 h y helada |
+| `Temperatura tinaco` | TT-1 | °C | DS18B20 GPIO4 | Informativo |
+| `Nivel tinaco`, `Nivel tinaco litros`, `Distancia tinaco` | LT-1 | %, L, cm | JSN-SR04T GPIO5/18 | Interlock < 20 %, rearme 25 %, advertencia < 40 % |
+| `Ciclos de riego hoy`, `Riego minutos hoy` | — | ciclos, min | contadores del nodo | Watchdog N ciclos/h; export semanal |
+| `Bomba riego` → `switch.bomba_riego` | P-1 (riego) | on/off | K1 GPIO25 | Actuador del lazo de riego |
+| `Ventilador` → `switch.ventilador` | — | on/off | K2 GPIO26 | Ventilación |
+| `Luces T8` → `switch.luces_t8` | — | on/off | K3 GPIO27 → K5 (127 V) | Fotoperiodo 12–14 h (`Luces hora encender/apagar`) |
+| `Reserva K4` → `switch.reserva_k4` | — | on/off | K4 GPIO14 | Tapete térmico dic–feb o luz del nivel 5 |
+| `Riego automatico`, `Ventilacion automatica`, `Ventilacion forzada cada hora`, `Luces automaticas` → `switch.*` | — | on/off | template | Modos; "forzada" se enciende jun–sep |
+| `Etapa nivel 1…4` → `select.etapa_nivel_1…4` | — | vacio / germinacion / desarrollo | `select` | Qué banda aplica a cada nivel; `vacio` no riega |
+| Setpoints `number.*`: `Riego humedad min/max germinacion`, `Riego humedad min/max desarrollo`, `Riego duracion max ciclo`, `Riego ciclos max por hora`, `Tinaco nivel minimo interlock / rearme / advertencia`, `Ventilacion HR encender/apagar`, `Ventilacion T encender/apagar`, `Ventilacion tiempo minimo ON`, `Ventilacion forzado minutos por hora`, `Luces hora encender/apagar`, `Alarma helada temperatura` | — | categoría Configuración | flash del nodo (`restore_value`) | Valores en [control.md](control.md); cambio = commit |
+| `Tinaco bajo`, `Tinaco critico`, `Riego saturado`, `HR alta`, `Riesgo de helada` → `binary_sensor.*` | — | on/off | template | Disparadores de las automatizaciones de HA (advertencia / crítica) |
+| `Nodo riego estado` → `binary_sensor.nodo_riego_estado` | — | on/off | `status` | Heartbeat: OFF = nodo caído |
+| `Estado riego` → `text_sensor.estado_riego` | — | texto | template | Panel de excepciones ("reposo", "regando N1", "bloqueado") |
+| `Riego ciclo manual`, `Riego rearmar saturado`, `Nodo riego reiniciar` → `button.*` | — | — | — | Commissioning y rearmes |
 
-### Nodo NFT v2 (`nodo-nft-v2`)
+### Nodo NFT v2 (`nodo-nft-v2`, Fase 2)
 
-| Entidad | Tag | Unidad | Origen | Uso |
+| Entidad (`name` → `entity_id`) | Tag | Unidad | Pin / origen | Uso |
 |---|---|---|---|---|
-| `sensor.ph_nft` | AT-1 | pH | GPIO34 vía RC | Lazo pH, sonda no confiable |
-| `sensor.ec_nft` | AT-2 | mS/cm | GPIO35 | Lazo EC |
-| `sensor.temperatura_solucion` | TT-2 | °C | DS18B20 GPIO4 | Advertencia > 25 °C |
-| `sensor.flujo_nft` ✔ | FT-1 | L/min (450 pulsos/L) | `pulse_counter` GPIO27 | Watchdog bomba sin flujo |
-| `binary_sensor.red_cfe_presente` ✔ | — | on/off | GPIO23, `delayed_off: 5s` | Aviso de corte, escalación |
-| `sensor.voltaje_bateria_nft` ✔ | — | V (×5.7) | GPIO36 | Modo ahorro < 12.9 V |
-| `switch.bomba_nft` ✔ | P-1 (NFT) | on/off | K1 NC GPIO14, `restore_mode: RESTORE_DEFAULT_ON` | Reposo = ON |
-| `switch.bomba_nft_respaldo` ✔ | P-2 | on/off | K2 GPIO32 | Respaldo por flujo cero |
-| `switch.peristaltica_a`, `_b`, `_ph` | DP-1/2/3 | on/off | MOSFET GPIO25/26/33 | Dosificación |
-| `switch.solenoide_llenado`, `switch.solenoide_purga` | SV-1 / SV-2 | on/off | GPIO12 / 13 | Llenado y purga |
-| `binary_sensor.nivel_tambo_bajo` | LT-2 | on/off | `[POR VERIFICAR: sensor a definir]` | Interlock |
-| `binary_sensor.nft_emergencia` | — | template | `red_cfe` off **y** flujo < 2 | `alert` cada 10 min |
-| `counter.ml_dosificados_dia` (×3) | — | mL | HA helper | Watchdog de deriva 2× |
-| `input_number.setpoint_ph_min/max`, `..._ec_min/max`, `..._hr_on/off` | — | — | HA helper | Setpoints visibles y versionados |
-| `calendar.huerto` | — | — | HA | Calibración quincenal, cambio de solución, simulacro mensual |
+| `pH NFT` → `sensor.ph_nft` (+ `pH voltaje`) | AT-1 | pH | PH-4502C GPIO34 | Lazo pH; regla de sonda no confiable |
+| `EC NFT` → `sensor.ec_nft` (+ `EC voltaje`) | AT-2 | mS/cm a 25 °C | SEN0244 GPIO35 | Lazo EC |
+| `Temperatura solucion` → `sensor.temperatura_solucion` | TT-2 | °C | DS18B20 GPIO4 | Compensación; `Solucion caliente` > 25 °C |
+| `Flujo NFT` → `sensor.flujo_nft`, `Volumen NFT acumulado` | FT-1 | L/min (450 pulsos/L), L | YF-S201 GPIO27 | Watchdog bomba sin flujo; consumo semanal |
+| `Red CFE presente` → `binary_sensor.red_cfe_presente` | — | on/off | PC817 GPIO23, `delayed_on/off: 5s` | Aviso de corte; escalación |
+| `Voltaje bateria NFT` → `sensor.voltaje_bateria_nft` (+ `Bateria voltaje ADC`) | — | V (× 5.7) | divisor 47k/10k GPIO36 | Modo ahorro < 12.9 V; autonomía |
+| `Tiempo en bateria actual`, `Duracion ultimo corte` | — | min | contadores del nodo | Notificación al volver la luz; simulacro V11 |
+| `Dosis hoy`, `mL dosificados hoy A / B / pH` | — | dosis, mL | contadores del nodo | Watchdog de deriva (HA compara con el promedio de 7 días) |
+| `Bomba NFT` → `switch.bomba_nft` | P-1 (NFT) | on/off | K1 **NC** GPIO32, `RESTORE_DEFAULT_ON` | Reposo = ON; solo se apaga para mantenimiento |
+| `Bomba NFT respaldo` → `switch.bomba_nft_respaldo` | P-2 | on/off | K2 NO GPIO14, `RESTORE_DEFAULT_OFF` | Arranca por flujo cero |
+| `Peristaltica A / B / pH` → `switch.peristaltica_a / _b / _ph` | DP-1/2/3 | on/off (tope 30 s) | MOSFET GPIO25/26/33 | Dosificación |
+| `Solenoide llenado`, `Solenoide purga` → `switch.solenoide_llenado / _purga` | SV-1 / SV-2 | on/off (tiempo máximo) | MOSFET GPIO12 / 13 | Llenado desde TK-1 y purga a coladera |
+| `Nivel tambo bajo`, `Nivel tambo alto` → `binary_sensor.nivel_tambo_bajo / _alto` | LT-2 | on/off | flotadores GPIO17 / 16 | Interlock de dosificación y llenado `[POR VERIFICAR: el flotador no está en bom/fase2; sin él el interlock queda desactivado]` |
+| `NFT sin flujo`, `NFT emergencia`, `Bateria baja`, `pH fuera de banda`, `EC fuera de banda`, `Solucion caliente`, `Dosificacion suspendida` → `binary_sensor.*` | — | on/off | template | Disparadores de HA; `nft_emergencia` = red OFF **y** sin flujo → `alert` cada 10 min |
+| `Nodo NFT estado` → `binary_sensor.nodo_nft_estado` | — | on/off | `status` | Heartbeat |
+| `Estado dosificacion`, `Estado continuidad NFT` → `text_sensor.*` | — | texto | template | Panel de excepciones |
+| `Dosificacion automatica`, `Sonda confiable`, `Modo calibracion`, `Respaldo automatico por flujo`, `Modo ahorro 15-15` → `switch.*` | — | on/off | template | Modos; `modo_ahorro_15_15` lo enciende HA con batería baja **y** red ausente |
+| Setpoints `number.*`: `pH minimo/maximo`, `EC minima/maxima`, `pH calibracion V en buffer 4.01 / 6.86`, `pH calibracion temperatura`, `EC factor de calibracion k`, `Dosis A/B/pH- segundos`, `Dosis tope de seguridad`, `Tiempo muerto de mezcla`, `Dosis maximas por dia`, `Peristaltica A/B/pH- mL por segundo`, `pH salto maximo en 5 min`, `Flujo minimo`, `Flujo segundos sin flujo para alarma`, `Flujo gracia tras arranque`, `Bateria voltaje bajo`, `Bateria factor divisor`, `Modo ahorro minutos ON/OFF`, `Llenado tiempo maximo`, `Llenado tinaco minimo`, `Purga tiempo maximo`, `Solucion temperatura maxima` | — | categoría Configuración | flash del nodo | Valores en [control.md](control.md) y [software/firmware → Cambiar setpoints](../software/firmware.md) |
+| `Rearmar alarma de flujo`, `Rearmar dosificacion`, `Purgar tambo`, `Llenar tambo`, `Nodo NFT reiniciar` → `button.*` | — | — | — | Rearmes manuales y cambio de solución |
 
-Nombres de los nodos y pines: [electrico.md](electrico.md). Qué corre dónde: [control.md](control.md).
+### Nodo de ambiente (`nodo-ambiente`, opcional)
+
+`Temperatura <lugar>`, `Humedad <lugar>`, `Punto de rocio <lugar>`, `VPD <lugar>`, `HR alta
+<lugar>`, `T alta <lugar>`, `Riesgo de helada <lugar>` y sus umbrales `number.*`; `<lugar>` es
+la `substitution` del YAML (túnel a media longitud, zona de germinación o casa en invierno).
+Sin actuadores.
+
+### Del lado de Home Assistant (`firmware/homeassistant/`, propuesta de este diseño)
+
+| Entidad o automatización | Qué hace | Fuente |
+|---|---|---|
+| `notify.mobile_app_<tu_cel>` | Push de advertencia; crítica con `interruption-level: critical` (iOS) o canal de importancia alta (Android) | [research §5.2](../research/electrico-respaldo-seguridad.md) |
+| `alert.nft_emergencia` sobre `binary_sensor.nft_emergencia` | Repite cada 10 min hasta que se atiende (+ Telegram o llamada, opcional) | ídem; [06 §Escalamiento](../referencia/06-validacion-y-lazos-agenticos.md) |
+| "Corte de CFE" (`red_cfe_presente` OFF 30 s) y "bomba sin flujo" (`nft_sin_flujo` ON) | Aviso con voltaje y autonomía; al volver la luz, `Duracion ultimo corte` | [research §5.2](../research/electrico-respaldo-seguridad.md) |
+| "Modo ahorro" (`bateria_baja` ON **y** `red_cfe_presente` OFF) | Enciende `switch.modo_ahorro_15_15` | ídem |
+| "Nodo caído" (`nodo_riego_estado` / `nodo_nft_estado` OFF, o entidades `unavailable` 5–10 min) | Alerta crítica | [06 watchdogs](../referencia/06-validacion-y-lazos-agenticos.md) |
+| `sensor.ml_dosificados_7d_*` (plataforma `statistics`, propuesta) | Deriva: mL de hoy > 2× el promedio de 7 días → advertencia | ídem |
+| "HR alta 6 h" (`binary_sensor.hr_alta` ON durante 6 h) | Advertencia | ídem |
+| `calendar.huerto` | Calibración quincenal, cambio de solución cada 2–3 semanas, simulacro V11 mensual | [06 §Resumen](../referencia/06-validacion-y-lazos-agenticos.md) |
+| Export CSV semanal (`recorder` → `bitacora/ha/AAAA-Www.csv`) | Insumo del informe L3 | §3 y §5 |
+
+Pines y esquemas por nodo: [electrico.md](electrico.md) `[POR VERIFICAR: su tabla propone K1/K2
+del NFT en GPIO14/32 y el YAML usa GPIO32/14; el YAML manda y electrico.md debe actualizarse]`.
+Qué corre dónde: [control.md](control.md).
 
 ## 3. Retención y exportación
 
 | Dato | Dónde vive | Cuánto tiempo | Fuente de la regla |
 |---|---|---|---|
 | Lecturas de sensores (cada 10–30 s) | `recorder` de HA en el mini PC | `[POR VERIFICAR: la fuente no fija días; propuesta 30 días de detalle + estadísticas de largo plazo de HA]` | — |
-| Export semanal (T, HR, pH, EC, riegos, alarmas) | `bitacora/ha/AAAA-Www.csv` en este repo (propuesta) | ≥ 12 meses | Insumo del informe L3 ([06 §L3](../referencia/06-validacion-y-lazos-agenticos.md)); bitácoras ≥ 12 meses ([research/inocuidad-operativa §4](../research/inocuidad-operativa.md)) |
+| Export semanal (T, HR, pH, EC, riegos, dosis, alarmas) | `bitacora/ha/AAAA-Www.csv` en este repo (propuesta) | ≥ 12 meses | Insumo del informe L3 ([06 §L3](../referencia/06-validacion-y-lazos-agenticos.md)); bitácoras ≥ 12 meses ([research/inocuidad-operativa §4](../research/inocuidad-operativa.md)) |
 | `bitacora/produccion.csv`, `ventas.csv`, `semilla.csv`, `electrico.csv` | Git | Para siempre (son pequeños) | Trazabilidad V10 y gates L4 |
 | Informes del agente y decisiones | `bitacora/informes/AAAA-Www.md` (propuesta) + mensajes de commit | Para siempre | "El histórico de informes + decisiones se vuelve el manual de operación" ([06 §L3](../referencia/06-validacion-y-lazos-agenticos.md)) |
 | Fotos contramuestra de cada entrega | Carpeta por fecha (fuera de Git) | 12 meses | [research/inocuidad-operativa §5](../research/inocuidad-operativa.md) |

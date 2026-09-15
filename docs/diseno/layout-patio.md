@@ -180,7 +180,7 @@ Son las longitudes que compras (más 10–15 % de desperdicio y subidas/bajadas)
 - [ ] Vecinos y condominio informados/consultados; uso de suelo verificado en SEDUVI ([07 §9](../referencia/07-puntos-ciegos-y-riesgos.md)).
 - [ ] Longitudes del panel derecho de la planta copiadas a la lista de compras de Fase 1 (`docs/fases/fase-1/compras.md`).
 
-Registrar en bitácora: `bitacora/obra.csv` con fecha, medida, valor, foto.
+Registrar en bitácora: una fila `SITIO-AAMMDD` en `bitacora/produccion.csv` con las medidas en `observaciones` (T mín/máx, µmol, diagonales, foto), igual que en [Montar el rack](../fases/fase-0/montaje.md). Si prefieres un `bitacora/obra.csv` aparte, créalo con `fecha,medida,valor,foto` [POR VERIFICAR: no existe aún en el repo].
 
 ## Fuentes
 

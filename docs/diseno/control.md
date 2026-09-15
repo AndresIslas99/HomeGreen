@@ -46,16 +46,16 @@ Regla: **una capa solo escala problemas hacia arriba, nunca los resuelve dos vec
 
 | Lazo | Variable (tag / entidad) | Referencia o banda | Actuador | Regla | Fuente |
 |---|---|---|---|---|---|
-| Riego microgreens | Humedad de sustrato MT-1…4 (`sensor.humedad_sustrato_n1…n4`) | Banda por etapa: germinación (más húmeda) y desarrollo `[POR VERIFICAR: la fuente no fija %; calibrar el ADC de cada sensor en seco/saturado y fijar límites en el dry-run V3 con 4 charolas testigo]` | P-1 diafragma 12 V + nebulizadores (K1 del nodo riego) | ON si < límite inferior; OFF si > límite superior; máx. N ciclos/h `[POR VERIFICAR: N y duración máxima por ciclo, medidos en V3]` | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md) |
-| pH NFT | AT-1 en el retorno (`sensor.ph_nft`) | **5.8–6.2** | DP-3 peristáltica pH− (AquAcid) | Dosis fija pequeña → T_mezcla **10–15 min** → re-medir | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [03 §2.2](../referencia/03-instalacion.md) |
+| Riego microgreens | Humedad de sustrato MT-1…4 (`sensor.humedad_sustrato_n1…n4`); etapa por nivel con `select.etapa_nivel_1…4` (vacio / germinacion / desarrollo) | Banda por etapa; valores iniciales del firmware **60–80 %** en germinación y **45–70 %** en desarrollo `[POR VERIFICAR: la fuente no fija %; calibrar cada sensor en seco/saturado y fijar los límites en el dry-run V3 con 4 charolas testigo]` | P-1 diafragma 12 V + nebulizadores (K1 del nodo riego) | ON si < límite inferior; OFF si > límite superior o al cumplir `t_max`; máx. **4 ciclos/h** de **120 s** (valores iniciales) `[POR VERIFICAR: N y t_max se miden en V3]` | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), `firmware/esphome/nodo-riego-v1.yaml` |
+| pH NFT | AT-1 en el retorno (`sensor.ph_nft`) | **5.8–6.2** | DP-3 peristáltica pH− (AquAcid) | Dosis fija pequeña (tope **30 s** por dosis, **12 dosis/día**) → T_mezcla **10–15 min** (inicial 12 min) → re-medir | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [03 §2.2](../referencia/03-instalacion.md) |
 | EC NFT | AT-2 en el retorno (`sensor.ec_nft`, mS/cm) | **1.2–1.8 mS/cm** según cultivo | DP-1 (A) y DP-2 (B), nunca juntas en el mismo bote | Igual: dosis + tiempo muerto; nunca continua | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md) |
-| Nivel tinaco | LT-1 JSN-SR04T (`sensor.nivel_tinaco`) | **> 20 %** | Bloqueo de P-1, SV-1 y dosificación | Interlock: nivel bajo = nada dosifica ni bombea; advertencia < 40 % | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [hidraulico §6](hidraulico.md) |
-| Nivel tambo | LT-2 `[POR VERIFICAR: sensor no definido en bom/fase2 — flotador con contacto o segundo JSN-SR04T]` | Alto: cierra SV-1 · Bajo: bloquea | SV-1 llenado, P-1/P-2, DP-1/2/3 | Interlock: sin dosificación ni bomba con nivel bajo o bomba OFF | [hidraulico §5.3](hidraulico.md) |
-| Ventilación | SHT31 T/HR (`sensor.humedad_ambiente`, `sensor.temperatura_ambiente`) | Referencia **HR < 75 %, T < 28 °C**; arranque a **HR > 70 %** | Ventilador 12 V (K2 del nodo riego) | Histéresis en la banda 70–75 %: ON arriba de 75 % o T > 28 °C, OFF abajo de 70 % `[POR VERIFICAR: la fuente da los dos umbrales, no el sentido de la banda; ajustar en V3 viendo cuánto tarda en bajar la HR]`; **forzado 10 min/h en temporada de lluvia** (jun–sep) | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [02 §1](../referencia/02-restricciones-y-requisitos.md) |
+| Nivel tinaco | LT-1 JSN-SR04T (`sensor.nivel_tinaco`) | **> 20 %** | Bloqueo de P-1, SV-1 y dosificación | Interlock: nivel bajo = nada dosifica ni bombea; rearme al **25 %**; advertencia < 40 % | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [hidraulico §6](hidraulico.md) |
+| Nivel tambo | LT-2: flotadores "tambo bajo" (GPIO17) y "tambo alto" (GPIO16) → `binary_sensor.nivel_tambo_bajo/_alto` `[POR VERIFICAR: el flotador no está en bom/fase2; sin él, el interlock del tambo queda desactivado en el firmware]` | Alto: cierra SV-1 · Bajo: bloquea | SV-1 llenado, P-1/P-2, DP-1/2/3 | Interlock: sin dosificación ni bomba con nivel bajo o bomba OFF | [hidraulico §5.3](hidraulico.md) |
+| Ventilación | SHT31 T/HR (`sensor.humedad_ambiente`, `sensor.temperatura_ambiente`) | Referencia **HR < 75 %, T < 28 °C**; arranque a **HR > 70 %** | Ventilador 12 V (K2 del nodo riego) | Histéresis: ON si HR > **75 %** o T > **28 °C**; OFF si HR < **70 %** y T < **26 °C**, nunca antes de **5 min** encendido `[POR VERIFICAR: la fuente da los dos umbrales de HR, no el sentido de la banda; ajustar en V3 viendo cuánto tarda en bajar la HR]`; **forzado 10 min/h en temporada de lluvia** (jun–sep) | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md), [02 §1](../referencia/02-restricciones-y-requisitos.md) |
 | Temperatura de solución | TT-2 DS18B20 en TK-2 (`sensor.temperatura_solucion`) | **18–22 °C**; advertencia > 25 °C | Ninguno (sombra, cambio de solución) | Informativo; arriba de 25 °C cae el oxígeno disuelto | [hidraulico §6](hidraulico.md) |
-| Continuidad NFT: flujo | FT-1 YF-S201 (`sensor.flujo_nft`, 450 pulsos/L) | 8–16 L/min normal; **< 2 L/min** = sin flujo | K2 bomba de respaldo + alerta crítica | Bomba comandada ON y flujo < 2 L/min por **60 s** → respaldo + crítica; apagar la principal (protege en seco) `[POR VERIFICAR: 06 dice 60 s y el YAML del informe 2 min; este diseño usa 60 s y se ajusta tras medir el caudal real]` | [06 watchdogs](../referencia/06-validacion-y-lazos-agenticos.md), [research §5.2](../research/electrico-respaldo-seguridad.md) |
+| Continuidad NFT: flujo | FT-1 YF-S201 (`sensor.flujo_nft`, 450 pulsos/L) | 8–16 L/min normal; **< 2 L/min** = sin flujo | K2 bomba de respaldo + alerta crítica | Bomba comandada ON y flujo < 2 L/min por **60 s** → respaldo + crítica; apagar la principal (protege en seco); **20 s de gracia** tras cada arranque para no disparar en falso `[POR VERIFICAR: 06 dice 60 s y el YAML del informe 2 min; el firmware usa 60 s y se ajusta tras medir el caudal real]` | [06 watchdogs](../referencia/06-validacion-y-lazos-agenticos.md), [research §5.2](../research/electrico-respaldo-seguridad.md) |
 | Continuidad NFT: red CFE | `binary_sensor.red_cfe_presente` (GPIO23, `delayed_off: 5s`) | Presente / ausente | Notificación | Ausente 30 s → aviso "corte de luz" con voltaje y autonomía | [research §5.1–5.2](../research/electrico-respaldo-seguridad.md) |
-| Continuidad NFT: batería | `sensor.voltaje_bateria_nft` (GPIO36, ×5.7) | Flotación ≤ 13.6 V; **< 12.9 V** = 30–40 % restante | `script.ciclo_bomba_15_15` | < 12.9 V por 5 min **y** red ausente → modo ahorro 15 min ON / 15 min OFF (≈ 2.5 días) | [research §2.3 y §5.2](../research/electrico-respaldo-seguridad.md) |
+| Continuidad NFT: batería | `sensor.voltaje_bateria_nft` (GPIO36, ×5.7) | Flotación ≤ 13.6 V; **< 12.9 V** = 30–40 % restante | `switch.modo_ahorro_15_15` del nodo (lo enciende HA) | `binary_sensor.bateria_baja` (< 12.9 V por 5 min) **y** red ausente → modo ahorro 15 min ON / 15 min OFF (≈ 2.5 días) | [research §2.3 y §5.2](../research/electrico-respaldo-seguridad.md) |
 | Heladas (sur de CDMX) | `sensor.temperatura_ambiente` | Alarma **< 6 °C** | Cerrar túnel, masa térmica o calefactor 500 W en relé (K4) | Solo dic–feb en Tlalpan/Xochimilco/Milpa Alta | [02 §1](../referencia/02-restricciones-y-requisitos.md) |
 
 !!! warning "Qué NO decide el agente ni Home Assistant"
@@ -77,7 +77,8 @@ stateDiagram-v2
 ```
 
 - **Una bomba, cuatro sensores.** El nodo v1 tiene una sola bomba (K1) y válvulas manuales
-  por nivel en el manifold; el lazo decide con **el más seco de MT-1…4** y el caudal por
+  por nivel en el manifold; el lazo decide con **el más seco de los niveles en etapa
+  germinación o desarrollo** (`Etapa nivel n` = `vacio` excluye ese nivel) y el caudal por
   nivel se iguala a mano `[POR VERIFICAR: decidir en V3 si conviene la mediana; regar cada
   nivel por separado exige una solenoide por nivel en K4]`.
 - **Nivel 5 (oscuridad) no se nebuliza:** se atomiza a mano 1–2×/día
@@ -124,7 +125,7 @@ stateDiagram-v2
 stateDiagram-v2
     [*] --> Apagado
     Apagado --> Encendido: HR mayor a 75 % o T mayor a 28 °C
-    Encendido --> Apagado: HR menor a 70 %, T menor a 28 °C y t_on sobre t_min
+    Encendido --> Apagado: HR menor a 70 %, T menor a 26 °C y t_on sobre t_min
     Apagado --> Forzado: cada hora en jun–sep
     Forzado --> Apagado: 10 min
     Encendido --> Alarma: HR alta 6 h seguidas
@@ -134,7 +135,7 @@ La ventilación forzada por histéresis de HR es **la automatización más impor
 proyecto**, más que el riego: entre junio y septiembre la HR de 70–89 % convierte cualquier
 túnel cerrado en incubadora de moho, damping-off y botrytis
 ([02 §1](../referencia/02-restricciones-y-requisitos.md), [research/clima-agronomia](../research/clima-agronomia.md)).
-`t_min` (tiempo mínimo encendido) evita el parpadeo del ventilador cuando la HR ronda el
+`t_min` (tiempo mínimo encendido, inicial 5 min) evita el parpadeo del ventilador cuando la HR ronda el
 límite `[POR VERIFICAR: 5–10 min, ajustar en V3]`. En dic–feb en alcaldías del sur, no
 forzar de noche y mantener la alarma de helada < 6 °C.
 
@@ -158,12 +159,14 @@ stateDiagram-v2
 - Cinco automatizaciones con YAML listo en
   [research/electrico-respaldo-seguridad §5.2](../research/electrico-respaldo-seguridad.md):
   bomba sin flujo → respaldo + crítica; corte de CFE → aviso; escalación corte + sin flujo
-  (`alert`, repite cada 10 min); modo ahorro por voltaje; nodo caído. Los pines de este
-  diseño difieren del YAML del informe (ver nota en [electrico.md](electrico.md)); la
-  lógica no.
+  (`alert`, repite cada 10 min); modo ahorro por voltaje; nodo caído. El firmware corre
+  localmente el respaldo por flujo, el detector de red y el contador de corte; HA avisa y
+  enciende el modo ahorro. Los pines difieren del YAML del informe: K1 NC (principal) en
+  **GPIO32** y K2 (respaldo) en **GPIO14**, porque GPIO14 emite un pulso al arrancar y en el
+  respaldo es inofensivo ([software/firmware](../software/firmware.md)); la lógica no cambia.
 - **Tras cada corte el sistema se auto-recupera** (ESPHome y HA arrancan solos) y no debe
   haber falso "sin flujo" al restaurar: el contador de pulsos necesita unos segundos de
-  bomba corriendo antes de evaluar ([07-puntos-ciegos §2](../referencia/07-puntos-ciegos-y-riesgos.md)).
+  bomba corriendo antes de evaluar (`Flujo gracia tras arranque`, inicial 20 s) ([07-puntos-ciegos §2](../referencia/07-puntos-ciegos-y-riesgos.md)).
 
 ## Watchdogs y escalamiento
 
@@ -174,7 +177,7 @@ Un lazo que actúa sin verificar que la acción ocurrió no es un lazo, es una e
 |---|---|---|---|
 | Bomba tapada / línea rota | `switch.bomba_nft` ON y `sensor.flujo_nft` < 2 L/min por 60 s | K2 respaldo ON, principal OFF, alerta | Crítica |
 | Sonda descalibrada o muerta | Sin cambio en 24 h con dosis, o salto > 1.5 en 5 min | Suspender dosificación, marcar "no confiable" | Crítica |
-| Nodo caído | Sin heartbeat 10 min (entidades `unavailable` 5 min en el YAML del informe) | Alerta; el nodo reinicia por sí mismo | Crítica |
+| Nodo caído | `binary_sensor.nodo_riego_estado` / `nodo_nft_estado` OFF, o entidades `unavailable` 5–10 min (06 dice 10 min; el YAML del informe 5) | Alerta; el nodo reinicia por sí mismo | Crítica |
 | Corte de luz | `red_cfe_presente` OFF 30 s | Aviso con voltaje y autonomía; al volver, duración del corte | Advertencia (crítica si además no hay flujo) |
 | Deriva de dosificación | mL dosificados/día > 2× promedio móvil de 7 días | Alerta (fuga, sonda mintiendo, depósito contaminado) | Advertencia |
 | Riego sin fin | Ciclo > `t_max` o > N ciclos/h | Cortar bomba, alerta | Advertencia |
@@ -201,11 +204,11 @@ La llamada telefónica (Twilio, CallMeBot o similar) es opcional; el push repeti
 
 | Función | ESPHome (nodo) | Home Assistant | Por qué ahí |
 |---|---|---|---|
-| Riego por histéresis, ventilación | Sí (`on_value_range` / lambda) | Solo expone setpoints (`input_number`) y grafica | Debe funcionar sin Wi-Fi |
+| Riego por histéresis, ventilación | Sí (scripts del nodo con sus `number`/`select`) | Muestra los setpoints (`number`, `select` y `switch` del nodo, categoría Configuración) y grafica | Debe funcionar sin Wi-Fi |
 | Dosificación con tiempo muerto, interlocks | Sí (script con `delay` de 10–15 min y condiciones) | Suspende por "sonda no confiable" y deriva diaria | El tiempo muerto no debe depender de la red |
 | Bomba NFT principal | Cableado K1 NC + `restore_mode: RESTORE_DEFAULT_ON` | Solo manda apagar para mantenimiento | Fail-safe físico |
 | Respaldo por flujo cero | Sí, local (K2) | Además notifica y registra | Un router caído no debe impedir el respaldo |
-| Detector de red, voltaje de batería | Sí (`binary_sensor` con `delayed_off: 5s`; `adc` ×5.7) | Aviso, modo ahorro (`script.ciclo_bomba_15_15`), escalación | La decisión de ahorro admite latencia |
+| Detector de red, voltaje de batería, contador de corte | Sí (`binary_sensor` con `delayed_off: 5s`; `adc` ×5.7; `Duracion ultimo corte`) | Aviso, modo ahorro (enciende `switch.modo_ahorro_15_15`), escalación | La decisión de ahorro admite latencia |
 | Calendario de calibración, export CSV, informe L3 | — | Sí | Tareas de datos, no de control |
 
 Pines por nodo: [electrico.md](electrico.md). Nombres de entidades: [datos.md §2](datos.md).
@@ -263,7 +266,7 @@ Después de producción: **V5** (4 días sin tocar nada) y **V11** cada mes
 
 ## Al terminar
 
-- [ ] La tabla de setpoints coincide con `firmware/esphome/*.yaml` y con los `input_number` de HA.
+- [ ] La tabla de setpoints coincide con los `initial_value` de `firmware/esphome/*.yaml` y con lo que muestra HA.
 - [ ] Cada `[POR VERIFICAR]` de esta página tiene fecha y método en la bitácora del dry-run V3.
 - [ ] La tabla FMEA-lite de V3 está llena con la columna "Observado" al 100 %.
 - [ ] Simulacro V11 hecho y anotado; el "falso sin flujo" no apareció.

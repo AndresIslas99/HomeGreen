@@ -133,9 +133,11 @@ el sistema *en el tiempo*; cada uno vive en `docs/assets/diagramas/animaciones/`
 
 ## Cómo cambiar un diseño sin romper el resto
 
-1. **Un número vive en un solo lugar.** Los pines están en `firmware/esphome/*.yaml`, en los
-   scripts de `hardware/electrico/` y en la tabla de [electrico.md](electrico.md): si cambias
-   uno, cambias los tres en el mismo commit. Lo mismo con los tags de instrumentos
+1. **Un número vive en un solo lugar.** Los pines están en `firmware/esphome/*.yaml` (la
+   fuente de verdad), en los scripts de `hardware/electrico/` y en la tabla de
+   [electrico.md](electrico.md): si cambias uno, cambias los tres en el mismo commit (hoy
+   K1/K2 del nodo NFT difieren entre el YAML y electrico.md; ver
+   [software/firmware](../software/firmware.md)). Lo mismo con los tags de instrumentos
    ([hidraulico.md §6](hidraulico.md)) y los setpoints ([control.md](control.md)).
 2. **Los diagramas se regeneran, no se editan a mano:** `hardware/electrico/*.py`
    (schemdraw), `hardware/hidraulico/pid.py`, `hardware/cad/*.scad` (OpenSCAD). Las

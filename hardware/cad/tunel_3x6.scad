@@ -24,7 +24,10 @@
 //    xvfb-run -a openscad -o ../../docs/assets/diagramas/cad/tunel-3x6.png \
 //      --autocenter --viewall --imgsize=1400,1000 --projection=p \
 //      --colorscheme=Tomorrow --camera=0,0,0,62,0,212,0 tunel_3x6.scad
-//  La lista de cortes se imprime en consola (ECHO) cada vez que se abre o renderiza.
+//  La lista de cortes se imprime en consola (ECHO) cada vez que se abre o renderiza,
+//  junto con los metros lineales por perfil y los tramos comerciales REALES que hay que
+//  comprar (empaquetado por primer ajuste decreciente con kerf de 3 mm, para tramos de
+//  6.00 m y de 6.10 m).
 //
 //  Para el túnel de 5 × 6 m NO copies este archivo: tunel_5x6.scad hace
 //  `use <tunel_3x6.scad>` y llama a tunel(ancho=5000, ...). Cambia parámetros aquí
@@ -326,16 +329,55 @@ function piezas_tunel(ancho = ancho, largo = largo, n_porticos = n_porticos, h_c
         ["Poste de malla antigranizo",                "PTR 1",     5 * n_porticos,       sep_malla + 20]
     ];
 
+/* ================================ Empaquetado en tramos ======================= */
+// Cuántos tramos comerciales hay que comprar DE VERDAD: primer ajuste decreciente (FFD)
+// con kerf (ancho del disco de corte) entre piezas. Un tramo con n piezas gasta n − 1
+// cortes (la última pieza puede terminar en el extremo del tramo), así que las piezas
+// caben si suma(piezas) + kerf · (n − 1) ≤ L_tramo. Es una cota práctica y reproducible,
+// no la solución óptima; el herrero puede mejorarla, nunca debería empeorarla.
+// Ejemplo: tres columnas de 2,000 mm NO caben en un tramo de 6,000 mm (6,000 + 2 kerf);
+// sí caben en uno de 6,100 mm. Por eso se imprime el resultado para ambos largos.
+
+// Orden descendente (quicksort)
+function ordenar_desc(v) = len(v) <= 1 ? v :
+    let (piv = v[0], resto = [for (i = [1 : len(v) - 1]) v[i]])
+    concat(ordenar_desc([for (x = resto) if (x > piv) x]), [piv], ordenar_desc([for (x = resto) if (x <= piv) x]));
+
+// Mete la pieza p en el primer tramo donde quepa; si no cabe en ninguno, abre uno nuevo
+function _ffd_meter(tramos, p, L, kerf, i = 0) =
+    i >= len(tramos) ? concat(tramos, [[p]]) :
+    (suma(tramos[i]) + kerf * len(tramos[i]) + p <= L)
+        ? [for (j = [0 : len(tramos) - 1]) j == i ? concat(tramos[i], [p]) : tramos[j]]
+        : _ffd_meter(tramos, p, L, kerf, i + 1);
+
+function _ffd(piezas, L, kerf, tramos = [], i = 0) =
+    i >= len(piezas) ? tramos : _ffd(piezas, L, kerf, _ffd_meter(tramos, piezas[i], L, kerf), i + 1);
+
+// Lista de tramos (cada tramo = lista de longitudes que salen de él) para longitudes sueltas
+function empaquetar(longitudes, L_tramo = 6000, kerf = 3) = _ffd(ordenar_desc(longitudes), L_tramo, kerf);
+
+// Expande [[pieza, perfil, cantidad, longitud], ...] a las longitudes sueltas de un perfil
+function longitudes_perfil(p, perfil) = [for (q = p) if (q[1] == perfil) each [for (k = [1 : q[2]]) q[3]]];
+
+// Número de tramos reales de un perfil (para comparar configuraciones desde otro archivo)
+function tramos_reales(p, perfil, L_tramo = 6000, kerf = 3) = len(empaquetar(longitudes_perfil(p, perfil), L_tramo, kerf));
+
 module lista_cortes(ancho = ancho, largo = largo, n_porticos = n_porticos, h_col = h_columna, pend = pendiente,
                     a = ptr_a, b = ptr_b, puerta_ancho = puerta_ancho, puerta_alto = puerta_alto,
-                    largueros_techo = largueros_techo, escuadra = escuadra, sep_malla = sep_malla) {
+                    largueros_techo = largueros_techo, escuadra = escuadra, sep_malla = sep_malla,
+                    L_tramo = 6000, kerf = 3) {
     p = piezas_tunel(ancho, largo, n_porticos, h_col, pend, a, b, puerta_ancho, puerta_alto, largueros_techo, escuadra, sep_malla);
     echo(str("=== LISTA DE CORTES túnel ", ancho / 1000, " x ", largo / 1000, " m · ", n_porticos, " pórticos · pendiente ", pend, " % ==="));
     for (q = p) echo(str(q[1], " | ", q[0], " | ", q[2], " pza x ", q[3], " mm"));
     m15 = suma([for (q = p) if (q[1] == "PTR 1 1/2") q[2] * q[3]]);
     m1  = suma([for (q = p) if (q[1] == "PTR 1") q[2] * q[3]]);
-    echo(str("PTR 1 1/2 cal. 14: ", m15 / 1000, " m lineales -> mínimo teórico ", ceil(m15 / 6000), " tramos de 6 m (sin desperdicio)"));
-    echo(str("PTR 1: ", m1 / 1000, " m lineales -> mínimo teórico ", ceil(m1 / 6000), " tramos de 6 m (sin desperdicio)"));
+    echo(str("PTR 1 1/2 cal. 14: ", m15 / 1000, " m lineales -> mínimo teórico ", ceil(m15 / L_tramo), " tramos de ", L_tramo / 1000, " m (sin desperdicio)"));
+    echo(str("PTR 1: ", m1 / 1000, " m lineales -> mínimo teórico ", ceil(m1 / L_tramo), " tramos de ", L_tramo / 1000, " m (sin desperdicio)"));
+    // Tramos reales con kerf, para tramos de 6.00 m y de 6.10 m (el PTR llega en 6.0–6.10 m)
+    for (perfil = ["PTR 1 1/2", "PTR 1"]) for (Lt = [L_tramo, L_tramo + 100]) {
+        t = empaquetar(longitudes_perfil(p, perfil), Lt, kerf);
+        echo(str(perfil, ": tramos REALES de ", Lt / 1000, " m (FFD, kerf ", kerf, " mm): ", len(t), " -> ", t));
+    }
     echo(str("Placas base ", placa_lado, "x", placa_lado, " mm: ", 2 * n_porticos, " | Anclas de cuña 3/8\" x 5\": ", 2 * n_porticos * ancla_n));
     echo(str("Altura de cumbrera (eje): ", h_col + a + rise(ancho, pend), " mm | ángulo del agua: ", ang_techo(ancho, pend), " °"));
 }

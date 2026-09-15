@@ -168,7 +168,7 @@
 <text x="294" y="436" class="lb b" text-anchor="middle">destape</text>
 <text x="840" y="436" class="lb b" text-anchor="end">cosecha (día 8–12)</text>
 <line x1="684" y1="442" x2="840" y2="442" stroke="#2e7d32" stroke-width="3"/>
-<text x="60" y="458" class="sm">antes del día 0: prueba de germinación V1 del lote (≥ 85 %), sanitizar semilla, remojo 8–12 h (solo girasol y chícharo)</text>
+<text x="60" y="458" class="sm">antes del día 0: prueba de germinación V1 del lote (≥ 85 %; girasol y chícharo ≥ 80 %), sanitizar semilla, remojo 8–12 h (solo girasol y chícharo)</text>
 <circle cx="60" cy="400" r="6" fill="#b45309" stroke="#ffffff" stroke-width="1.5"><animate attributeName="cx" values="60;840;840" keyTimes="0.0000;0.9091;1.0000" dur="22.0s" repeatCount="indefinite"/></circle>
 <text x="60" y="476" class="sm">Nota: rábano y brócoli 2–3 d de oscuridad y 7–13 d a cosecha; betabel 6–8 d de oscuridad; en dic–feb todo se alarga 30–50 %.</text>
 <text x="880" y="488" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>

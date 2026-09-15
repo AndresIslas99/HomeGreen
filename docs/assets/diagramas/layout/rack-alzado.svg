@@ -4,33 +4,33 @@
 <defs><marker id="arrInk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1f2937"/></marker><marker id="arrBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1d4ed8"/></marker><marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#b45309"/></marker><marker id="arrGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#2e7d32"/></marker><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#1f2937" stroke-width="1.2"/></pattern><pattern id="hatchGreen" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#2e7d32" stroke-width="0.8"/></pattern><pattern id="roof" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#6b7280" stroke-width="0.6"/></pattern></defs>
 <rect x="0" y="0" width="1600" height="1040" fill="#ffffff" stroke="none" stroke-width="1.5"/>
 <text x="24" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="18" fill="#1f2937" text-anchor="start" font-weight="bold">Alzado · Rack Husky 183×91×46 cm · 5 niveles · escala 1:10</text>
-<text x="24" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280" text-anchor="start">charolas 10×20 (25.4×50.8 cm) · 3 por nivel · T8 18 W ×2 por nivel N1–N4 · nebulizadores N1–N4 · oscuridad arriba (N5) · recién sembradas abajo (N1) · cotas en cm</text>
+<text x="24" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280" text-anchor="start">charolas 10×20 (25.4×50.8 cm) · 3 por nivel · T8 18 W ×2 por nivel N1–N4 · nebulizadores N1–N4 · oscuridad arriba (N5) · cosecha abajo (N1) · cotas en cm</text>
 <text x="1576" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280" text-anchor="end">HomeGreen · v1 · 2026-09</text>
 <line x1="24" y1="64" x2="1576" y2="64" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
 <text x="130" y="86" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">VISTA FRONTAL (desde el pasillo)</text>
+<text x="50" y="97" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#1f2937" text-anchor="start" font-weight="bold">N5 = OSCURIDAD (arriba, más cálido): cubierta opaca, pilas tapadas con peso · N1–N4 en luz (T8 + nebulizadores)</text>
+<text x="50" y="109" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="start">Verano (&gt; 27 °C en N5): invierte — tapadas en N1 (el más fresco) y cosecha en N2 (03 §0.2).</text>
 <line x1="50" y1="930" x2="615.6" y2="930" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
-<text x="50" y="946" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="start">piso nivelado + bloques de 15 cm bajo las patas (charola desnivelada = encharcamiento = moho; los bloques dan pendiente al drenaje)</text>
+<text x="50" y="946" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="start">piso nivelado (nivel de burbuja, calzar patas) + bloques macizos de 15 cm bajo las patas: dan pendiente a la manguera de drenaje (charola desnivelada = encharcamiento = moho)</text>
 <rect x="124" y="914" width="377.6" height="16" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.2"/>
 <text x="511.6" y="926" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1d4ed8" text-anchor="start">charola colectora → manguera → coladera</text>
 <rect x="130" y="198" width="14" height="732" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
 <rect x="481.6" y="198" width="14" height="732" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
 <rect x="130" y="890" width="365.6" height="10" fill="#d1d5db" stroke="#1f2937" stroke-width="1.5"/>
 <text x="118" y="894" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="end" font-weight="bold">N1</text>
-<rect x="145.2" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="145.2" y="842" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="169.2" y="822" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="195.2" y="836" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
-<rect x="262" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="262" y="842" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="286" y="822" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="312" y="836" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
-<rect x="378.8" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="378.8" y="842" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="402.8" y="822" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="428.8" y="836" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
+<rect x="145.2" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<rect x="149.2" y="868.4" width="93.6" height="17.6" fill="#f1f8e9" stroke="#2e7d32" stroke-width="0.8"/>
+<rect x="148.4" y="830" width="95.2" height="36" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="0.8"/>
+<rect x="262" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<rect x="266" y="868.4" width="93.6" height="17.6" fill="#f1f8e9" stroke="#2e7d32" stroke-width="0.8"/>
+<rect x="265.2" y="830" width="95.2" height="36" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="0.8"/>
+<rect x="378.8" y="866" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<rect x="382.8" y="868.4" width="93.6" height="17.6" fill="#f1f8e9" stroke="#2e7d32" stroke-width="0.8"/>
+<rect x="382" y="830" width="95.2" height="36" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="0.8"/>
 <line x1="161.2" y1="842" x2="161.2" y2="886" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
 <text x="165.2" y="846" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">MT-1</text>
 <rect x="72.8" y="740" width="480" height="10.4" fill="#fef3c7" stroke="#b45309" stroke-width="1.4" rx="5"/>
+<text x="558.8" y="749" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">T8 ×2</text>
 <line x1="130" y1="758.4" x2="495.6" y2="758.4" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="217.4,758.4 225.4,758.4 221.4,767.4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
 <line x1="221.4" y1="768.4" x2="211.4" y2="780.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
@@ -40,7 +40,6 @@
 <line x1="404.2" y1="768.4" x2="394.2" y2="780.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="404.2" y1="768.4" x2="404.2" y2="780.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="404.2" y1="768.4" x2="414.2" y2="780.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
-<text x="558.8" y="749" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">T8 de N1 apagados mientras haya charolas tapadas</text>
 <rect x="130" y="718" width="365.6" height="10" fill="#d1d5db" stroke="#1f2937" stroke-width="1.5"/>
 <text x="118" y="722" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="end" font-weight="bold">N2</text>
 <rect x="145.2" y="694" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
@@ -55,6 +54,7 @@
 <line x1="161.2" y1="670" x2="161.2" y2="714" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
 <text x="165.2" y="674" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">MT-2</text>
 <rect x="72.8" y="568" width="480" height="10.4" fill="#fef3c7" stroke="#b45309" stroke-width="1.4" rx="5"/>
+<text x="558.8" y="577" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">T8 ×2</text>
 <line x1="130" y1="586.4" x2="495.6" y2="586.4" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="217.4,586.4 225.4,586.4 221.4,595.4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
 <line x1="221.4" y1="596.4" x2="211.4" y2="608.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
@@ -78,6 +78,7 @@
 <line x1="161.2" y1="498" x2="161.2" y2="542" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
 <text x="165.2" y="502" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">MT-3</text>
 <rect x="72.8" y="396" width="480" height="10.4" fill="#fef3c7" stroke="#b45309" stroke-width="1.4" rx="5"/>
+<text x="558.8" y="405" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">T8 ×2</text>
 <line x1="130" y1="414.4" x2="495.6" y2="414.4" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="217.4,414.4 225.4,414.4 221.4,423.4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
 <line x1="221.4" y1="424.4" x2="211.4" y2="436.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
@@ -101,6 +102,7 @@
 <line x1="161.2" y1="326" x2="161.2" y2="370" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
 <text x="165.2" y="330" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">MT-4</text>
 <rect x="72.8" y="224" width="480" height="10.4" fill="#fef3c7" stroke="#b45309" stroke-width="1.4" rx="5"/>
+<text x="558.8" y="233" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">T8 ×2</text>
 <line x1="130" y1="242.4" x2="495.6" y2="242.4" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
 <polygon points="217.4,242.4 225.4,242.4 221.4,251.4" fill="#1d4ed8" stroke="#1d4ed8" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
 <line x1="221.4" y1="252.4" x2="211.4" y2="264.4" stroke="#1d4ed8" stroke-width="0.7" stroke-linecap="round" stroke-dasharray="2 2"/>
@@ -114,20 +116,20 @@
 <text x="118" y="206" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="end" font-weight="bold">N5</text>
 <rect x="145.2" y="178" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
 <rect x="145.2" y="154" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="169.2" y="134" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="195.2" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
+<rect x="170.6" y="134" width="50.8" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
+<text x="196" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
 <rect x="262" y="178" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
 <rect x="262" y="154" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="286" y="134" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="312" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
+<rect x="287.4" y="134" width="50.8" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
+<text x="312.8" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
 <rect x="378.8" y="178" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
 <rect x="378.8" y="154" width="101.6" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="402.8" y="134" width="52" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
-<text x="428.8" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
-<rect x="124" y="114" width="377.6" height="88" fill="#374151" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="6 4" fill-opacity="0.18"/>
-<text x="50" y="102" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start" font-weight="bold">N5 = OSCURIDAD (arriba = más cálido): cubierta opaca, charolas apiladas con peso 2–4 kg, 2–4 días, atomizar a mano 1–2×/día · N1 = recién sembradas (abajo = más fresco)</text>
-<circle cx="501.6" cy="550" r="5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
-<text x="509.6" y="554" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="start">SHT31 T/HR (poste, 1.0 m)</text>
+<rect x="404.2" y="134" width="50.8" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
+<text x="429.6" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#ffffff" text-anchor="middle">peso 2–4 kg</text>
+<rect x="124" y="118" width="377.6" height="84" fill="#374151" stroke="#1f2937" stroke-width="1.2" stroke-dasharray="6 4" fill-opacity="0.18"/>
+<text x="312.8" y="132" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#1f2937" text-anchor="middle" font-weight="bold">ZONA BLACKOUT · cubierta opaca (lona/cartón) · sin T8</text>
+<circle cx="488.6" cy="490" r="5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<text x="509.6" y="490" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="middle" transform="rotate(-90 509.6 490)">SHT31 T/HR · poste · 1.1 m</text>
 <line x1="70" y1="930" x2="70" y2="198" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
 <line x1="65" y1="930" x2="75" y2="930" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
 <line x1="65" y1="198" x2="75" y2="198" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
@@ -143,25 +145,25 @@
 <line x1="72.8" y1="986" x2="552.8" y2="986" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
 <line x1="72.8" y1="981" x2="72.8" y2="991" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
 <line x1="552.8" y1="981" x2="552.8" y2="991" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
-<text x="312.8" y="982" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#b45309" text-anchor="middle">T8 120 (vuela 14.3 por lado → racks separados ≥ 30 cm)</text>
+<text x="312.8" y="982" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#b45309" text-anchor="middle">T8 120 (vuela 14.3 por lado → racks en fila separados ≥ 30 cm)</text>
 <line x1="94" y1="406.4" x2="94" y2="502" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
 <line x1="89" y1="406.4" x2="99" y2="406.4" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
 <line x1="89" y1="502" x2="99" y2="502" stroke="#b45309" stroke-width="1" stroke-linecap="round"/>
 <text x="88" y="454.2" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" transform="rotate(-90 88 454.2)">luz→dosel 23.9</text>
-<text x="565.6" y="810" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">① SIEMBRA día 0 → N1 (abajo, más fresco):</text>
-<text x="565.6" y="822" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">tapada con peso; sube a N5 al día siguiente</text>
-<text x="565.6" y="638" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">⑤ N2 acabado → COSECHA día 8–12</text>
-<text x="565.6" y="650" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">(tijera sobre el sustrato, la mañana de entrega)</text>
-<text x="565.6" y="466" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">④ N3 desarrollo (día 5–8)</text>
-<line x1="571.6" y1="482" x2="571.6" y2="614" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
-<text x="565.6" y="294" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">③ DESTAPE día 3–5 → N4: luz indirecta +</text>
-<text x="565.6" y="306" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">T8 12–14 h; riego SOLO por abajo</text>
-<line x1="571.6" y1="310" x2="571.6" y2="442" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
-<text x="565.6" y="122" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">② OSCURIDAD día 1–4 → N5 (arriba, más cálido):</text>
-<text x="565.6" y="134" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">apiladas con peso 2–4 kg; atomizar 1–2×/día</text>
-<line x1="571.6" y1="138" x2="571.6" y2="270" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
-<line x1="551.6" y1="794" x2="551.6" y2="178" stroke="#2e7d32" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="6 3" marker-end="url(#arrGreen)"/>
-<text x="547.6" y="550" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle" transform="rotate(-90 547.6 550)">día 1: de N1 a N5</text>
+<text x="565.6" y="826" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">⑤ COSECHA día 8–12 → N1 (abajo = más fresco): suspender riego</text>
+<text x="565.6" y="838" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">12–24 h antes; tijera sobre el sustrato la mañana de la entrega</text>
+<text x="565.6" y="654" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">④ ACABADO día 8–10 → N2: color y densidad finales</text>
+<line x1="571.6" y1="662" x2="571.6" y2="812" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
+<text x="565.6" y="482" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">③ DESARROLLO día 4–8 → N3: tallo y cotiledón abiertos</text>
+<line x1="571.6" y1="490" x2="571.6" y2="640" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
+<text x="565.6" y="310" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">② DESTAPE día 2–4 → N4 brote: luz indirecta + T8 12–14 h;</text>
+<text x="565.6" y="322" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">desde aquí riego SOLO por abajo (perforada dentro de lisa)</text>
+<line x1="571.6" y1="330" x2="571.6" y2="468" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
+<text x="565.6" y="138" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">① SIEMBRA día 0 → N5 OSCURIDAD (arriba = más cálido):</text>
+<text x="565.6" y="150" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">3 pilas de 2–3 charolas tapadas con peso 2–4 kg,</text>
+<text x="565.6" y="162" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="start">2–4 días; atomizar a mano 1–2×/día</text>
+<line x1="571.6" y1="170" x2="571.6" y2="296" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3" marker-end="url(#arrGreen)"/>
+<text x="565.6" y="960" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#6b7280" text-anchor="start">Cada charola BAJA un nivel por etapa.</text>
 <text x="860" y="86" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">VISTA LATERAL</text>
 <line x1="830" y1="930" x2="1102.8" y2="930" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
 <rect x="860" y="198" width="14" height="732" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
@@ -169,9 +171,8 @@
 <line x1="850" y1="890" x2="850" y2="236" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
 <text x="844" y="690" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle" transform="rotate(-90 844 690)">riser ½" nebulizadores desde P-1</text>
 <rect x="860" y="890" width="182.8" height="10" fill="#d1d5db" stroke="#1f2937" stroke-width="1.5"/>
-<rect x="850" y="866" width="203.2" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="850" y="842" width="203.2" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
-<rect x="908" y="822" width="104" height="20" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
+<rect x="850" y="866" width="203.2" height="24" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<rect x="853.2" y="830" width="196.8" height="36" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="0.8"/>
 <circle cx="905.7" cy="745.2" r="5.2" fill="#fef3c7" stroke="#b45309" stroke-width="1.4"/>
 <circle cx="997.1" cy="745.2" r="5.2" fill="#fef3c7" stroke="#b45309" stroke-width="1.4"/>
 <line x1="850" y1="758.4" x2="951.4" y2="758.4" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
@@ -209,7 +210,7 @@
 <line x1="850" y1="986" x2="1053.2" y2="986" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
 <line x1="850" y1="981" x2="850" y2="991" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
 <line x1="1053.2" y1="981" x2="1053.2" y2="991" stroke="#2e7d32" stroke-width="1" stroke-linecap="round"/>
-<text x="951.4" y="982" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#2e7d32" text-anchor="middle">charola 50.8 (vuela 2.5 por lado)</text>
+<text x="951.4" y="982" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#2e7d32" text-anchor="middle">charola 50.8 (vuela 5.1: 2.5 por lado)</text>
 <text x="951.4" y="1008" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#6b7280" text-anchor="middle">◄ atrás (pared, riser)   ·   frente (pasillo) ►</text>
 <text x="1150" y="86" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">PLANTA DE UN NIVEL (N1–N4)</text>
 <rect x="1150" y="118" width="365.6" height="182.8" fill="#d1d5db" stroke="#1f2937" stroke-width="1.5"/>
@@ -231,31 +232,51 @@
 <line x1="1150" y1="337.8" x2="1150" y2="347.8" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
 <line x1="1515.6" y1="337.8" x2="1515.6" y2="347.8" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
 <text x="1332.8" y="338.8" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="middle">91.4 = 3 × 25.4 + 4 × 3.8</text>
-<text x="1150" y="400" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">CAPACIDAD (geometría, no la cifra de la investigación)</text>
+<text x="1150" y="400" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">CAPACIDAD (geometría del entrepaño, no la cifra de la investigación)</text>
 <text x="1150" y="415" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Entrepaño 91.4 × 45.7 cm; charola 1020 = 25.4 × 50.8 cm.</text>
-<text x="1150" y="430" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Caben 3 atravesadas por nivel (76.2 de 91.4 cm; vuelan 2.5 cm</text>
-<text x="1150" y="445" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  por lado). El '8–10/nivel' de research/estructura-invernadero</text>
-<text x="1150" y="460" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  NO cabe: pide ~1.0 m² por nivel. [POR VERIFICAR con el rack armado]</text>
-<text x="1150" y="475" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· En luz (N2–N4): 9 posiciones/rack. N5 oscuridad: 3 pilas × 2–3 =</text>
-<text x="1150" y="490" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  6–9. N1 recién sembradas: 3 pilas × 2 = 6. Total ≈ 21–24 por rack.</text>
-<text x="1150" y="505" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· 3 racks (Fase 1) ≈ 27 en luz (≈ 7 d cada una) → ~27 charolas/semana</text>
-<text x="1150" y="520" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  con ciclo de 8–12 d: cierra la meta de 25–35 del plan.</text>
-<text x="1150" y="550" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">CARGAS</text>
-<text x="1150" y="565" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Charola doble con coco saturado: 2.5–4 kg → nivel en luz 3 × 4 =</text>
-<text x="1150" y="580" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  12 kg; nivel tapado (N1, N5) 3 × (2 × 4 + 4) = 36 kg. Rack: 362.9 kg/repisa.</text>
-<text x="1150" y="595" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Carga viva total ≈ 110 kg + peso propio [POR VERIFICAR en caja]:</text>
-<text x="1150" y="610" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  margen &gt; 10× por repisa; lo que importa es rigidez y humedad.</text>
-<text x="1150" y="625" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Forrar entrepaños de MDF con plástico o charola de drenaje.</text>
+<text x="1150" y="430" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Caben 3 atravesadas por nivel (3 × 25.4 = 76.2 de 91.4 cm; vuelan</text>
+<text x="1150" y="445" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  5.1 cm). El '8–10 por nivel' de research/estructura-invernadero §d</text>
+<text x="1150" y="460" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  NO cabe: pediría ~1.0 m² por nivel [POR VERIFICAR con el rack armado].</text>
+<text x="1150" y="475" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· En luz (N1–N4): 12 posiciones/rack. N5 oscuridad: 3 pilas × 2–3 =</text>
+<text x="1150" y="490" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  6–9. Total 18–21 charolas en proceso por rack.</text>
+<text x="1150" y="505" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· 3 racks (Fase 1) = 36 en luz; con ~7 días en luz por charola (día</text>
+<text x="1150" y="520" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  3 → 10) el techo es ~36/semana: la meta de 25–35 pide ≥ 70–85 %</text>
+<text x="1150" y="535" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  de ocupación. Husky de 122 cm: 4 por nivel (16 en luz).</text>
+<text x="1150" y="565" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">CARGAS</text>
+<text x="1150" y="580" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Charola doble con coco saturado 2.5–4 kg → nivel en luz 3 × 4 = 12 kg;</text>
+<text x="1150" y="595" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  N5 tapado 3 × (2 × 4 + 4) = 36 kg. Total ≈ 84 kg + rack [POR VERIFICAR</text>
+<text x="1150" y="610" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  peso en caja]. Repisa: 362.9 kg → margen &gt; 10×; lo que manda es</text>
+<text x="1150" y="625" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  rigidez y humedad: forrar el MDF con plástico o charola de drenaje.</text>
 <text x="1150" y="655" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">ILUMINACIÓN</text>
 <text x="1150" y="670" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· 2 × T8 LED 18 W 6500 K 1,400 lm por nivel N1–N4 = 8 tubos/rack</text>
-<text x="1150" y="685" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  ($121 c/u JWJ = $968; bom/fase1 cubre UN rack: 3 racks = 24).</text>
-<text x="1150" y="700" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· 12–14 h/día por K5 (GAB-A): 8 × 18 W × 13 h ≈ 1.9 kWh/día/rack.</text>
+<text x="1150" y="685" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  ($121 c/u JWJ = $968); bom/fase1 cubre UN rack: 3 racks = 24 tubos.</text>
+<text x="1150" y="700" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· 12–14 h/día por K5 (GAB-A): 8 × 18 W × 13 h ≈ 1.9 kWh/día por rack.</text>
 <text x="1150" y="715" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Tubo a 3 cm bajo el entrepaño; luz→dosel 20–27 cm con paso de 43 cm.</text>
-<text x="1150" y="730" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  Meta: 100–200 µmol/m²s en la charola (app Photone); si falta, baja</text>
+<text x="1150" y="730" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  Meta 100–200 µmol/m²s en la charola (app Photone); si falta, baja</text>
 <text x="1150" y="745" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  una posición el entrepaño de arriba [POR VERIFICAR con luxómetro].</text>
 <text x="1150" y="775" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">RIEGO</text>
 <text x="1150" y="790" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Nebulizadores N1–N4 (2 boquillas/nivel) desde P-1 12 V; N5 a mano.</text>
 <text x="1150" y="805" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· Tras el destape: riego SOLO por abajo (perforada dentro de lisa).</text>
-<text x="1150" y="820" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· MT-1…4 capacitivo en la charola testigo de cada nivel; SHT31 en poste.</text>
-<text x="24" y="1030" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="start">Fuentes: referencia/03-instalacion §0.2–0.3 · research/estructura-invernadero §d · research/clima-agronomia §8 · research/semillas-sustrato-charolas §c · diseno/hidraulico §1 · bom/fase0-1.csv. Charola 1020 = 10×20 pulgadas.</text>
+<text x="1150" y="820" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">· MT-1…4 capacitivo en la charola testigo de cada nivel (rack 3 en F1);</text>
+<text x="1150" y="835" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">  SHT31 en el poste a 1.0 m; trampa amarilla 1 por rack.</text>
+<text x="1150" y="864" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">LEYENDA</text>
+<rect x="1150" y="870" width="30" height="13" fill="#ffffff" stroke="#2e7d32" stroke-width="1.2"/>
+<text x="1188" y="881" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">charola 1020 doble (perforada dentro de lisa)</text>
+<rect x="1150" y="886.5" width="30" height="13" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="1.2"/>
+<text x="1188" y="897.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">dosel: brote (2 cm) → cosecha (8–9 cm)</text>
+<rect x="1150" y="903" width="30" height="13" fill="#fef3c7" stroke="#b45309" stroke-width="1.2"/>
+<text x="1188" y="914" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">tubo LED T8 18 W 120 cm (127 V vía K5, GAB-A)</text>
+<line x1="1150" y1="926.5" x2="1180" y2="926.5" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+<text x="1188" y="930.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">sensor MT-x capacitivo · SHT31</text>
+<line x1="1150" y1="943" x2="1180" y2="943" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
+<text x="1188" y="947" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">línea ½" de nebulizadores (P-1 12 V) · ▼ boquilla</text>
+<rect x="1150" y="952.5" width="30" height="13" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.2"/>
+<text x="1188" y="963.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">charola colectora → manguera → coladera</text>
+<rect x="1150" y="969" width="30" height="13" fill="#374151" stroke="#1f2937" stroke-width="1.2" fill-opacity="0.18"/>
+<text x="1188" y="980" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">zona blackout N5 (cubierta opaca)</text>
+<rect x="1150" y="985.5" width="30" height="13" fill="#9ca3af" stroke="#1f2937" stroke-width="1.2"/>
+<text x="1188" y="996.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">peso 2–4 kg sobre charola invertida</text>
+<rect x="1150" y="1002" width="30" height="13" fill="#d1d5db" stroke="#1f2937" stroke-width="1.2"/>
+<text x="1188" y="1013" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">entrepaño MDF forrado (paso 43 cm, ≥ 30)</text>
+<text x="24" y="1030" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="start">Fuentes: referencia/03-instalacion §0.1–0.3 · research/estructura-invernadero §d · research/clima-agronomia §8 · research/semillas-sustrato-charolas §c · diseno/hidraulico §1 · diseno/electrico §1 · bom/fase0-1.csv. Charola 1020 = 10×20 pulgadas. Escala 1:10 (1 cm = 4 px).</text>
 </svg>

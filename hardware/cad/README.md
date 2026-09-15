@@ -1,6 +1,6 @@
 # Modelos CAD paramétricos (OpenSCAD)
 
-Modelos 3D del huerto en [OpenSCAD](https://openscad.org) (probados con la versión 2021.01).
+Modelos 3D del huerto en OpenSCAD (software libre; probados con la versión 2021.01).
 Cada archivo es un modelo paramétrico: cambias un número al principio del archivo, vuelves a
 renderizar y el PNG de la wiki se actualiza. Los renders viven en
 `docs/assets/diagramas/cad/` y los usan las páginas de diseño
@@ -87,12 +87,28 @@ xvfb-run -a openscad -o $OUT/patio-fase-2-3d.png $OPTS --camera=0,0,0,42,0,200,0
 
 ## Cómo leer la lista de cortes del túnel
 
-`tunel_3x6.scad` y `tunel_5x6.scad` imprimen `PERFIL | pieza | cantidad × longitud`, los metros
-lineales por perfil y el mínimo teórico de tramos de 6 m. Ese mínimo **no** incluye el
-desperdicio de corte; el empaquetado real por tramo (con 3 mm de kerf por corte) está en la
-tabla de `docs/diseno/estructura-tunel.md`. Truco práctico: tres columnas de 2.00 m no caben
-en un tramo de 6.00 m exactos (6,000 + kerf); si tu proveedor entrega 6.10 m sí caben, y si
-no, corta las columnas a 1.99 m.
+`tunel_3x6.scad` y `tunel_5x6.scad` imprimen tres bloques:
+
+1. `PERFIL | pieza | cantidad × longitud` (longitudes de eje a eje; los cabios llevan un
+   perfil extra de traslape).
+2. Metros lineales por perfil y el **mínimo teórico** de tramos (metros ÷ 6), que **no**
+   incluye el desperdicio de corte.
+3. Los **tramos reales** que hay que comprar: el modelo empaqueta las piezas en tramos por
+   *primer ajuste decreciente* (FFD) con 3 mm de kerf por corte, y lo imprime para tramos
+   de 6.00 m y de 6.10 m (el PTR llega en 6.0–6.10 m según el proveedor), con el detalle
+   de qué piezas salen de cada tramo. Ejemplo (túnel 3 × 6 m):
+
+   ```
+   ECHO: "PTR 1 1/2: tramos REALES de 6 m (FFD, kerf 3 mm): 11 -> [[6000], [6000], [6000], [2924, 2924], [2924, 2450, 412], [2000, 2000, 1586], ...]"
+   ECHO: "PTR 1 1/2: tramos REALES de 6.1 m (FFD, kerf 3 mm): 10 -> ..."
+   ```
+
+   Es una cota práctica y reproducible, no la óptima: dásela al herrero como punto de
+   partida. Truco: tres columnas de 2.00 m no caben en un tramo de 6.00 m exactos
+   (6,000 + 2 cortes); si tu proveedor entrega 6.10 m sí caben, y si no, corta las columnas
+   a 1.99 m. Para otro largo de tramo o de kerf: `lista_cortes(L_tramo = 6100, kerf = 2)`.
+   La función `empaquetar(longitudes, L_tramo, kerf)` sirve para cualquier lista de cortes
+   (p. ej. los soportes de PTR 1" del NFT).
 
 ## Exportar a STL / DXF (opcional)
 
