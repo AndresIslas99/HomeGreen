@@ -106,7 +106,7 @@ def postproceso(path):
 
 # --- Dibujo -------------------------------------------------------------------
 with schemdraw.Drawing(file=SALIDA, show=False) as d:
-    d.config(unit=2.0, fontsize=11, font='sans-serif', color=INK, lw=1.4, bgcolor='white')
+    d.config(unit=2.0, fontsize=11, font='sans-serif', color=INK, lw=1.4, bgcolor='white', margin=0.8)
 
     # Título y subtítulo
     texto(d, -0.5, 18.4, 'Nodo de riego v1 — ESP32 + sensores + relés (Fase 1)', fs=16)
@@ -187,8 +187,8 @@ with schemdraw.Drawing(file=SALIDA, show=False) as d:
     # JSN-SR04T: TRIG directo; ECHO es de 5 V -> divisor 10 k / 20 k a 3.3 V
     ruta(d, jsn['trig'], esp['g5'], xm=8.5)
     ye = jsn['echo'][1]
-    d.add(elm.Resistor().at(jsn['echo']).right().length(1.6).label('10 kΩ', fontsize=9, loc='bottom'))
-    nodo = (jsn['echo'][0] + 1.6, ye)
+    d.add(elm.Resistor().at(jsn['echo']).right().length(1.8).label('10 kΩ', fontsize=9, loc='bottom'))
+    nodo = (jsn['echo'][0] + 1.8, ye)
     punto(d, nodo)
     d.add(elm.Resistor().at(nodo).down().length(1.3).label('20 kΩ', fontsize=9, loc='bottom'))
     d.add(elm.Ground().at((nodo[0], ye - 1.3)))
@@ -199,8 +199,8 @@ with schemdraw.Drawing(file=SALIDA, show=False) as d:
     RX, RY, RW, RH = 18.0, 4.4, 3.6, 8.5
     rect(d, (RX, RY), (RX + RW, RY + RH))
     texto(d, RX + RW / 2, RY + RH + 0.28, 'Módulo relé 4 ch 5 V optoacoplado', fs=11, halign='center')
-    texto(d, RX + RW / 2, RY - 0.35, 'entradas activas en BAJO (IN = 0 → K cerrado)', fs=8.5, halign='center', color=GRIS)
-    texto(d, RX + RW / 2, RY - 0.7, 'contactos 10 A / 250 V CA · JD-VCC = VCC (5 V)', fs=8.5, halign='center', color=GRIS)
+    texto(d, RX + RW / 2, RY - 0.35, 'activas en BAJO (IN = 0 → K cerrado) · JD-VCC = VCC', fs=8.5, halign='center', color=GRIS)
+    texto(d, RX + RW / 2, RY - 0.7, 'contactos 10 A / 250 V CA', fs=8.5, halign='center', color=GRIS)
     rel = {}
     for nom, etq in [('vin', 'VCC 5 V'), ('gndr', 'GND'), ('g25', 'IN1'), ('g26', 'IN2'),
                      ('g27', 'IN3'), ('g14', 'IN4')]:

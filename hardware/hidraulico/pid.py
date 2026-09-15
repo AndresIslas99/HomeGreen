@@ -265,14 +265,23 @@ class Sheet:
             self.text(cx + s + 17, cy + 4, "S", size=11, anchor="middle", weight="bold")
         self._label(cx, cy, s + (0 if orient == "v" else 0), tag, lines, label)
 
-    def float_valve(self, cx, cy, tag, lines=(), label="below") -> None:
-        """Válvula de flotador (llenado desde red): moño + brazo + bola."""
+    def float_valve(self, cx, cy, tag, lines=(), label="below", mirror=False) -> None:
+        """Válvula de flotador (llenado desde red): moño + brazo + bola.
+
+        mirror=True dibuja el brazo hacia la izquierda (válvula en la pared derecha del tanque).
+        """
         s = 10
+        d = -1 if mirror else 1
         self.valve(cx, cy, orient="h", size=s, butterfly=False)
         self.line(cx, cy, cx, cy + 14, width=1.6)
-        self.line(cx, cy + 14, cx + 26, cy + 26, width=1.6)
-        self.circle(cx + 32, cy + 29, 7, fill=LIGHT, width=1.6)
-        self._label(cx, cy, s, tag, lines, label)
+        self.line(cx, cy + 14, cx + d * 26, cy + 26, width=1.6)
+        self.circle(cx + d * 32, cy + 29, 7, fill=LIGHT, width=1.6)
+        if tag:
+            self._label(cx, cy, s, tag, lines, label)
+
+    def jump(self, x, y, r=6, width=2.5) -> None:
+        """Salto de tubería vertical sobre una horizontal (cruce sin conexión)."""
+        self.path(f"M{fmt(x)},{fmt(y + r)} A{r},{r} 0 0 1 {fmt(x)},{fmt(y - r)}", width=width)
 
     def sensor(self, cx, cy, symbol, tag=None, lines=(), r=14, label="below",
                accent=False) -> None:
@@ -469,7 +478,7 @@ def build_riego() -> Sheet:
     )
 
     # ---- Tinaco TK-1 ----
-    tx, ty, tw, th = 70, 190, 170, 270
+    tx, ty, tw, th = 70, 230, 170, 230
     s.tank(tx, ty, tw, th, "TK-1 · Tinaco 750 L", [
         "Rotoplas Resistec 750 L ($2,051)",
         "opaco / a la sombra: luz + agua = algas",
@@ -477,89 +486,89 @@ def build_riego() -> Sheet:
         "tandeo duro: Plus+ 1,100 L ($3,774)",
     ], level=0.62)
 
-    # entradas al tinaco: captación pluvial (izq) y red SACMEX (der)
-    s.water([(30, 120), (30, 175), (tx + 30, 175), (tx + 30, ty)], arrows=[1])
-    s.multiline(30, 100, ["de captación pluvial", "(captacion-pluvial.svg)"], size=11, fill=GREEN)
-    s.pipe([(tx + tw + 70, 120), (tx + tw + 70, 160), (tx + tw - 30, 160), (tx + tw - 30, ty)],
-           arrows=[1])
-    s.float_valve(tx + tw - 30, ty + 26, "FV-1", [], label="right")
-    s.multiline(tx + tw + 78, 104, ["red SACMEX → válvula de flotador", "(solo rellena cuando hay presión)"],
-                size=11, fill=GRAY)
-    # rebosadero
-    s.pipe([(tx + tw, ty + 40), (tx + tw + 40, ty + 40), (tx + tw + 40, ty + 95)], arrows=[0])
-    s.text(tx + tw + 46, ty + 60, "rebosadero", size=11, fill=GRAY)
-    s.text(tx + tw + 46, ty + 74, "→ coladera", size=11, fill=GRAY)
+    # entrada de captación pluvial (izquierda, por la tapa)
+    s.multiline(30, 84, ["de captación pluvial", "(captacion-pluvial.svg)"], size=11, fill=GREEN)
+    s.water([(30, 104), (30, 212), (tx + 30, 212), (tx + 30, ty)], arrows=[1])
 
-    # instrumentos del tinaco
-    s.sensor(tx + 60, ty - 34, "L", "LT-1", [], r=14, label="left")
-    s.line(tx + 60, ty - 20, tx + 60, ty, width=1.4, dash="3 2")
-    s.multiline(tx + 80, ty - 46, [
-        "JSN-SR04T ultrasónico en la tapa",
+    # nivel LT-1 en la tapa
+    s.sensor(tx + 80, ty - 34, "L", "LT-1", [], r=14, label="left")
+    s.line(tx + 80, ty - 20, tx + 80, ty, width=1.4, dash="3 2")
+    s.multiline(tx + 102, ty - 44, [
+        "JSN-SR04T en la tapa → nodo-riego-v1",
         "zona muerta ≈ 20 cm sobre nivel máx.",
         "adv. < 40 % · crítica < 20 % (interlock P-1)",
     ], size=11, fill=GRAY)
-    s.sensor(tx + 110, ty + th - 60, "T", "TT-1", ["DS18B20", "sumergido"], r=14, label="right")
+
+    # red SACMEX por la pared derecha con válvula de flotador
+    s.pipe([(460, 104), (460, 250), (tx + tw, 250)], arrows=[0, 1])
+    s.multiline(468, 100, ["red SACMEX → válvula de flotador FV-1",
+                           "(solo rellena cuando hay presión)"], size=11, fill=GRAY)
+    s.float_valve(tx + tw - 26, 250, "FV-1", [], label="left", mirror=True)
+
+    # rebosadero
+    s.pipe([(tx + tw, 285), (290, 285), (290, 345)], arrows=[1])
+    s.text(296, 305, "rebosadero", size=11, fill=GRAY)
+    s.text(296, 319, "→ coladera", size=11, fill=GRAY)
+
+    # temperatura del agua
+    s.sensor(tx + 90, ty + th - 65, "T", "TT-1", ["DS18B20"], r=14, label="right")
 
     # ---- Línea de succión: válvula, filtro, bomba ----
     yl = ty + th - 30  # 430
-    s.pipe([(tx + tw, yl), (300, yl)], arrows=True)
-    s.valve(300, yl, "V-1", ["paso · multiconector 1½\"", "salida del tinaco"])
-    s.pipe([(311, yl), (370, yl)], arrows=False)
-    s.filter_(395, yl, "F-1", ["filtro de sedimentos", "(accesorio del tinaco)"])
-    s.pipe([(417, yl), (475, yl)], arrows=True, min_seg=30)
-    s.pump(495, yl, "P-1", [
+    s.pipe([(tx + tw, yl), (290, yl)], arrows=True)
+    s.valve(290, yl, "V-1", ["paso 1½\""], label="above")
+    s.pipe([(301, yl), (358, yl)], arrows=False)
+    s.filter_(380, yl, "F-1", ["sedimentos"], label="above")
+    s.pipe([(402, yl), (462, yl)], arrows=True, min_seg=30)
+    s.pump(480, yl, "P-1", [
         "diafragma 12 V con presostato",
         "4–6 L/min · ~20 W · relé CH1",
-        "12 V 5 A Steren ELI-1260",
+        "fuente 12 V 5 A Steren ELI-1260",
     ], r=18)
-    # señal de control al nodo
-    s.signal([(495, yl - 18), (495, 330), (560, 330)])
-    s.rect(560, 300, 150, 60, fill=LIGHT, width=1.4, rx=4)
-    s.multiline(635, 322, ["nodo-riego-v1", "ESP32 · gabinete IP65", "(electrico/nodo-riego-v1.svg)"],
+    # control desde el nodo
+    s.signal([(480, yl - 18), (480, 350)])
+    s.rect(400, 290, 150, 60, fill=LIGHT, width=1.4, rx=4)
+    s.multiline(475, 312, ["nodo-riego-v1", "ESP32 · gabinete IP65", "(electrico/nodo-riego-v1.svg)"],
                 size=11, anchor="middle")
-    s.signal([(tx + 46, ty - 34), (tx + 46, 100), (635, 100), (635, 300)])
-    s.text(400, 92, "señal LT-1 / TT-1 / MT-x → ESP32", size=11, fill=GRAY)
 
     # ---- Subida al manifold ----
-    mx = 570  # x del manifold
-    s.pipe([(513, yl), (mx, yl), (mx, 150)], arrows=[1])
-    s.text(mx + 8, yl - 8, "manguera del kit de nebulizadores", size=11, fill=GRAY)
-    s.text(mx + 8, 470, "[POR VERIFICAR: Ø de la manguera del kit]", size=11, fill=AMBER)
+    mx = 580
+    s.pipe([(498, yl), (mx, yl), (mx, 150)], arrows=[1])
+    s.multiline(mx + 10, 140, ["manifold · 1 válvula por nivel", "manguera flexible del kit"],
+                size=11, fill=GRAY)
+    s.text(mx + 10, 168, "[POR VERIFICAR: Ø manguera]", size=11, fill=AMBER)
 
     # ---- Rack de 5 niveles con nebulizadores ----
     rx, ry, rw = 760, 130, 300
-    levels = [150, 230, 310, 390, 470]  # y de cada parrilla (N5 arriba → N1 abajo)
-    names = ["N5 germinación / oscuridad", "N4 desarrollo", "N3 desarrollo",
-             "N2 desarrollo", "N1 recién sembradas (más fresco)"]
-    # postes
+    levels = [150, 230, 310, 390, 470]  # parrillas N5 (arriba) … N1 (abajo)
+    names = [
+        [("N5 germinación / oscuridad", GRAY), ("atomizar 1–2×/día a mano;", AMBER),
+         ("tapa invertida + peso 2–4 kg", AMBER)],
+        [("N4 desarrollo", GRAY)],
+        [("N3 desarrollo", GRAY)],
+        [("N2 desarrollo", GRAY)],
+        [("N1 recién sembradas", GRAY), ("(más fresco)", GRAY)],
+    ]
     s.line(rx, ry, rx, 500, width=3)
     s.line(rx + rw, ry, rx + rw, 500, width=3)
     s.text(rx + rw / 2, ry - 10, "Rack Husky 183 × 91 × 46 cm · 5 niveles · ≥ 30 cm entre parrillas",
            size=12, anchor="middle", weight="bold")
     for i, ly in enumerate(levels):
         s.line(rx, ly, rx + rw, ly, width=2.5)
-        # charolas (doble charola: perforada dentro de lisa)
-        s.tray(rx + 20, ly - 10, 110)
+        s.tray(rx + 20, ly - 10, 110)    # doble charola: perforada dentro de lisa
         s.tray(rx + 170, ly - 10, 110)
-        # nebulizadores (2 por nivel, encima)
         if i > 0:
             for nx in (rx + 75, rx + 225):
                 s.nozzle(nx, ly - 38, size=6)
-            # ramal del manifold
             s.pipe([(mx, ly - 50), (rx + 40, ly - 50), (rx + rw - 40, ly - 50)], arrows=[0])
             s.valve(mx + 60, ly - 50, size=8)
-        s.text(rx + rw + 12, ly - 2, names[i], size=11, fill=GRAY)
-        # sensores capacitivos de sustrato en N1–N4
-        if i > 0:
             s.sensor(rx - 30, ly - 12, "M", r=10)
-    # ramal superior N5: atomizado manual
-    s.text(rx + 20, levels[0] - 26, "oscuridad 2–4 días: atomizar 1–2×/día a mano; tapa + peso 2–4 kg",
-           size=10, fill=AMBER)
-    s.multiline(mx + 10, 150 + 4, ["manifold", "1 válvula por nivel"], size=11, fill=GRAY)
-    s.text(rx - 30, 520, "MT-1…4 capacitivos", size=10, anchor="middle", fill=GRAY)
-    s.text(rx - 30, 533, "(ADC1, conector arriba)", size=10, anchor="middle", fill=GRAY)
+        for k, (txt, col) in enumerate(names[i]):
+            s.text(rx + rw + 12, ly - 2 + k * 13, txt, size=11, fill=col)
+    s.text(rx - 30, 548, "MT-1…4 capacitivos", size=10, anchor="middle", fill=GRAY)
+    s.text(rx - 30, 561, "(ADC1, conector arriba)", size=10, anchor="middle", fill=GRAY)
 
-    # drenaje del rack
+    # drenaje del rack → coladera (no recircula)
     s.rect(rx, 505, rw, 12, fill=LIGHT, width=1.4)
     s.text(rx + rw / 2, 530, "charola colectora de drenaje bajo el rack", size=11, anchor="middle", fill=GRAY)
     s.pipe([(rx + rw, 511), (rx + rw + 60, 511), (rx + rw + 60, 590)], arrows=[1])
@@ -580,20 +589,20 @@ def build_riego() -> Sheet:
     ], kind="warn", title="Errores típicos")
 
     # ---- Leyenda ----
-    s.legend(580, 640, 630, [
+    s.legend(570, 690, 650, [
         (lg_tank, "tanque con nivel"),
         (lg_pump, "bomba (triángulo = sentido)"),
         (lg_filter, "filtro"),
         (lg_valve, "válvula de mariposa (manual)"),
         (lg_float, "válvula de flotador (red)"),
-        (lg_sensor, "sensor: L nivel · T temp · M sustrato"),
+        (lg_sensor, "sensor (L, T, M, pH, EC, F)"),
         (lg_pipe, "tubería con flecha de flujo"),
         (lg_water, "agua de lluvia / entrada"),
         (lg_signal, "señal al ESP32"),
         (lg_nozzle, "nebulizador / microaspersor"),
         (lg_drain, "coladera"),
-    ], cols=2, row_h=28)
-    s.text(30, 845, "Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · "
+    ], cols=3, row_h=28)
+    s.text(30, 850, "Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · "
            "research/electronica-automatizacion · bom/fase1.csv", size=10, fill=GRAY)
     return s
 
@@ -603,118 +612,117 @@ def build_riego() -> Sheet:
 # ---------------------------------------------------------------------------
 def build_nft() -> Sheet:
     s = Sheet(
-        1360, 940,
+        1360, 1000,
         "P&ID · NFT recirculante de hierbas (Fase 2)",
         "tambo 200 L → bomba diafragma 12 V (DC-first) → filtro malla 120 → manifold con válvulas → "
         "8 líneas PVC sanitario 4\" a 2–3 % → retorno 2\" → tambo · pH/EC en el retorno · nodo-nft-v2",
     )
 
-    # ---- Manifold y 8 líneas ----
+    # ---- Manifold y 8 líneas (vista en planta) ----
     hx0, hx1, hy = 520, 1250, 150
     s.pipe([(455, hy), (hx1, hy)], arrows=[0], width=3)
-    s.text(hx0 - 60, hy - 14, "manifold ¾\" · 1 válvula por línea (ajuste con botella 1 L + cronómetro)",
+    s.text(460, 136, "manifold ¾\" · 1 válvula por línea (ajuste con botella de 1 L + cronómetro)",
            size=11, fill=GRAY)
     n_lines = 8
     pitch = (hx1 - hx0) / (n_lines - 1)
-    ly0, ly1 = 205, 520  # tubo (entrada arriba → salida abajo, pendiente 2–3 %)
+    ly0, ly1 = 205, 520
     ret_y = 560
     for i in range(n_lines):
         x = hx0 + i * pitch
         s.pipe([(x, hy), (x, ly0 - 12)], arrows=False)
         s.valve(x, hy + 26, size=8, orient="v")
-        # tubo 4" en planta: tira con canastillas
         s.rect(x - 13, ly0, 26, ly1 - ly0, fill=LIGHT, width=1.8, rx=6)
         for k in range(6):
             s.circle(x, ly0 + 28 + k * 50, 6.5, fill=WHITE, width=1.2)
-        s.text(x, ly1 + 14, f"L{i + 1}", size=11, anchor="middle", weight="bold")
-        # bajada al retorno
+        s.text(x + 16, ly0 - 5, f"L{i + 1}", size=11, weight="bold")
         s.pipe([(x, ly1), (x, ret_y)], arrows=False)
+    # pendiente de las líneas (flecha ámbar junto a L1)
+    sx = hx0 - 24
+    s.line(sx, ly0 + 10, sx, ly1 - 12, stroke=AMBER, width=2)
+    s.polygon([(sx, ly1 - 2), (sx - 5, ly1 - 12), (sx + 5, ly1 - 12)], fill=AMBER, stroke=AMBER, width=1)
+    s.text(sx - 6, (ly0 + ly1) / 2, "pendiente 2–3 %", size=11, anchor="middle", fill=AMBER,
+           weight="bold", rotate=-90)
     # anotaciones de las líneas
-    s.multiline(hx0 - 20, ly0 + 40, [
-        "8 líneas × 3 m",
-        "PVC SANITARIO 4\"",
-        "Amanco blanco",
-        "$415 / 6 m (½ tramo por línea)",
-        "NO hidráulico C-40 ($1,401)",
-        "",
-        "10 sitios / línea",
-        "canastilla 3\" ($12.80)",
-        "centros: 20 cm albahaca / arúgula",
-        "15 cm cilantro",
-        "sierra copa del CUERPO de la",
-        "canastilla (medir antes; desbarbar)",
-        "",
-        "pendiente 2–3 % (2–3 cm / m)",
+    s.multiline(440, 250, [
+        "8 líneas × 3 m · PVC SANITARIO 4\" Amanco blanco",
+        "$415 / 6 m (½ tramo por línea) · NO C-40 ($1,401)",
+        "10 sitios / línea · canastilla 3\" ($12.80)",
+        "centros 20 cm albahaca / arúgula · 15 cm cilantro",
+        "sierra copa del CUERPO de la canastilla",
+        "(comprar canastillas ANTES de perforar; desbarbar)",
+        "pendiente 2–3 % (2–3 cm por metro)",
         "soportes cada ≤ 1.5 m (sin panza)",
         "entrada ALTA · salida BAJA",
     ], size=11, anchor="end", fill=GRAY)
-    # flecha de pendiente
-    s.line(hx0 - 210, ly0 + 250, hx0 - 30, ly0 + 250 + 5, stroke=AMBER, width=2)
-    s.text(hx0 - 120, ly0 + 244, "2–3 %", size=11, anchor="middle", fill=AMBER, weight="bold")
-    s.text(hx1 + 18, ly0 + 20, "caudal por línea", size=11, fill=GREEN, weight="bold")
-    s.text(hx1 + 18, ly0 + 36, "1–2 L/min", size=14, fill=GREEN, weight="bold")
-    s.text(hx1 + 18, ly0 + 54, "total 8–16 L/min", size=11, fill=GREEN)
-    s.text(hx1 + 18, ly0 + 70, "a 1–2 m de columna", size=11, fill=GREEN)
+    # caudal objetivo (columna derecha)
+    cxr = hx1 + 22
+    s.text(cxr, 230, "caudal", size=11, fill=GREEN, weight="bold")
+    s.text(cxr, 244, "por línea", size=11, fill=GREEN, weight="bold")
+    s.text(cxr, 264, "1–2 L/min", size=14, fill=GREEN, weight="bold")
+    s.text(cxr, 284, "total", size=11, fill=GREEN)
+    s.text(cxr, 300, "8–16 L/min", size=12, fill=GREEN, weight="bold")
+    s.text(cxr, 316, "a 1–2 m de", size=11, fill=GREEN)
+    s.text(cxr, 330, "columna", size=11, fill=GREEN)
 
-    # ---- Retorno 2" → sondas → tambo ----
-    s.pipe([(hx1, ret_y), (330, ret_y)], arrows=[0], width=3)
+    # ---- Retorno 2" con sondas → tambo (por la pared derecha) ----
+    bx, by, bw, bh = 170, 600, 160, 200
+    s.pipe([(hx1, ret_y), (350, ret_y), (350, 640), (bx + bw, 640)], arrows=[0, 1], width=3)
     s.text(900, ret_y + 18, "retorno por gravedad · PVC sanitario 2\" (codos 90° $28.80 · 45° $18.31)",
            size=11, fill=GRAY)
-    s.sensor(700, ret_y, "pH", "AT-1", ["pH 5.8–6.2"], r=15, label="below", accent=True)
-    s.sensor(600, ret_y, "EC", "AT-2", ["1.2–1.8 mS/cm"], r=15, label="below", accent=True)
-    s.multiline(430, ret_y + 40, [
-        "sondas en el RETORNO (solución mezclada),",
-        "nunca junto a la dosificación",
-    ], size=11, fill=GRAY)
-    # tambo
-    bx, by, bw, bh = 150, 600, 180, 200
-    s.tank(bx, by, bw, bh, "TK-2 · Tambo 200 L", [
-        "HDPE grado alimenticio ($450–900)",
-        "tapado y a la sombra · 18–22 °C",
-        "> 25 °C cae el O₂ disuelto",
-        "cambio completo cada 2–3 semanas",
-    ], level=0.6)
-    s.pipe([(330, ret_y), (bx + bw - 30, ret_y), (bx + bw - 30, by)], arrows=[1])
-    s.sensor(bx + 50, by + 60, "T", "TT-2", ["DS18B20"], r=14, label="right")
-    s.sensor(bx + 30, by - 30, "L", "LT-2", [], r=13, label="left")
-    s.line(bx + 30, by - 17, bx + 30, by, width=1.4, dash="3 2")
-    s.text(bx + 50, by - 34, "nivel del tambo (interlock)", size=10, fill=GRAY)
-    s.text(bx + 50, by - 21, "[POR VERIFICAR: flotador o JSN-SR04T n.º 2, no está en bom/fase2]",
-           size=10, fill=AMBER)
+    s.sensor(700, ret_y, "pH", "AT-1", ["pH 5.8–6.2"], r=15, accent=True)
+    s.sensor(600, ret_y, "EC", "AT-2", ["1.2–1.8 mS/cm"], r=15, accent=True)
+    s.multiline(760, 600, ["sondas en el RETORNO (solución mezclada),",
+                           "nunca junto a la dosificación"], size=11, fill=GRAY)
 
-    # ---- Succión: P-1 principal + P-2 respaldo en paralelo → F-1 → FT-1 → riser ----
-    sy = by + bh - 40  # 760
-    s.pipe([(bx + bw, sy), (380, sy)], arrows=True)
+    # ---- Tambo TK-2 ----
+    s.tank(bx, by, bw, bh, "TK-2 · Tambo 200 L", [
+        "HDPE alimenticio $450–900",
+        "tapado y a la sombra",
+        "18–22 °C · > 25 °C cae el O₂",
+        "cambio total cada 2–3 sem.",
+    ], level=0.6)
+    s.sensor(bx + 50, by + 60, "T", "TT-2", ["DS18B20"], r=14, label="right")
+    s.sensor(bx + 40, by - 28, "L", "LT-2", [], r=13, label="left")
+    s.line(bx + 40, by - 15, bx + 40, by, width=1.4, dash="3 2")
+    s.text(160, 566, "nivel del tambo (interlock)", size=10, anchor="end", fill=GRAY)
+    s.text(160, 579, "[POR VERIFICAR: no en BOM]", size=10, anchor="end", fill=AMBER)
+
+    # ---- Succión: P-1 principal + P-2 respaldo → F-1 → FT-1 → subida ----
+    sy = by + bh - 60  # 740
+    s.pipe([(bx + bw, sy), (369, sy)], arrows=True)
     s.valve(380, sy, "V-0", ["paso"], size=10)
-    s.pipe([(391, sy), (420, sy), (420, sy - 40), (450, sy - 40)], arrows=False)
-    s.pipe([(420, sy), (420, sy + 40), (450, sy + 40)], arrows=False)
-    s.pump(468, sy - 40, "P-1", [], r=16)
+    s.pipe([(391, sy), (420, sy), (420, sy - 40), (452, sy - 40)], arrows=False)
+    s.pipe([(420, sy), (420, sy + 40), (452, sy + 40)], arrows=False)
+    s.pump(468, sy - 40, "P-1", [], r=16, label="above")
     s.pump(468, sy + 40, "P-2", [], r=16)
     s.pipe([(484, sy - 40), (520, sy - 40), (520, sy)], arrows=False)
     s.pipe([(484, sy + 40), (520, sy + 40), (520, sy)], arrows=False)
-    s.multiline(540, sy - 52, [
-        "P-1 principal + P-2 respaldo: diafragma 12 V 40–60 W (4–6 L/min c/u)",
-        "en bus de batería LiFePO4 12.8 V 100 Ah → 28–30 h sin CFE (DC-first)",
-        "relevador de transferencia por ESP32 · ver electrico/bus-dc-first.svg",
-        "bomba 127 V (sumergible 4500 LPH, 65 W) SOLO llenado / purga / trasiego",
-    ], size=11, fill=GRAY)
-    s.pipe([(520, sy), (600, sy)], arrows=True)
+    s.pipe([(520, sy), (610, sy)], arrows=True)
     s.filter_(632, sy, "F-1", ["malla 120 mesh 1\" ($230)", "lavar cada semana"])
-    s.pipe([(654, sy), (720, sy)], arrows=True)
-    s.sensor(748, sy, "F", "FT-1", ["YF-S201 · 450 pulsos/L", "alarma: bomba ON y < 2 L/min 60 s"],
+    s.pipe([(654, sy), (775, sy)], arrows=True)
+    s.sensor(790, sy, "F", "FT-1", ["YF-S201 · 450 pulsos/L", "alarma: ON y < 2 L/min 60 s"],
              r=15, accent=True)
-    s.pipe([(763, sy), (820, sy), (820, sy - 100)], arrows=[0])
-    s.valve(820, sy - 60, size=9, orient="v")
-    s.text(834, sy - 56, "V-8 purga a coladera / bypass", size=10, fill=GRAY)
-    s.text(834, sy - 44, "(cambio de solución)", size=10, fill=GRAY)
-    # riser: sube al manifold por la izquierda del campo de líneas
-    s.pipe([(820, sy - 100), (820, sy - 130), (455, sy - 130), (455, hy)], arrows=[1, 2])
-    s.text(462, sy - 138, "subida ¾\" al manifold", size=11, fill=GRAY)
-    s.text(462, 240, "distribución ½\"–¾\"", size=11, fill=GRAY)
+    s.pipe([(805, sy), (840, sy), (840, sy - 80)], arrows=False)
+    s.valve(840, sy - 40, size=9, orient="v")
+    s.text(826, sy - 36, "V-8 purga a coladera / bypass", size=10, anchor="end", fill=GRAY)
+    s.text(826, sy - 24, "(cambio de solución)", size=10, anchor="end", fill=GRAY)
+    # subida al manifold: cruza el retorno con salto
+    s.pipe([(840, sy - 80), (840, 630), (455, 630), (455, ret_y + 6)], arrows=[1])
+    s.jump(455, ret_y)
+    s.pipe([(455, ret_y - 6), (455, hy)], arrows=[0])
+    s.text(462, 622, "subida ¾\" al manifold · distribución ½\"–¾\"", size=11, fill=GRAY)
+    s.multiline(430, 836, [
+        "P-1 principal + P-2 respaldo: diafragma 12 V 40–60 W (4–6 L/min c/u)",
+        "en bus de batería LiFePO4 12.8 V 100 Ah → 28–30 h sin CFE (DC-first).",
+        "Relevador de transferencia por ESP32: FT-1 sin flujo → arranca P-2.",
+        "Bomba 127 V (sumergible 4500 LPH, 65 W) SOLO llenado / purga / trasiego.",
+        "Detalle eléctrico: electrico/bus-dc-first.svg",
+    ], size=11, fill=GRAY)
 
-    # ---- Dosificación: 3 peristálticas al tambo cerca de la succión ----
+    # ---- Dosificación: 3 peristálticas al tambo, cerca de la succión ----
     dx0 = 40
-    for j, (nm, txt) in enumerate([("A", "sol. A"), ("B", "sol. B"), ("pH−", "AquAcid")]):
+    s.text(dx0, 620, "DP-1/2/3 peristálticas 12 V", size=11, weight="bold")
+    for j, nm in enumerate(["A", "B", "pH−"]):
         yy = 640 + j * 50
         s.rect(dx0, yy - 12, 30, 26, fill=LIGHT, width=1.3, rx=3)
         s.text(dx0 + 15, yy + 5, nm, size=10, anchor="middle", weight="bold")
@@ -722,33 +730,27 @@ def build_nft() -> Sheet:
         s.circle(dx0 + 62, yy, 3, fill=INK)
         s.pipe([(dx0 + 30, yy), (dx0 + 53, yy)], arrows=False, width=1.4)
         s.pipe([(dx0 + 71, yy), (bx, yy)], arrows=False, width=1.4, dash="2 2")
-    s.multiline(dx0, 620, ["DP-1/2/3 peristálticas 12 V"], size=11, weight="bold")
-    s.multiline(dx0, 810, [
-        "dosis fija → esperar 10–15 min",
-        "de mezcla → re-medir (histéresis)",
-        "sin dosificación si LT-2 bajo o",
-        "bomba OFF · A y B en botes",
-        "separados (Ca precipita con PO₄/SO₄)",
-        "calibración quincenal: pH 4.01/6.86,",
-        "EC 1.413 mS/cm",
-    ], size=10, fill=GRAY)
+    s.text(dx0, 770, "A y B en botes separados", size=10, fill=GRAY)
+    s.text(dx0, 783, "(Ca precipita con PO₄ / SO₄)", size=10, fill=GRAY)
+    s.text(dx0, 796, "pH−: AquAcid ($516)", size=10, fill=GRAY)
 
     # ---- Llenado desde tinaco: solenoide + dúplex ----
     fy = 470
-    s.water([(30, fy), (110, fy)], arrows=True)
-    s.multiline(30, fy - 26, ["de TK-1 tinaco 750 L", "(agua de lluvia / red)"], size=11, fill=GREEN)
-    s.solenoid(140, fy, "SV-1", ["12 V ½\" NC", "(corte de luz = cerrada)"])
-    s.pipe([(151, fy), (200, fy)], arrows=False)
-    s.filter_(232, fy, "F-2", ["dúplex 10\": sedimento 5 µm +", "carbón activado (quita cloro)",
-                               "cartuchos cada 4–6 meses"], w=50, h=32)
-    s.pipe([(257, fy), (bx + 40, fy), (bx + 40, by)], arrows=[0])
+    s.water([(30, fy), (139, fy)], arrows=True)
+    s.multiline(30, fy - 26, ["de TK-1 tinaco", "750 L (lluvia / red)"], size=11, fill=GREEN)
+    s.solenoid(150, fy, "SV-1", ["½\" NC 12 V"])
+    s.pipe([(161, fy), (210, fy)], arrows=False)
+    s.filter_(235, fy, "F-2", ["dúplex 10\": sedimento 5 µm +", "carbón activado (quita cloro)",
+                               "cartuchos cada 4–6 meses"], w=50, h=32, label="above")
+    s.pipe([(260, fy), (300, fy), (300, by)], arrows=[1])
+    s.text(308, fy + 22, "SV-1 cerrada sin luz:", size=10, fill=GRAY)
+    s.text(308, fy + 34, "no vacía el tinaco", size=10, fill=GRAY)
 
-    # ---- Purga del tambo ----
-    s.pipe([(bx + 60, by + bh), (bx + 60, by + bh + 40)], arrows=False)
-    s.solenoid(bx + 60, by + bh + 60, "SV-2", [], orient="v", label="right")
-    s.pipe([(bx + 60, by + bh + 71), (bx + 60, by + bh + 90), (30, by + bh + 90)], arrows=[1])
-    s.drain(30, by + bh + 118, "coladera", [])
-    s.text(bx + 100, by + bh + 84, "purga NC · vaciado cada 2–3 semanas", size=10, fill=GRAY)
+    # ---- Purga del tambo → coladera ----
+    s.pipe([(bx + bw, by + bh - 15), (370, by + bh - 15), (370, 830)], arrows=False)
+    s.solenoid(370, 845, "SV-2", [], orient="v", label="left")
+    s.pipe([(370, 856), (370, 876)], arrows=False)
+    s.drain(370, 890, "coladera", ["purga NC · vaciado", "cada 2–3 semanas"])
 
     # ---- Notas ----
     y0 = s.note(880, 620, 450, [
@@ -758,15 +760,20 @@ def build_nft() -> Sheet:
         "sonda que no cambia en 24 h o salta > 1.5 en 5 min → 'no confiable'.",
         "Commissioning: 48 h con agua sola, sin fugas, caudal en rango por línea.",
     ], kind="ok", title="Continuidad y watchdogs")
-    s.note(880, y0 + 10, 450, [
+    y1 = s.note(880, y0 + 10, 450, [
         "Panza a media línea (soporte > 1.5 m) = agua estancada = raíces podridas.",
         "Perforar antes de tener las canastillas → hoyo de 2\" exacto: se cae.",
         "Peat pellets / turba tapan la malla 120. Tambo al sol > 25 °C: algas y sin O₂.",
         "Periférica 0.5 HP 24/7 = 324 kWh/mes → tarifa DAC.",
     ], kind="warn", title="Errores típicos")
+    s.note(430, 905, 440, [
+        "dosis fija pequeña → esperar 10–15 min de mezcla → re-medir (histéresis).",
+        "Interlock: sin dosis con LT-2 bajo o bomba OFF; dosificar AL TAMBO, no a una línea.",
+        "Calibrar cada 15 días: pH 4.01 / 6.86 y EC 1.413 mS/cm (evento en HA).",
+    ], kind="ok", title="Dosificación (L0)")
 
     # ---- Leyenda ----
-    s.legend(880, 800, 450, [
+    s.legend(880, y1 + 10, 450, [
         (lg_tank, "tanque con nivel"),
         (lg_pump, "bomba"),
         (lg_filter, "filtro"),
@@ -776,7 +783,7 @@ def build_nft() -> Sheet:
         (lg_line_nft, "línea NFT 4\" con canastillas"),
         (lg_signal, "señal al ESP32"),
     ], cols=2, row_h=26)
-    s.text(30, 925, "Fuentes: referencia/03-instalacion §2.1–2.3 · research/hidroponia-nft · "
+    s.text(30, 991, "Fuentes: referencia/03-instalacion §2.1–2.3 · research/hidroponia-nft · "
            "research/electrico-respaldo-seguridad §2 · referencia/06 L0 · bom/fase2.csv", size=10, fill=GRAY)
     return s
 
@@ -786,7 +793,7 @@ def build_nft() -> Sheet:
 # ---------------------------------------------------------------------------
 def build_captacion() -> Sheet:
     s = Sheet(
-        1240, 860,
+        1240, 922,
         "P&ID · Captación pluvial del túnel (Fase 1 → 2)",
         "techo del túnel → canalón PVC 0.5–1 % → bajante → filtro de hojas → separador de primeras "
         "lluvias (tlaloque) → tinaco 750 L (rebosadero a coladera) · flotador de red SACMEX",
@@ -795,39 +802,35 @@ def build_captacion() -> Sheet:
     # ---- Túnel (alzado, dos aguas) ----
     tx0, tx1, ty_base, ty_ridge = 60, 420, 330, 150
     tmid = (tx0 + tx1) / 2
-    s.line(tx0, ty_base, tx0, 230, width=3)          # columna izq
-    s.line(tx1, ty_base, tx1, 230, width=3)          # columna der
-    s.line(tx0, 230, tmid, ty_ridge, width=3)        # cabio izq
-    s.line(tmid, ty_ridge, tx1, 230, width=3)        # cabio der
-    # malla antigranizo (doble techo)
+    s.line(tx0, ty_base, tx0, 230, width=3)
+    s.line(tx1, ty_base, tx1, 230, width=3)
+    s.line(tx0, 230, tmid, ty_ridge, width=3)
+    s.line(tmid, ty_ridge, tx1, 230, width=3)
     s.line(tx0 - 10, 216, tmid, ty_ridge - 16, width=1.2, dash="4 3")
     s.line(tmid, ty_ridge - 16, tx1 + 10, 216, width=1.2, dash="4 3")
-    s.text(tmid, ty_ridge - 26, "malla antigranizo 10–20 cm SOBRE el plástico", size=11,
-           anchor="middle", fill=GRAY)
-    s.line(tx0 - 20, ty_base, tx1 + 20, ty_base, width=2)  # losa
+    s.text(330, 150, "malla antigranizo 10–20 cm SOBRE el plástico", size=11, fill=GRAY)
+    s.line(tx0 - 20, ty_base, tx1 + 20, ty_base, width=2)
     s.multiline(tmid, 262, [
         "túnel PTR · plástico UV cal. 720",
         "techo a dos aguas, pendiente ≥ 25 %",
         "3 × 6 m = 18 m² (F1) → 5 × 6 m = 30 m² (F2)",
     ], size=11, anchor="middle", fill=GRAY)
-    # lluvia
     for k in range(6):
-        xx = tx0 + 30 + k * 60
+        xx = 90 + k * 60
         s.line(xx, 96, xx - 6, 122, stroke=GREEN, width=1.4)
-    s.text(tx0 + 20, 88, "lluvia: 1 mm = 1 L por m² de techo", size=11, fill=GREEN, weight="bold")
+    s.text(80, 88, "lluvia: 1 mm = 1 L por m² de techo", size=11, fill=GREEN, weight="bold")
 
     # ---- Canaleta en el alero derecho, pendiente hacia la bajante ----
-    gx0, gy0, gx1, gy1 = tx1 - 40, 232, tx1 + 60, 238
-    s.gutter(gx0, gy0, gx1, gy1, depth=10)
-    s.multiline(gx1 + 12, 214, [
+    s.gutter(414, 232, 486, 238, depth=10)
+    s.multiline(500, 214, [
         "canalón PVC blanco $269 / 3.07 m (Home Depot)",
         "pendiente 0.5–1 % (1 cm por 2 m) hacia la bajante",
         "soportes al larguero bajo del alero",
     ], size=11, fill=GRAY)
-    # bajante
-    bxx = gx1 + 4
-    s.water([(bxx, gy1 + 10), (bxx, 300)], arrows=True)
-    s.text(bxx + 10, 285, "bajante PVC 3\" o manguera reforzada", size=11, fill=GRAY)
+    bxx = 490
+    s.water([(bxx, 248), (bxx, 300)], arrows=True)
+    s.text(500, 268, "bajante PVC 3\"", size=11, fill=GRAY)
+    s.text(500, 282, "(o manguera reforzada)", size=11, fill=GRAY)
 
     # ---- Filtro de hojas ----
     s.filter_(bxx, 330, "F-3", ["filtro de hojas (malla inox)", "sólidos > 1 mm"], w=48, h=32,
@@ -836,14 +839,12 @@ def build_captacion() -> Sheet:
 
     # ---- Tlaloque (separador de primeras lluvias) ----
     tlx, tly = bxx, 400
-    # T: el agua entra, baja al tubo ciego; al llenarse, la bola flota y sella → sigue al tinaco
     s.water([(tlx, tly), (tlx, tly + 20)], arrows=False)
-    s.rect(tlx - 22, tly + 20, 44, 150, fill=WHITE, width=2.2, rx=4)  # tubo 4" vertical
+    s.rect(tlx - 22, tly + 20, 44, 150, fill=WHITE, width=2.2, rx=4)
     s.add(f'<rect x="{tlx - 20}" y="{tly + 90}" width="40" height="78" fill="{GREEN}" fill-opacity="0.16"/>')
-    s.circle(tlx, tly + 84, 11, fill=LIGHT, width=1.6)  # bola flotante
-    s.text(tlx, tly + 88, "●", size=8, anchor="middle", fill=GRAY)
-    s.valve(tlx, tly + 190, size=9, orient="v")
+    s.circle(tlx, tly + 84, 11, fill=LIGHT, width=1.6)
     s.pipe([(tlx, tly + 170), (tlx, tly + 181)], arrows=False)
+    s.valve(tlx, tly + 190, size=9, orient="v")
     s.pipe([(tlx, tly + 199), (tlx, tly + 230)], arrows=False)
     s.text(tlx + 16, tly + 224, "V-P purga (tapón de registro)", size=10, fill=GRAY)
     s.text(tlx + 16, tly + 236, "vaciar después de cada tormenta", size=10, fill=GRAY)
@@ -858,51 +859,49 @@ def build_captacion() -> Sheet:
         "≤ 120 m²) · Paquete Básico Tláloc",
         "$5,300 = tlaloque + filtro + Axolote",
     ], size=11, anchor="end", fill=GRAY)
-    # salida lateral hacia tinaco (una vez lleno el tubo ciego)
-    s.water([(tlx + 22, tly + 50), (700, tly + 50), (700, 300), (830, 300)], arrows=[0, 2])
-    s.text(560, tly + 42, "lleno el separador → agua limpia al tinaco", size=11, fill=GREEN)
+    # salida lateral hacia el tinaco (una vez lleno el tubo ciego)
+    kx, ky, kw, kh = 800, 300, 190, 300
+    s.water([(tlx + 22, tly + 50), (700, tly + 50), (700, 260), (kx + 60, 260), (kx + 60, ky)],
+            arrows=[0, 1, 2])
+    s.text(560, tly + 68, "lleno el separador → agua limpia al tinaco", size=11, fill=GREEN)
 
     # ---- Tinaco ----
-    kx, ky, kw, kh = 800, 300, 190, 300
     s.tank(kx, ky, kw, kh, "TK-1 · Tinaco 750 L", [
         "Rotoplas Resistec 750 L ($2,051) · opaco",
         "sobre base firme al nivel del patio:",
         "lleno ≈ 750 kg · nunca sobre estructura ligera",
         "alcaldía con tandeo duro: 1,100 L ($3,774)",
     ], level=0.6)
-    s.pipe([(830, 300), (830, ky)], arrows=False)
-    s.text(838, ky - 8, "entrada con reductor de turbulencia (Axolote, F2)", size=10, fill=GRAY)
-    # red SACMEX + flotador
-    s.pipe([(1120, 160), (1120, 240), (kx + kw - 40, 240), (kx + kw - 40, ky)], arrows=[0, 1])
+    s.text(kx + 68, ky + 18, "reductor de turbulencia (Axolote, F2)", size=10, fill=GRAY)
+    s.line(kx + 25, ky, kx + 25, ky - 22, width=1.6)
+    s.text(kx + 19, ky - 12, "jarro de aire", size=10, anchor="end", fill=GRAY)
+    # nivel y temperatura
+    s.sensor(kx + 120, ky - 34, "L", "LT-1", [], r=14, label="left")
+    s.line(kx + 120, ky - 20, kx + 120, ky, width=1.4, dash="3 2")
+    s.text(kx + 140, ky - 38, "JSN-SR04T", size=10, fill=GRAY)
+    s.text(kx + 140, ky - 24, "alarma tinaco bajo en HA", size=10, fill=GRAY)
+    s.sensor(kx + 105, ky + kh - 70, "T", "TT-1", ["DS18B20"], r=14, label="right")
+    # red SACMEX por la pared derecha + flotador
+    s.pipe([(1120, 160), (1120, 330), (kx + kw, 330)], arrows=[0, 1])
     s.multiline(1000, 140, ["red SACMEX (toma domiciliaria)", "solo rellena cuando hay presión"],
                 size=11, fill=GRAY)
-    s.float_valve(kx + kw - 40, ky + 28, "FV-1", ["flotador"], label="left")
+    s.float_valve(kx + kw - 26, 330, "FV-1", [], label="left", mirror=True)
     # rebosadero
-    s.pipe([(kx + kw, ky + 45), (kx + kw + 50, ky + 45), (kx + kw + 50, 560)], arrows=[1])
-    s.text(kx + kw + 56, ky + 60, "rebosadero", size=11, fill=GRAY)
-    s.drain(kx + kw + 50, 585, "coladera del patio", ["no tapar coladeras con", "placas ni con el tinaco"])
-    # jarro de aire
-    s.line(kx + 30, ky, kx + 30, ky - 22, width=1.6)
-    s.text(kx + 36, ky - 12, "jarro de aire", size=10, fill=GRAY)
-    # instrumentos
-    s.sensor(kx + 95, ky - 34, "L", "LT-1", [], r=14, label="left")
-    s.line(kx + 95, ky - 20, kx + 95, ky, width=1.4, dash="3 2")
-    s.text(kx + 115, ky - 38, "JSN-SR04T", size=10, fill=GRAY)
-    s.text(kx + 115, ky - 26, "alarma tinaco bajo en HA", size=10, fill=GRAY)
-    s.sensor(kx + 130, ky + kh - 70, "T", "TT-1", ["DS18B20"], r=14, label="right")
-    # salida inferior → riego
+    s.pipe([(kx + kw, 370), (1060, 370), (1060, 560)], arrows=[1])
+    s.text(1066, 392, "rebosadero", size=11, fill=GRAY)
+    s.drain(1060, 585, "coladera del patio", [])
+    # salida inferior → riego / NFT
     oy = ky + kh - 30
-    s.pipe([(kx, oy), (740, oy)], arrows=True)
-    s.valve(740, oy, "V-1", [], size=10, label="above")
-    s.pipe([(729, oy), (690, oy)], arrows=False)
-    s.filter_(660, oy, "F-1", [], w=40, h=28, label="above")
-    s.pipe([(640, oy), (560, oy)], arrows=True)
-    s.multiline(556, oy - 10, ["→ bomba de riego P-1", "(riego-microgreens.svg)", "y llenado NFT vía dúplex", "(nft-recirculacion.svg)"],
-                size=11, anchor="end", fill=GREEN)
-    s.text(700, oy + 34, "válvula + filtro de sedimentos", size=10, anchor="middle", fill=GRAY)
+    s.pipe([(kx, oy), (751, oy)], arrows=True)
+    s.valve(740, oy, "V-1", [], size=10)
+    s.pipe([(729, oy), (682, oy)], arrows=False)
+    s.filter_(660, oy, "F-1", ["sedimentos"], w=44, h=28)
+    s.pipe([(638, oy), (580, oy)], arrows=True)
+    s.text(578, oy - 34, "→ P-1 riego (riego-microgreens.svg)", size=11, fill=GREEN)
+    s.text(578, oy - 20, "→ llenado NFT (nft-recirculacion.svg)", size=11, fill=GREEN)
 
     # ---- Notas de dimensionamiento ----
-    y0 = s.note(30, 660, 560, [
+    y0 = s.note(30, 692, 560, [
         "Tacubaya (SMN 1991–2020): 847 mm/año · núcleo jun–sep 132–176 mm/mes · 118 días de lluvia.",
         "Tormenta de 30 mm sobre 15–20 m² ≈ 500–600 L: no dejarla caer al patio.",
         "Anual (650 mm × coef. 0.9): 15 m² ≈ 8,800 L · 30 m² ≈ 17,500 L.",
@@ -911,12 +910,13 @@ def build_captacion() -> Sheet:
     ], kind="ok", title="Dimensionamiento")
     s.note(30, y0 + 10, 560, [
         "Sin separador: la primera lluvia mete hollín y polvo al tinaco. Tinaco al sol: algas.",
-        "Canalón sin pendiente o con panza: se desborda en tormenta vespertina.",
+        "Canalón sin pendiente o con panza: se desborda en la tormenta vespertina.",
+        "No tapar coladeras del patio con placas ni con el tinaco; rebosadero SIEMPRE a coladera.",
         "Programa Cosecha de Lluvia (SEDEMA, ene–feb): sistema ~$20k gratis si la alcaldía califica.",
     ], kind="warn", title="Errores típicos y atajo")
 
     # ---- Leyenda ----
-    s.legend(620, 660, 590, [
+    s.legend(620, 692, 590, [
         (lg_gutter, "canaleta / canalón"),
         (lg_filter, "filtro (hojas / sedimentos)"),
         (lg_tank, "tanque / separador con nivel"),
@@ -927,7 +927,7 @@ def build_captacion() -> Sheet:
         (lg_pipe, "tubería con flecha de flujo"),
         (lg_drain, "coladera"),
     ], cols=2, row_h=26)
-    s.text(30, 845, "Fuentes: research/instalacion-tunel-detalle §4 · research/agua-captacion §b · "
+    s.text(30, 910, "Fuentes: research/instalacion-tunel-detalle §4 · research/agua-captacion §b · "
            "research/clima-agronomia §4–5 · referencia/03-instalacion §1.1–1.2 · bom/fase1.csv", size=10, fill=GRAY)
     return s
 

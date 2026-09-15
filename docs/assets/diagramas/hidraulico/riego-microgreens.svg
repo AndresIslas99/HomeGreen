@@ -6,78 +6,75 @@
 <text x="24" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280">tinaco 750 L → válvula → filtro de sedimentos → bomba diafragma 12 V → manifold → nebulizadores por nivel · nodo-riego-v1 · drenaje a coladera</text>
 <text x="1216" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="end" fill="#6b7280">HomeGreen · v1 · 2026-09</text>
 <line x1="24" y1="64" x2="1216" y2="64" stroke="#1f2937" stroke-width="1"/>
-<path d="M70,296.3 L70,442 Q70,460 88,460 L222,460 Q240,460 240,442 L240,296.3 Z" fill="#2e7d32" fill-opacity="0.16" stroke="none"/>
-<line x1="70" y1="296.3" x2="240" y2="296.3" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="5 3"/>
-<path d="M70,190 L70,442 Q70,460 88,460 L222,460 Q240,460 240,442 L240,190 L240,190 L70,190 Z" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M70,321.1 L70,442 Q70,460 88,460 L222,460 Q240,460 240,442 L240,321.1 Z" fill="#2e7d32" fill-opacity="0.16" stroke="none"/>
+<line x1="70" y1="321.1" x2="240" y2="321.1" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="5 3"/>
+<path d="M70,230 L70,442 Q70,460 88,460 L222,460 Q240,460 240,442 L240,230 L240,230 L70,230 Z" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="155" y="476" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13" text-anchor="middle" font-weight="bold" fill="#1f2937">TK-1 · Tinaco 750 L</text>
 <text x="155" y="492" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">Rotoplas Resistec 750 L ($2,051)</text>
 <text x="155" y="507" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">opaco / a la sombra: luz + agua = algas</text>
 <text x="155" y="522" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">lleno ≈ 750 kg → sobre piso firme</text>
 <text x="155" y="537" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">tandeo duro: Plus+ 1,100 L ($3,774)</text>
-<polyline points="30,120 30,175 100,175 100,190" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="71,175 59,179.5 59,170.5" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
-<text x="30" y="100" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#2e7d32">de captación pluvial</text>
-<text x="30" y="115" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#2e7d32">(captacion-pluvial.svg)</text>
-<polyline points="310,120 310,160 210,160 210,190" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="254,160 266,155.5 266,164.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="200,209 210,216 200,223" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="220,209 210,216 220,223" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="210" y1="216" x2="210" y2="230" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
-<line x1="210" y1="230" x2="236" y2="242" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
-<circle cx="242" cy="245" r="7" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.6"/>
-<text x="228" y="220" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="start" font-weight="bold" fill="#1f2937">FV-1</text>
-<text x="318" y="104" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">red SACMEX → válvula de flotador</text>
-<text x="318" y="119" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">(solo rellena cuando hay presión)</text>
-<polyline points="240,230 280,230 280,285" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="266,230 254,234.5 254,225.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<text x="286" y="250" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">rebosadero</text>
-<text x="286" y="264" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">→ coladera</text>
-<circle cx="130" cy="156" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<text x="130" y="160" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">L</text>
-<text x="108" y="160" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="end" font-weight="bold" fill="#1f2937">LT-1</text>
-<line x1="130" y1="170" x2="130" y2="190" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 2"/>
-<text x="150" y="144" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">JSN-SR04T ultrasónico en la tapa</text>
-<text x="150" y="159" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">zona muerta ≈ 20 cm sobre nivel máx.</text>
-<text x="150" y="174" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">adv. &lt; 40 % · crítica &lt; 20 % (interlock P-1)</text>
-<circle cx="180" cy="400" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<text x="180" y="404" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">T</text>
-<text x="202" y="404" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="start" font-weight="bold" fill="#1f2937">TT-1</text>
-<text x="202" y="418" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">DS18B20</text>
-<text x="202" y="433" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">sumergido</text>
-<polyline points="240,430 300,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="276,430 264,434.5 264,425.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="289,422.3 300,430 289,437.7" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="311,422.3 300,430 311,437.7" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="300" y1="420.1" x2="300" y2="439.9" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="300" cy="430" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="300" y="455" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">V-1</text>
-<text x="300" y="469" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">paso · multiconector 1½&quot;</text>
-<text x="300" y="484" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">salida del tinaco</text>
-<polyline points="311,430 370,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<rect x="373" y="415" width="44" height="30" rx="0" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<path d="M377,437.5 L383,422.5 L389,437.5 L395,422.5 L401,437.5 L407,422.5 L413,437.5 " fill="none" stroke="#1f2937" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="395" y="459" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">F-1</text>
-<text x="395" y="473" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">filtro de sedimentos</text>
-<text x="395" y="488" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">(accesorio del tinaco)</text>
-<polyline points="417,430 475,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="452,430 440,434.5 440,425.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<circle cx="495" cy="430" r="18" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<polygon points="509,430 487.8,438.5 487.8,421.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<text x="495" y="462" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">P-1</text>
-<text x="495" y="476" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">diafragma 12 V con presostato</text>
-<text x="495" y="491" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">4–6 L/min · ~20 W · relé CH1</text>
-<text x="495" y="506" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">12 V 5 A Steren ELI-1260</text>
-<polyline points="495,412 495,330 560,330" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
-<rect x="560" y="300" width="150" height="60" rx="4" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.4"/>
-<text x="635" y="322" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">nodo-riego-v1</text>
-<text x="635" y="337" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">ESP32 · gabinete IP65</text>
-<text x="635" y="352" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">(electrico/nodo-riego-v1.svg)</text>
-<polyline points="116,156 116,100 635,100 635,300" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
-<text x="400" y="92" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">señal LT-1 / TT-1 / MT-x → ESP32</text>
-<polyline points="513,430 570,430 570,150" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="570,284 574.5,296 565.5,296" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<text x="578" y="422" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">manguera del kit de nebulizadores</text>
-<text x="578" y="470" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#b45309">[POR VERIFICAR: Ø de la manguera del kit]</text>
+<text x="30" y="84" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#2e7d32">de captación pluvial</text>
+<text x="30" y="99" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#2e7d32">(captacion-pluvial.svg)</text>
+<polyline points="30,104 30,212 100,212 100,230" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="71,212 59,216.5 59,207.5" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="150" cy="196" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="150" y="200" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">L</text>
+<text x="128" y="200" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="end" font-weight="bold" fill="#1f2937">LT-1</text>
+<line x1="150" y1="210" x2="150" y2="230" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 2"/>
+<text x="172" y="186" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">JSN-SR04T en la tapa → nodo-riego-v1</text>
+<text x="172" y="201" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">zona muerta ≈ 20 cm sobre nivel máx.</text>
+<text x="172" y="216" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">adv. &lt; 40 % · crítica &lt; 20 % (interlock P-1)</text>
+<polyline points="460,104 460,250 240,250" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="460,183 455.5,171 464.5,171" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="344,250 356,245.5 356,254.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="468" y="100" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">red SACMEX → válvula de flotador FV-1</text>
+<text x="468" y="115" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">(solo rellena cuando hay presión)</text>
+<polygon points="204,243 214,250 204,257" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="224,243 214,250 224,257" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="214" y1="250" x2="214" y2="264" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
+<line x1="214" y1="264" x2="188" y2="276" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/>
+<circle cx="182" cy="279" r="7" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.6"/>
+<text x="196" y="254" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="end" font-weight="bold" fill="#1f2937">FV-1</text>
+<polyline points="240,285 290,285 290,345" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="290,321 285.5,309 294.5,309" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="296" y="305" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">rebosadero</text>
+<text x="296" y="319" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">→ coladera</text>
+<circle cx="160" cy="395" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="160" y="399" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">T</text>
+<text x="182" y="399" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="start" font-weight="bold" fill="#1f2937">TT-1</text>
+<text x="182" y="413" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">DS18B20</text>
+<polyline points="240,430 290,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="271,430 259,434.5 259,425.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="279,422.3 290,430 279,437.7" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="301,422.3 290,430 301,437.7" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="290" y1="420.1" x2="290" y2="439.9" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="290" cy="430" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+<text x="290" y="396" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">V-1</text>
+<text x="290" y="411" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">paso 1½&quot;</text>
+<polyline points="301,430 358,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="358" y="415" width="44" height="30" rx="0" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<path d="M362,437.5 L368,422.5 L374,437.5 L380,422.5 L386,437.5 L392,422.5 L398,437.5 " fill="none" stroke="#1f2937" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="380" y="392" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">F-1</text>
+<text x="380" y="407" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">sedimentos</text>
+<polyline points="402,430 462,430" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="438,430 426,434.5 426,425.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="480" cy="430" r="18" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<polygon points="494,430 472.8,438.5 472.8,421.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="480" y="462" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">P-1</text>
+<text x="480" y="476" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">diafragma 12 V con presostato</text>
+<text x="480" y="491" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">4–6 L/min · ~20 W · relé CH1</text>
+<text x="480" y="506" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">fuente 12 V 5 A Steren ELI-1260</text>
+<polyline points="480,412 480,350" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<rect x="400" y="290" width="150" height="60" rx="4" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.4"/>
+<text x="475" y="312" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">nodo-riego-v1</text>
+<text x="475" y="327" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">ESP32 · gabinete IP65</text>
+<text x="475" y="342" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#1f2937">(electrico/nodo-riego-v1.svg)</text>
+<polyline points="498,430 580,430 580,150" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="580,284 584.5,296 575.5,296" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="590" y="140" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">manifold · 1 válvula por nivel</text>
+<text x="590" y="155" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">manguera flexible del kit</text>
+<text x="590" y="168" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#b45309">[POR VERIFICAR: Ø manguera]</text>
 <line x1="760" y1="130" x2="760" y2="500" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
 <line x1="1060" y1="130" x2="1060" y2="500" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
 <text x="910" y="120" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937">Rack Husky 183 × 91 × 46 cm · 5 niveles · ≥ 30 cm entre parrillas</text>
@@ -85,6 +82,8 @@
 <rect x="780" y="140" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <rect x="930" y="140" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <text x="1072" y="148" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N5 germinación / oscuridad</text>
+<text x="1072" y="161" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#b45309">atomizar 1–2×/día a mano;</text>
+<text x="1072" y="174" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#b45309">tapa invertida + peso 2–4 kg</text>
 <line x1="760" y1="230" x2="1060" y2="230" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
 <rect x="780" y="220" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <rect x="930" y="220" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
@@ -96,15 +95,15 @@
 <line x1="985" y1="192" x2="978.4" y2="202.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="192" x2="985" y2="202.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="192" x2="991.6" y2="202.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<polyline points="570,180 800,180 1020,180" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="691,180 679,184.5 679,175.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="622,174.4 630,180 622,185.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="638,174.4 630,180 638,185.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="630" y1="172.8" x2="630" y2="187.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="630" cy="180" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="1072" y="228" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N4 desarrollo</text>
+<polyline points="580,180 800,180 1020,180" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="696,180 684,184.5 684,175.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="632,174.4 640,180 632,185.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="648,174.4 640,180 648,185.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="640" y1="172.8" x2="640" y2="187.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="640" cy="180" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
 <circle cx="730" cy="218" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
 <text x="730" y="222" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">M</text>
+<text x="1072" y="228" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N4 desarrollo</text>
 <line x1="760" y1="310" x2="1060" y2="310" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
 <rect x="780" y="300" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <rect x="930" y="300" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
@@ -116,15 +115,15 @@
 <line x1="985" y1="272" x2="978.4" y2="282.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="272" x2="985" y2="282.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="272" x2="991.6" y2="282.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<polyline points="570,260 800,260 1020,260" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="691,260 679,264.5 679,255.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="622,254.4 630,260 622,265.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="638,254.4 630,260 638,265.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="630" y1="252.8" x2="630" y2="267.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="630" cy="260" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="1072" y="308" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N3 desarrollo</text>
+<polyline points="580,260 800,260 1020,260" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="696,260 684,264.5 684,255.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="632,254.4 640,260 632,265.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="648,254.4 640,260 648,265.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="640" y1="252.8" x2="640" y2="267.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="640" cy="260" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
 <circle cx="730" cy="298" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
 <text x="730" y="302" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">M</text>
+<text x="1072" y="308" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N3 desarrollo</text>
 <line x1="760" y1="390" x2="1060" y2="390" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
 <rect x="780" y="380" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <rect x="930" y="380" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
@@ -136,15 +135,15 @@
 <line x1="985" y1="352" x2="978.4" y2="362.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="352" x2="985" y2="362.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="352" x2="991.6" y2="362.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<polyline points="570,340 800,340 1020,340" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="691,340 679,344.5 679,335.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="622,334.4 630,340 622,345.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="638,334.4 630,340 638,345.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="630" y1="332.8" x2="630" y2="347.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="630" cy="340" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="1072" y="388" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N2 desarrollo</text>
+<polyline points="580,340 800,340 1020,340" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="696,340 684,344.5 684,335.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="632,334.4 640,340 632,345.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="648,334.4 640,340 648,345.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="640" y1="332.8" x2="640" y2="347.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="640" cy="340" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
 <circle cx="730" cy="378" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
 <text x="730" y="382" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">M</text>
+<text x="1072" y="388" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N2 desarrollo</text>
 <line x1="760" y1="470" x2="1060" y2="470" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
 <rect x="780" y="460" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
 <rect x="930" y="460" width="110" height="8" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.2"/>
@@ -156,20 +155,18 @@
 <line x1="985" y1="432" x2="978.4" y2="442.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="432" x2="985" y2="442.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
 <line x1="985" y1="432" x2="991.6" y2="442.8" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<polyline points="570,420 800,420 1020,420" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="691,420 679,424.5 679,415.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<polygon points="622,414.4 630,420 622,425.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="638,414.4 630,420 638,425.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="630" y1="412.8" x2="630" y2="427.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="630" cy="420" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="1072" y="468" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N1 recién sembradas (más fresco)</text>
+<polyline points="580,420 800,420 1020,420" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="696,420 684,424.5 684,415.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<polygon points="632,414.4 640,420 632,425.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="648,414.4 640,420 648,425.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="640" y1="412.8" x2="640" y2="427.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="640" cy="420" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
 <circle cx="730" cy="458" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
 <text x="730" y="462" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="bold" fill="#1f2937">M</text>
-<text x="780" y="124" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="start" font-weight="normal" fill="#b45309">oscuridad 2–4 días: atomizar 1–2×/día a mano; tapa + peso 2–4 kg</text>
-<text x="580" y="154" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">manifold</text>
-<text x="580" y="169" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">1 válvula por nivel</text>
-<text x="730" y="520" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="normal" fill="#6b7280">MT-1…4 capacitivos</text>
-<text x="730" y="533" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="normal" fill="#6b7280">(ADC1, conector arriba)</text>
+<text x="1072" y="468" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">N1 recién sembradas</text>
+<text x="1072" y="481" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#6b7280">(más fresco)</text>
+<text x="730" y="548" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="normal" fill="#6b7280">MT-1…4 capacitivos</text>
+<text x="730" y="561" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="normal" fill="#6b7280">(ADC1, conector arriba)</text>
 <rect x="760" y="505" width="300" height="12" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.4"/>
 <text x="910" y="530" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="middle" font-weight="normal" fill="#6b7280">charola colectora de drenaje bajo el rack</text>
 <polyline points="1060,511 1120,511 1120,590" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
@@ -195,50 +192,50 @@
 <text x="44" y="705" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">Los nebulizadores atomizan en germinación/oscuridad y en secas; en jun–sep (HR 70–89 %)</text>
 <text x="44" y="720" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">subirrigación y ventilación forzada por HR &gt; 70 %.</text>
 <text x="44" y="735" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">Rack desnivelado → riego encharcado en una esquina → moho: nivelar y calzar patas.</text>
-<rect x="580" y="640" width="630" height="202" rx="4" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
-<text x="592" y="660" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="start" font-weight="bold" fill="#1f2937">Leyenda de símbolos</text>
-<rect x="604" y="678" width="20" height="20" rx="3" fill="#ffffff" stroke="#1f2937" stroke-width="1.6"/>
-<line x1="604" y1="690" x2="624" y2="690" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 2"/>
-<text x="644" y="692" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">tanque con nivel</text>
-<circle cx="917" cy="688" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<polygon points="924.8,688 913,692.7 913,683.3" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<text x="917" y="712" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937"></text>
-<text x="947" y="692" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">bomba (triángulo = sentido)</text>
-<rect x="601" y="707" width="26" height="18" rx="0" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<path d="M605,720.5 L611,711.5 L617,720.5 L623,711.5 " fill="none" stroke="#1f2937" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="614" y="739" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937"></text>
-<text x="644" y="720" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">filtro</text>
-<polygon points="909,710.4 917,716 909,721.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="925,710.4 917,716 925,721.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="917" y1="708.8" x2="917" y2="723.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
-<circle cx="917" cy="716" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
-<text x="947" y="720" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">válvula de mariposa (manual)</text>
-<polygon points="601,735.1 608,740 601,744.9" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<polygon points="615,735.1 608,740 615,744.9" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
-<line x1="608" y1="740" x2="608" y2="748" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
-<line x1="608" y1="748" x2="622" y2="753" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
-<circle cx="626" cy="754" r="4" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.4"/>
-<text x="644" y="748" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">válvula de flotador (red)</text>
-<circle cx="917" cy="744" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
-<text x="917" y="747.6" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2937">pH</text>
-<text x="947" y="748" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">sensor: L nivel · T temp · M sustrato</text>
-<polyline points="596,772 632,772" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="620,772 608,776.5 608,767.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
-<text x="644" y="776" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">tubería con flecha de flujo</text>
-<polyline points="899,772 935,772" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-<polygon points="923,772 911,776.5 911,767.5" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
-<text x="947" y="776" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">agua de lluvia / entrada</text>
-<polyline points="596,800 632,800" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
-<text x="644" y="804" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">señal al ESP32</text>
-<polygon points="914,791 920,791 917,796" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
-<line x1="917" y1="796" x2="911.5" y2="805" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<line x1="917" y1="796" x2="917" y2="805" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<line x1="917" y1="796" x2="922.5" y2="805" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
-<text x="947" y="804" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">nebulizador / microaspersor</text>
-<rect x="605" y="819" width="18" height="18" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.3"/>
-<line x1="608" y1="824" x2="620" y2="824" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="608" y1="828" x2="620" y2="828" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="608" y1="832" x2="620" y2="832" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="644" y="832" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">coladera</text>
-<text x="30" y="845" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="start" font-weight="normal" fill="#6b7280">Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · research/electronica-automatizacion · bom/fase1.csv</text>
+<rect x="570" y="690" width="650" height="146" rx="4" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
+<text x="582" y="710" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="start" font-weight="bold" fill="#1f2937">Leyenda de símbolos</text>
+<rect x="594" y="728" width="20" height="20" rx="3" fill="#ffffff" stroke="#1f2937" stroke-width="1.6"/>
+<line x1="594" y1="740" x2="614" y2="740" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 2"/>
+<text x="634" y="742" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">tanque con nivel</text>
+<circle cx="812.7" cy="738" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<polygon points="820.5,738 808.7,742.7 808.7,733.3" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="812.7" y="762" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937"></text>
+<text x="842.7" y="742" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">bomba (triángulo = sentido)</text>
+<rect x="1008.3" y="729" width="26" height="18" rx="0" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<path d="M1012.3,742.5 L1018.3,733.5 L1024.3,742.5 L1030.3,733.5 " fill="none" stroke="#1f2937" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1021.3" y="761" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#1f2937"></text>
+<text x="1051.3" y="742" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">filtro</text>
+<polygon points="596,760.4 604,766 596,771.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="612,760.4 604,766 612,771.6" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="604" y1="758.8" x2="604" y2="773.2" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="604" cy="766" r="2.2" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+<text x="634" y="770" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">válvula de mariposa (manual)</text>
+<polygon points="799.7,757.1 806.7,762 799.7,766.9" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<polygon points="813.7,757.1 806.7,762 813.7,766.9" fill="#ffffff" stroke="#1f2937" stroke-width="1.6" stroke-linejoin="round"/>
+<line x1="806.7" y1="762" x2="806.7" y2="770" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="806.7" y1="770" x2="820.7" y2="775" stroke="#1f2937" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="824.7" cy="776" r="4" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.4"/>
+<text x="842.7" y="770" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">válvula de flotador (red)</text>
+<circle cx="1021.3" cy="766" r="10" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="1021.3" y="769.6" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="middle" font-weight="bold" fill="#1f2937">pH</text>
+<text x="1051.3" y="770" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">sensor (L, T, M, pH, EC, F)</text>
+<polyline points="586,794 622,794" fill="none" stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="610,794 598,798.5 598,789.5" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round"/>
+<text x="634" y="798" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">tubería con flecha de flujo</text>
+<polyline points="794.7,794 830.7,794" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<polygon points="818.7,794 806.7,798.5 806.7,789.5" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
+<text x="842.7" y="798" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">agua de lluvia / entrada</text>
+<polyline points="1003.3,794 1039.3,794" fill="none" stroke="#6b7280" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<text x="1051.3" y="798" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">señal al ESP32</text>
+<polygon points="601,813 607,813 604,818" fill="#2e7d32" stroke="#2e7d32" stroke-width="1" stroke-linejoin="round"/>
+<line x1="604" y1="818" x2="598.5" y2="827" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
+<line x1="604" y1="818" x2="604" y2="827" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
+<line x1="604" y1="818" x2="609.5" y2="827" stroke="#2e7d32" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 2"/>
+<text x="634" y="826" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">nebulizador / microaspersor</text>
+<rect x="803.7" y="813" width="18" height="18" rx="0" fill="#f3f4f6" stroke="#1f2937" stroke-width="1.3"/>
+<line x1="806.7" y1="818" x2="818.7" y2="818" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="806.7" y1="822" x2="818.7" y2="822" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="806.7" y1="826" x2="818.7" y2="826" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="842.7" y="826" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#1f2937">coladera</text>
+<text x="30" y="850" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" text-anchor="start" font-weight="normal" fill="#6b7280">Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · research/electronica-automatizacion · bom/fase1.csv</text>
 </svg>
