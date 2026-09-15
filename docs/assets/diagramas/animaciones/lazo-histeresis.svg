@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2937">
+<title>Lazo de histéresis con banda muerta y tiempo muerto — animación</title>
+<desc>Dos gráficas animadas de los lazos L0: (A) humedad de sustrato contra tiempo con límite superior e inferior; la bomba de riego enciende al cruzar el límite inferior y apaga al cruzar el superior, con banda muerta entre ambos y máximo de ciclos por hora. (B) pH del NFT: dosis fija pequeña de pH−, tiempo muerto de mezcla de 10–15 minutos sin dosificar, re-medición y nueva decisión; banda 5.8–6.2; la misma regla aplica a EC 1.2–1.8 mS/cm con las peristálticas A y B. Incluye interlocks por nivel y reglas de sonda no confiable. Fuente: docs/referencia/06-validacion-y-lazos-agenticos.md §L0 y docs/referencia/03-instalacion.md §2.2.</desc>
+<style>
+  .h { font-size: 16px; font-weight: 600; fill: #1f2937; }
+  .sub { font-size: 12px; fill: #6b7280; }
+  .lb { font-size: 12px; fill: #1f2937; }
+  .sm { font-size: 11px; fill: #6b7280; }
+  .b { font-weight: 600; }
+  .ink { fill: none; stroke: #1f2937; stroke-width: 1.5; }
+  .pipe { fill: none; stroke: #1f2937; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .pipein { fill: none; stroke: #ffffff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .green { fill: #2e7d32; }
+  .amber { fill: #b45309; }
+  .box { fill: #ffffff; stroke: #1f2937; stroke-width: 1.5; }
+  .boxg { fill: #f0fdf4; stroke: #2e7d32; stroke-width: 1.5; }
+  .boxa { fill: #fff7ed; stroke: #b45309; stroke-width: 1.5; }
+  .boxn { fill: #f9fafb; stroke: #6b7280; stroke-width: 1.2; }
+</style>
+<rect width="900" height="500" fill="#ffffff"/>
+<text x="20" y="30" class="h">Lazos L0: histéresis con banda muerta (riego) y tiempo muerto de mezcla (pH/EC)</text>
+<text x="20" y="48" class="sub">Sin PID: las plantas son procesos lentos y las sondas baratas son ruidosas · la histéresis con banda muerta es más robusta que un PID mal sintonizado</text>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#b45309" stroke-width="1"/></pattern>
+<clipPath id="revA"><rect x="70" y="80" width="0" height="220"><animate attributeName="width" values="10;470" dur="24.0s" repeatCount="indefinite"/></rect></clipPath>
+<path id="trA" d="M80,165 L170,220 L188,130 L300,220 L318,130 L430,220 L448,130 L540,178"/>
+</defs>
+<text x="60" y="72" class="lb b">A · Riego de microgreens: histéresis con banda muerta</text>
+<rect x="70" y="130" width="470" height="90" fill="#f0fdf4"/>
+<line x1="70" y1="130" x2="540" y2="130" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="70" y1="220" x2="540" y2="220" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="76" y="124" class="sm green b">límite superior → bomba OFF</text>
+<text x="76" y="234" class="sm green b">límite inferior → bomba ON</text>
+<text x="305.0" y="179.0" class="sm" text-anchor="middle">banda muerta: aquí no se actúa · valores por etapa (germinación / desarrollo)</text>
+<line x1="70" y1="90" x2="70" y2="280" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="70" y1="280" x2="540" y2="280" stroke="#1f2937" stroke-width="1.5"/>
+<text x="62" y="185.0" class="sm" text-anchor="middle" transform="rotate(-90 62 185.0)">humedad de sustrato MT-1…4</text>
+<text x="540" y="294" class="sm" text-anchor="end">tiempo →</text>
+<g clip-path="url(#revA)">
+<path d="M80,165 L170,220 L188,130 L300,220 L318,130 L430,220 L448,130 L540,178" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+<line x1="70" y1="268" x2="540" y2="268" stroke="#6b7280" stroke-width="1"/>
+<rect x="170" y="254" width="18" height="14" fill="#2e7d32"/>
+<rect x="300" y="254" width="18" height="14" fill="#2e7d32"/>
+<rect x="430" y="254" width="18" height="14" fill="#2e7d32"/>
+</g>
+<text x="74" y="265" class="sm" font-size="10">P-1</text>
+<text x="179.0" y="250" class="sm green b" text-anchor="middle">ON</text>
+<text x="198" y="250" class="sm">OFF (el sustrato se seca despacio)</text>
+<circle r="5" fill="#2e7d32" stroke="#ffffff" stroke-width="1.5"><animateMotion dur="24.0s" repeatCount="indefinite" calcMode="linear" keyTimes="0.0000;0.1957;0.2348;0.4783;0.5174;0.7609;0.8000;1.0000" keyPoints="0.0000;0.1366;0.2555;0.4417;0.5606;0.7467;0.8656;1.0000"><mpath xlink:href="#trA"/></animateMotion></circle>
+<path d="M190,126 q0,-14 10,-18" fill="none" stroke="#1f2937" stroke-width="1"/>
+<text x="204" y="106" class="sm">1 ciclo = 1 nebulización (máx. N ciclos/h)</text>
+<defs><clipPath id="revB"><rect x="600" y="80" width="0" height="220"><animate attributeName="width" values="10;270" dur="24.0s" repeatCount="indefinite"/></rect></clipPath><path id="trB" d="M610,144.8 L640,144.8 L668,164.0 L700,173.6 L735,176.8 L840,157.6 L846,157.6 L870,168.8"/></defs>
+<text x="590" y="72" class="lb b">B · pH del NFT: dosis fija + tiempo muerto + re-medir</text>
+<rect x="600" y="164.0" width="280" height="64.0" fill="#f0fdf4"/>
+<line x1="600" y1="164.0" x2="880" y2="164.0" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="600" y1="228.0" x2="880" y2="228.0" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="595" y="232.0" class="sm" text-anchor="end">5.8</text>
+<text x="595" y="200.0" class="sm" text-anchor="end">6.0</text>
+<text x="595" y="168.0" class="sm" text-anchor="end">6.2</text>
+<text x="595" y="136.0" class="sm" text-anchor="end">6.4</text>
+<text x="606" y="158.0" class="sm green b">banda 5.8–6.2 (EC: 1.2–1.8 mS/cm)</text>
+<rect x="640" y="100" width="95" height="180" fill="url(#hatch)" opacity="0.7"/>
+<text x="687" y="112" class="sm amber b" text-anchor="middle">tiempo muerto 10–15 min</text>
+<text x="687" y="125" class="sm amber" text-anchor="middle">sin dosificar, sin decidir</text>
+<line x1="600" y1="90" x2="600" y2="280" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="600" y1="280" x2="880" y2="280" stroke="#1f2937" stroke-width="1.5"/>
+<text x="576" y="185.0" class="sm" text-anchor="middle" transform="rotate(-90 576 185.0)">pH en el retorno (AT-1)</text>
+<g clip-path="url(#revB)">
+<path d="M610,144.8 L640,144.8 L668,164.0 L700,173.6 L735,176.8 L840,157.6 L846,157.6 L870,168.8" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linejoin="round"/>
+<line x1="600" y1="268" x2="880" y2="268" stroke="#6b7280" stroke-width="1"/>
+<rect x="640" y="254" width="6" height="14" fill="#b45309"/>
+<rect x="846" y="254" width="6" height="14" fill="#b45309"/>
+</g>
+<text x="604" y="265" class="sm" font-size="10">pH−</text>
+<line x1="643" y1="280" x2="643" y2="286" stroke="#1f2937" stroke-width="1.5"/>
+<text x="646" y="298" class="sm">dosis fija</text>
+<line x1="735" y1="280" x2="735" y2="286" stroke="#1f2937" stroke-width="1.5"/>
+<text x="738" y="298" class="sm">re-medir → en banda</text>
+<line x1="849" y1="280" x2="849" y2="286" stroke="#1f2937" stroke-width="1.5"/>
+<text x="852" y="298" class="sm">dosis</text>
+<circle r="5" fill="#b45309" stroke="#ffffff" stroke-width="1.5"><animateMotion dur="24.0s" repeatCount="indefinite" calcMode="linear" keyTimes="0.0000;0.1154;0.2231;0.3462;0.4808;0.8846;0.9077;1.0000" keyPoints="0.0000;0.1104;0.2353;0.3583;0.4876;0.8805;0.9025;1.0000"><mpath xlink:href="#trB"/></animateMotion></circle>
+<rect x="45" y="314" width="270" height="132" rx="4" class="boxg"/>
+<text x="55" y="332" class="lb b">Regla de histéresis (riego, ventilación)</text>
+<text x="55" y="350" class="sm">ON bajo el límite inferior; OFF sobre el</text>
+<text x="55" y="366" class="sm">superior; entre ambos no se actúa.</text>
+<text x="55" y="382" class="sm">Riego: banda por etapa (germinación /</text>
+<text x="55" y="398" class="sm">desarrollo), máx. N ciclos/h.</text>
+<text x="55" y="414" class="sm">Ventilación: HR &gt; 70 % ON; HR &lt; 75 % y</text>
+<text x="55" y="430" class="sm">T &lt; 28 °C OFF; +10 min/h en lluvias.</text>
+<rect x="320" y="314" width="270" height="132" rx="4" class="boxa"/>
+<text x="330" y="332" class="lb b">Regla de dosificación (pH y EC)</text>
+<text x="330" y="350" class="sm">Dosis fija pequeña → esperar 10–15 min de</text>
+<text x="330" y="366" class="sm">mezcla → re-medir → decidir otra vez.</text>
+<text x="330" y="382" class="sm">Nunca dosificación continua: sin tiempo</text>
+<text x="330" y="398" class="sm">muerto el lazo oscila y sobredosifica.</text>
+<text x="330" y="414" class="sm">Sondas en el RETORNO; peristálticas al</text>
+<text x="330" y="430" class="sm">tambo, cerca de la succión. A y B separadas.</text>
+<rect x="595" y="314" width="270" height="132" rx="4" class="boxn"/>
+<text x="605" y="332" class="lb b">Interlocks y watchdogs</text>
+<text x="605" y="350" class="sm">Sin dosis ni bomba si nivel &lt; 20 % (LT-1/2).</text>
+<text x="605" y="366" class="sm">Sonda no confiable: sin cambio en 24 h con</text>
+<text x="605" y="382" class="sm">dosis, o salto &gt; 1.5 en 5 min → suspender</text>
+<text x="605" y="398" class="sm">dosificación + alarma.</text>
+<text x="605" y="414" class="sm">Bomba ON y flujo &lt; 2 L/min 60 s → respaldo.</text>
+<text x="605" y="430" class="sm">mL/día &gt; 2× promedio 7 días → alarma.</text>
+<line x1="60" y1="460" x2="90" y2="460" stroke="#1f2937" stroke-width="2.2"/><text x="96" y="464" class="sm">variable medida</text>
+<rect x="200" y="454" width="14" height="12" fill="#2e7d32"/><text x="220" y="464" class="sm">actuador ON</text>
+<rect x="310" y="454" width="14" height="12" fill="#b45309"/><text x="330" y="464" class="sm">dosis</text>
+<rect x="390" y="454" width="14" height="12" fill="url(#hatch)" stroke="#b45309" stroke-width="0.8"/><text x="410" y="464" class="sm">tiempo muerto de mezcla</text>
+<text x="45" y="481" class="sm">Fuente: referencia/06-validacion-y-lazos-agenticos.md §L0 · 03-instalacion.md §2.2 · YAML en firmware/esphome y firmware/homeassistant</text>
+<text x="880" y="496" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>
+</svg>

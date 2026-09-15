@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2937">
+<title>Semana operativa tipo — animación</title>
+<desc>Calendario animado de lunes a domingo de un huerto en Fase 1–2: siembras lunes y jueves, cosecha y ruta de reparto martes y viernes, 10 minutos diarios del lazo L1, recordatorio de cobro y confirmación de pedidos el lunes, corte de factura el viernes, fresh sheet el domingo a las 18:00, calibración quincenal de sondas, simulacro mensual de apagón, y el domingo la revisión semanal: KPIs L2, exportación de CSV, informe del agente L3 y aprobación humana del plan de siembra. Fuente: docs/referencia/06-validacion-y-lazos-agenticos.md, 00-plan-maestro.md, 03-instalacion.md y research/cobranza-b2b.md.</desc>
+<style>
+  .h { font-size: 16px; font-weight: 600; fill: #1f2937; }
+  .sub { font-size: 12px; fill: #6b7280; }
+  .lb { font-size: 12px; fill: #1f2937; }
+  .sm { font-size: 11px; fill: #6b7280; }
+  .b { font-weight: 600; }
+  .ink { fill: none; stroke: #1f2937; stroke-width: 1.5; }
+  .pipe { fill: none; stroke: #1f2937; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .pipein { fill: none; stroke: #ffffff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .green { fill: #2e7d32; }
+  .amber { fill: #b45309; }
+  .box { fill: #ffffff; stroke: #1f2937; stroke-width: 1.5; }
+  .boxg { fill: #f0fdf4; stroke: #2e7d32; stroke-width: 1.5; }
+  .boxa { fill: #fff7ed; stroke: #b45309; stroke-width: 1.5; }
+  .boxn { fill: #f9fafb; stroke: #6b7280; stroke-width: 1.2; }
+</style>
+<rect width="900" height="500" fill="#ffffff"/>
+<text x="20" y="30" class="h">Semana operativa tipo (Fase 1–2)</text>
+<text x="20" y="48" class="sub">siembras lun y jue · cosecha + ruta mar y vie · 10 min diarios (L1) · domingo: KPIs L2, informe del agente L3 y tú apruebas el plan · días de ruta ajustables</text>
+<rect x="100" y="56" width="191" height="18" rx="3" class="boxg"/>
+<text x="195.5" y="69" class="lb b" text-anchor="middle">Cultivo</text>
+<rect x="295" y="56" width="191" height="18" rx="3" class="boxa"/>
+<text x="390.5" y="69" class="lb b" text-anchor="middle">Ventas, reparto y cobro</text>
+<rect x="490" y="56" width="191" height="18" rx="3" class="boxn"/>
+<text x="585.5" y="69" class="lb b" text-anchor="middle">Sistema y datos</text>
+<rect x="685" y="56" width="191" height="18" rx="3" class="box"/>
+<text x="780.5" y="69" class="lb b" text-anchor="middle">Revisión y decisiones</text>
+<rect x="14" y="78" width="862" height="56" fill="#2e7d32" opacity="0.10"><animate attributeName="y" values="78;78;134;134;190;190;246;246;302;302;358;358;414;414" keyTimes="0.0000;0.1411;0.1429;0.2839;0.2857;0.4268;0.4286;0.5696;0.5714;0.7125;0.7143;0.8554;0.8571;0.9982" dur="28.0s" repeatCount="indefinite"/></rect>
+<line x1="14" y1="78" x2="876" y2="78" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="100" class="lb b">Lunes</text>
+<text x="18" y="116" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="82" width="191" height="48" rx="4" class="boxg"/><text x="108" y="97" class="sm">Siembra A: girasol + finas</text><text x="108" y="111" class="sm">tapar + peso 2–4 kg · atomizar</text><text x="108" y="125" class="sm">siembra_id en masking tape</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.0071;0.0214;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="82" width="191" height="48" rx="4" class="boxa"/><text x="303" y="97" class="sm">9:00 recordatorio de cobro</text><text x="303" y="111" class="sm">12:00 confirmar pedidos de la</text><text x="303" y="125" class="sm">semana (fresh sheet del dom)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.0071;0.0214;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="82" width="191" height="48" rx="4" class="boxn"/><text x="498" y="97" class="sm">Timesheet V9: cronometrar todo</text><text x="498" y="111" class="sm">(siembra, lavado, reparto, cobro)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.0071;0.0214;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="685" y="82" width="191" height="48" rx="4" class="box"/><text x="693" y="97" class="sm">Plan de siembra aprobado el dom</text><text x="693" y="111" class="sm">→ variedades y cantidades de hoy</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.0071;0.0214;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="134" x2="876" y2="134" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="156" class="lb b">Martes</text>
+<text x="18" y="172" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="138" width="191" height="48" rx="4" class="boxg"/><text x="108" y="153" class="sm">Cosecha AM del pedido · pesar</text><text x="108" y="167" class="sm">empacar y a 1–4 °C · registrar</text><text x="108" y="181" class="sm">lavar y desinfectar charolas</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.1500;0.1643;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="138" width="191" height="48" rx="4" class="boxa"/><text x="303" y="153" class="sm">Ruta 9–12 h · remisión firmada</text><text x="303" y="167" class="sm">1 pregunta por WhatsApp al chef</text><text x="303" y="181" class="sm">tras la entrega (feedback L2)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.1500;0.1643;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="138" width="191" height="48" rx="4" class="boxn"/><text x="498" y="153" class="sm">Foto contramuestra de la entrega</text><text x="498" y="167" class="sm">(registro 12 meses)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.1500;0.1643;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="190" x2="876" y2="190" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="212" class="lb b">Miércoles</text>
+<text x="18" y="228" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="194" width="191" height="48" rx="4" class="boxg"/><text x="108" y="209" class="sm">Destape lote lun (día 2–3)</text><text x="108" y="223" class="sm">riego solo por abajo desde hoy</text><text x="108" y="237" class="sm">moho: pelusa azul/verde = tirar</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.2929;0.3071;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="194" width="191" height="48" rx="4" class="boxa"/><text x="303" y="209" class="sm">Prospección: visita con muestra</text><text x="303" y="223" class="sm">mar–jue 10–12, preguntar por</text><text x="303" y="237" class="sm">el chef · registrar embudo V4</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.2929;0.3071;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="194" width="191" height="48" rx="4" class="boxn"/><text x="498" y="209" class="sm">Limpiar F-1 malla 120 (semanal)</text><text x="498" y="223" class="sm">medir caudal por línea</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.2929;0.3071;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="246" x2="876" y2="246" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="268" class="lb b">Jueves</text>
+<text x="18" y="284" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="250" width="191" height="48" rx="4" class="boxg"/><text x="108" y="265" class="sm">Siembra B (escalonada)</text><text x="108" y="279" class="sm">tapar + peso · atomizar 1–2×/día</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.4357;0.4500;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="250" width="191" height="48" rx="4" class="boxa"/><text x="303" y="265" class="sm">Pedidos extra de la semana:</text><text x="303" y="279" class="sm">±20 % sin renegociar (acuerdo)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.4357;0.4500;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="250" width="191" height="48" rx="4" class="boxn"/><text x="498" y="265" class="sm">Revisar nivel TK-1/TK-2 y</text><text x="498" y="279" class="sm">tendencia pH/EC en el dashboard</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.4357;0.4500;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="302" x2="876" y2="302" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="324" class="lb b">Viernes</text>
+<text x="18" y="340" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="306" width="191" height="48" rx="4" class="boxg"/><text x="108" y="321" class="sm">Cosecha AM · empacar a 1–4 °C</text><text x="108" y="335" class="sm">registrar rendimiento y merma</text><text x="108" y="349" class="sm">lavar y desinfectar charolas</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.5786;0.5929;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="306" width="191" height="48" rx="4" class="boxa"/><text x="303" y="321" class="sm">Ruta 9–12 h · remisión firmada</text><text x="303" y="335" class="sm">corte semanal: factura CFDI</text><text x="303" y="349" class="sm">(PUE mismo mes; si cruza, PPD)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.5786;0.5929;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="306" width="191" height="48" rx="4" class="boxn"/><text x="498" y="321" class="sm">Foto contramuestra de la entrega</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.5786;0.5929;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="358" x2="876" y2="358" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="380" class="lb b">Sábado</text>
+<text x="18" y="396" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="362" width="191" height="48" rx="4" class="boxg"/><text x="108" y="377" class="sm">Destape lote jue · V8 semanal:</text><text x="108" y="391" class="sm">% charolas con hongo, pulgón en</text><text x="108" y="405" class="sm">5 hojas marcadas de albahaca</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.7214;0.7357;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="362" width="191" height="48" rx="4" class="boxn"/><text x="498" y="377" class="sm">Cada 15 días: calibrar pH/EC</text><text x="498" y="391" class="sm">(buffers 4.0/6.86, EC 1.413)</text><text x="498" y="405" class="sm">cada 2–3 sem: cambio de solución</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.7214;0.7357;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="685" y="362" width="191" height="48" rx="4" class="box"/><text x="693" y="377" class="sm">1er sáb del mes: simulacro de</text><text x="693" y="391" class="sm">apagón 10 min (V11)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.7214;0.7357;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="414" x2="876" y2="414" stroke="#e5e7eb" stroke-width="1"/>
+<text x="18" y="436" class="lb b">Domingo</text>
+<text x="18" y="452" class="sm">L1 · 10 min</text>
+<g opacity="0"><rect x="100" y="418" width="191" height="48" rx="4" class="boxg"/><text x="108" y="433" class="sm">Pesar charolas testigo (V2)</text><text x="108" y="447" class="sm">revisar existencias para la</text><text x="108" y="461" class="sm">siembra del lun</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8643;0.8786;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="295" y="418" width="191" height="48" rx="4" class="boxa"/><text x="303" y="433" class="sm">18:00 fresh sheet a clientes</text><text x="303" y="447" class="sm">(disponibilidad de la semana)</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8643;0.8786;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="490" y="418" width="191" height="48" rx="4" class="boxn"/><text x="498" y="433" class="sm">Exportar CSV de HA + bitácora</text><text x="498" y="447" class="sm">tools/informe_semanal.py arma</text><text x="498" y="461" class="sm">paquete + prompt del agente L3</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8643;0.8786;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="685" y="418" width="191" height="48" rx="4" class="box"/><text x="693" y="433" class="sm" opacity="0">1. KPIs L2 (30–60 min)<animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8679;0.8786;1.0000" dur="28.0s" repeatCount="indefinite"/></text><text x="693" y="447" class="sm" opacity="0">2. Agente L3: informe ≤ 1 página<animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.9107;0.9214;1.0000" dur="28.0s" repeatCount="indefinite"/></text><text x="693" y="461" class="sm" opacity="0">3. Tú apruebas el plan de siembra<animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.9536;0.9643;1.0000" dur="28.0s" repeatCount="indefinite"/></text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8643;0.8786;1.0000" dur="28.0s" repeatCount="indefinite"/></g>
+<line x1="14" y1="470" x2="876" y2="470" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M850.5,466 L850.5,472 L683,472 L683,108.0 L686,108.0" fill="none" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5 4" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.9643;0.9786;1.0000" dur="28.0s" repeatCount="indefinite"/><animate attributeName="stroke-dashoffset" values="0;-18" dur="1s" repeatCount="indefinite"/></path>
+<text x="673" y="484" class="sm green b" text-anchor="end" opacity="0">el plan aprobado el domingo dirige la siembra del lunes<animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.9643;0.9786;1.0000" dur="28.0s" repeatCount="indefinite"/></text>
+<text x="18" y="484" class="sm">L1 diario: excepciones · inspección 2 min · bitácora el mismo día</text>
+<text x="880" y="494" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>
+</svg>

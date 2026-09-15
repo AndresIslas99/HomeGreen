@@ -1,0 +1,1183 @@
+# =============================================================================
+#  HomeGreen · firmware/esphome/nodo-riego-v1.yaml
+#  Nodo de riego v1 (Fase 1) · ESP32 DevKit V1 30 pines · ESPHome >= 2025.1
+#
+#  Qué hace este nodo (lazos L0 locales: funcionan sin Wi-Fi ni Home Assistant):
+#    · Riego de microgreens por histéresis con banda muerta, por nivel de rack
+#      (4 capacitivos MT-1…4), con interlock por nivel de tinaco, máximo de
+#      ciclos por hora y duración máxima por ciclo (watchdog "riego sin fin").
+#    · Ventilación por histéresis de HR y T (SHT31) con tiempo mínimo encendido
+#      y forzado de 10 min cada hora, opcional, para la temporada de lluvia.
+#    · Luces T8 con fotoperiodo local (sigue funcionando si HA está caído).
+#    · Nivel del tinaco (JSN-SR04T) en % y litros; temperatura del agua (DS18B20).
+#    · Heartbeat: uptime, estado del nodo, señal Wi-Fi, IP y versión.
+#
+#  Home Assistant NO es requisito para que este nodo riegue o ventile: solo
+#  expone setpoints (number/select/switch), grafica y avisa. Regla del proyecto:
+#  "una capa solo escala problemas hacia arriba" (docs/referencia/06 §L0).
+#
+#  Tabla de pines (idéntica a docs/diseno/electrico.md y docs/software/firmware.md;
+#  si cambias uno, cámbialo en los tres lugares):
+#    GPIO32  ADC1_CH4  MT-1 capacitivo nivel 1 (rack)
+#    GPIO33  ADC1_CH5  MT-2 capacitivo nivel 2
+#    GPIO34  ADC1_CH6  MT-3 capacitivo nivel 3 (solo entrada)
+#    GPIO35  ADC1_CH7  MT-4 capacitivo nivel 4 (solo entrada)
+#    GPIO21  SDA       SHT31 T/HR ambiente (dirección 0x44)
+#    GPIO22  SCL       SHT31
+#    GPIO4   1-Wire    DS18B20 del tinaco (pull-up 4.7 kΩ a 3V3)
+#    GPIO5   TRIG      JSN-SR04T nivel de tinaco (TRIG acepta 3.3 V)
+#    GPIO18  ECHO      JSN-SR04T (ECHO es de 5 V: divisor 10 kΩ / 20 kΩ obligatorio)
+#    GPIO25  K1        bomba diafragma 12 V (riego por nebulizadores)  ┐ módulo relé
+#    GPIO26  K2        ventilador 12 V                                 │ 4 canales,
+#    GPIO27  K3        luces T8 127 V (K3 excita el relé de potencia K5)│ activo en bajo
+#    GPIO14  K4        reserva: tapete térmico dic–feb o luz del nivel 5┘ (inverted: true)
+#  Solo ADC1 (GPIO32–39) para analógicos: ADC2 deja de funcionar con Wi-Fi activo.
+#
+#  Fuentes: docs/referencia/06-validacion-y-lazos-agenticos.md (lazos L0, watchdogs),
+#           docs/diseno/control.md (setpoints y bandas), docs/diseno/electrico.md (pines),
+#           docs/referencia/03-instalacion.md §1.3.
+# =============================================================================
+
+substitutions:
+  nodo: nodo-riego-v1
+  # --- Calibración de los capacitivos (volts leídos en "MT-n voltaje") ---------
+  # Procedimiento (docs/software/firmware.md → "Calibrar sensores"):
+  #   seco   = voltaje con el sensor AL AIRE, limpio y seco            → 0 %
+  #   humedo = voltaje con el sensor sumergido HASTA LA LÍNEA en agua  → 100 %
+  # Cada pieza del pack es distinta (20–30 % salen malas o desviadas): calibra
+  # las cuatro por separado. Los valores de abajo son de EJEMPLO
+  # [POR VERIFICAR: mide los tuyos y sustitúyelos antes del dry-run V3].
+  mt1_seco: "2.80"
+  mt1_humedo: "1.30"
+  mt2_seco: "2.80"
+  mt2_humedo: "1.30"
+  mt3_seco: "2.80"
+  mt3_humedo: "1.30"
+  mt4_seco: "2.80"
+  mt4_humedo: "1.30"
+
+esphome:
+  name: ${nodo}
+  # Sin friendly_name a propósito: así los entity_id en Home Assistant quedan
+  # exactamente como en docs/diseno/datos.md §2 (sensor.humedad_sustrato_n1, …).
+  comment: "HomeGreen · riego por histéresis, ventilación por HR, luces T8, nivel de tinaco"
+  min_version: "2025.1.0"
+  project:
+    name: "homegreen.nodo_riego"
+    version: "1.0.0"
+  on_boot:
+    priority: -100        # todo inicializado; los relés ya arrancaron en OFF
+    then:
+      - lambda: |-
+          id(vent_inicio_ms) = millis();
+          ESP_LOGI("boot", "Nodo riego v1 listo. Actuadores en estado seguro (OFF); riego auto=%s",
+                   id(riego_auto).state ? "ON" : "OFF");
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf         # framework recomendado en ESPHome 2025+; "arduino" también compila
+
+# -----------------------------------------------------------------------------
+# Red. reboot_timeout: 0s en wifi y api: el nodo NUNCA se reinicia por perder
+# el Wi-Fi o a HA (un reinicio cada 15 min resetearía los contadores del riego).
+# -----------------------------------------------------------------------------
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none   # latencia baja; el nodo va a 12 V, no a batería de botón
+  reboot_timeout: 0s
+  ap:                     # red de rescate si no encuentra tu Wi-Fi (conéctate y usa el portal)
+    ssid: "${nodo} rescate"
+    password: !secret ap_password
+
+captive_portal:
+
+api:
+  encryption:
+    key: !secret api_key_riego
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+logger:
+  level: INFO
+  baud_rate: 115200
+
+# Panel web local en http://nodo-riego-v1.local (o su IP): útil en el patio sin HA.
+# Coméntalo si prefieres no exponerlo en la red.
+web_server:
+  port: 80
+  version: 3
+
+# Hora: la de Home Assistant; SNTP como respaldo si HA está caído pero hay internet.
+time:
+  - platform: homeassistant
+    id: ha_time
+    on_time:
+      # Medianoche: reinicia los contadores diarios (informativos, no de control)
+      - seconds: 0
+        minutes: 0
+        hours: 0
+        then:
+          - lambda: |-
+              id(ciclos_riego_hoy) = 0;
+              id(riego_segundos_hoy) = 0;
+  - platform: sntp
+    id: sntp_time
+
+# Guarda los number/select/switch con restore_value en flash como máximo cada 5 min
+preferences:
+  flash_write_interval: 5min
+
+# -----------------------------------------------------------------------------
+# Buses
+# -----------------------------------------------------------------------------
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true              # en el log verás "Found i2c device at address 0x44" (SHT31)
+  frequency: 100kHz       # cable de 1–2 m máximo; pull-ups 4.7 kΩ si el módulo no los trae
+
+one_wire:
+  - platform: gpio
+    id: ow_tinaco
+    pin: GPIO4                # pull-up 4.7 kΩ entre DQ y 3V3
+
+# -----------------------------------------------------------------------------
+# Variables de estado del nodo
+# -----------------------------------------------------------------------------
+globals:
+  - id: tinaco_interlock          # true = nivel bajo: riego bloqueado (histéresis min/rearme)
+    type: bool
+    initial_value: 'false'
+  - id: riego_demanda             # bitmask de niveles que pidieron agua en el ciclo actual (bit0 = N1)
+    type: int
+    initial_value: '0'
+  - id: riego_inicio_ms           # millis() al arrancar la bomba (para t_max y contadores)
+    type: uint32_t
+    initial_value: '0'
+  - id: riego_inicios             # anillo con los últimos 8 arranques (para "máx. ciclos/hora")
+    type: uint32_t[8]
+    initial_value: '{0, 0, 0, 0, 0, 0, 0, 0}'
+  - id: riego_inicios_idx
+    type: int
+    initial_value: '0'
+  - id: riego_saturado            # true = se alcanzó el máximo de ciclos/h (watchdog)
+    type: bool
+    initial_value: 'false'
+  - id: ciclos_riego_hoy
+    type: int
+    restore_value: yes
+    initial_value: '0'
+  - id: riego_segundos_hoy
+    type: int
+    restore_value: yes
+    initial_value: '0'
+  - id: vent_inicio_ms            # millis() al encender el ventilador (para t_min)
+    type: uint32_t
+    initial_value: '0'
+  - id: vent_forzado              # true mientras corre el forzado de 10 min
+    type: bool
+    initial_value: 'false'
+
+# =============================================================================
+# SETPOINTS (visibles y editables desde Home Assistant; se guardan en flash).
+# Los valores iniciales son los de docs/diseno/control.md; los marcados
+# [POR VERIFICAR] se fijan en el dry-run V3 y después se commitean aquí
+# (regla: cada cambio de setpoint = commit en firmware/ con su evidencia).
+# =============================================================================
+number:
+  # --- Riego: bandas de humedad de sustrato por etapa -------------------------
+  - platform: template
+    name: "Riego humedad min germinacion"
+    id: hum_min_germinacion
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 60      # [POR VERIFICAR: la fuente no fija %; calibrar en V3 con 4 charolas testigo]
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-minus
+  - platform: template
+    name: "Riego humedad max germinacion"
+    id: hum_max_germinacion
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 80      # [POR VERIFICAR: ídem]
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-plus
+  - platform: template
+    name: "Riego humedad min desarrollo"
+    id: hum_min_desarrollo
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 45      # [POR VERIFICAR: ídem; tras el destape el riego es solo por abajo]
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-minus
+  - platform: template
+    name: "Riego humedad max desarrollo"
+    id: hum_max_desarrollo
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 70      # [POR VERIFICAR: ídem]
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-plus
+  # --- Riego: watchdogs del lazo ----------------------------------------------
+  - platform: template
+    name: "Riego duracion max ciclo"
+    id: riego_t_max
+    min_value: 10
+    max_value: 900
+    step: 5
+    initial_value: 120     # [POR VERIFICAR: t_max en V3; un conector corroído no debe dejar la bomba encendida]
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-alert
+  - platform: template
+    name: "Riego ciclos max por hora"
+    id: riego_ciclos_max_hora
+    min_value: 1
+    max_value: 8
+    step: 1
+    initial_value: 4       # [POR VERIFICAR: N en V3]
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:counter
+  - platform: template
+    name: "Riego ciclo manual duracion"
+    id: riego_manual_s
+    min_value: 5
+    max_value: 300
+    step: 5
+    initial_value: 60
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer
+  # --- Tinaco: interlock y advertencia (06 §L0: > 20 %; advertencia < 40 %) ---
+  - platform: template
+    name: "Tinaco nivel minimo interlock"
+    id: nivel_tinaco_min
+    min_value: 5
+    max_value: 50
+    step: 1
+    initial_value: 20
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-alert
+  - platform: template
+    name: "Tinaco nivel rearme"
+    id: nivel_tinaco_rearme
+    min_value: 5
+    max_value: 60
+    step: 1
+    initial_value: 25      # margen sobre el mínimo para que el interlock no parpadee
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-check
+  - platform: template
+    name: "Tinaco nivel advertencia"
+    id: nivel_tinaco_advertencia
+    min_value: 10
+    max_value: 90
+    step: 1
+    initial_value: 40
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-percent-alert
+  # Geometría del tinaco para convertir distancia → %. Mide con flexómetro:
+  #   altura_sensor = de la cara del JSN-SR04T al fondo del tinaco (cm)
+  #   altura_agua_max = del fondo al nivel con el flotador cerrado (cm); deja ≥ 20 cm
+  #   entre ese nivel y el sensor (zona muerta del JSN-SR04T).
+  - platform: template
+    name: "Tinaco altura sensor a fondo"
+    id: tinaco_altura_sensor_cm
+    min_value: 30
+    max_value: 300
+    step: 0.5
+    initial_value: 120     # [POR VERIFICAR: medir en tu tinaco Rotoplas 750 L]
+    unit_of_measurement: "cm"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:ruler
+  - platform: template
+    name: "Tinaco altura agua max"
+    id: tinaco_altura_agua_max_cm
+    min_value: 20
+    max_value: 280
+    step: 0.5
+    initial_value: 95      # [POR VERIFICAR: medir con el flotador cerrado]
+    unit_of_measurement: "cm"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:ruler
+  - platform: template
+    name: "Tinaco capacidad nominal"
+    id: tinaco_capacidad_l
+    min_value: 100
+    max_value: 2500
+    step: 10
+    initial_value: 750     # Rotoplas Resistec 750 L (bom/fase1.csv); 1100 si subes al Plus+
+    unit_of_measurement: "L"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:storage-tank
+  # --- Ventilación (06 §L0: HR < 75 %, T < 28 °C; arranque HR > 70 %) ----------
+  - platform: template
+    name: "Ventilacion HR encender"
+    id: hr_on
+    min_value: 40
+    max_value: 95
+    step: 1
+    initial_value: 75
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:fan-plus
+  - platform: template
+    name: "Ventilacion HR apagar"
+    id: hr_off
+    min_value: 30
+    max_value: 90
+    step: 1
+    initial_value: 70      # [POR VERIFICAR: sentido de la banda 70–75 %; ajustar en V3]
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:fan-minus
+  - platform: template
+    name: "Ventilacion T encender"
+    id: t_vent_on
+    min_value: 15
+    max_value: 40
+    step: 0.5
+    initial_value: 28
+    unit_of_measurement: "°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:thermometer-high
+  - platform: template
+    name: "Ventilacion T apagar"
+    id: t_vent_off
+    min_value: 10
+    max_value: 38
+    step: 0.5
+    initial_value: 26      # banda de 2 °C bajo el umbral de encendido
+    unit_of_measurement: "°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:thermometer-low
+  - platform: template
+    name: "Ventilacion tiempo minimo ON"
+    id: vent_t_min
+    min_value: 1
+    max_value: 30
+    step: 1
+    initial_value: 5       # [POR VERIFICAR: 5–10 min según control.md; evita el parpadeo del relé]
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-sand
+  - platform: template
+    name: "Ventilacion forzado minutos por hora"
+    id: vent_forzado_min
+    min_value: 1
+    max_value: 30
+    step: 1
+    initial_value: 10      # "forzado 10 min/h en temporada de lluvia" (06 §L0)
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:weather-pouring
+  # --- Luces T8: fotoperiodo local ----------------------------------------------
+  - platform: template
+    name: "Luces hora encender"
+    id: luces_hora_on
+    min_value: 0
+    max_value: 23
+    step: 1
+    initial_value: 6       # 06:00–20:00 = 14 h [POR VERIFICAR: fotoperiodo 12–14 h, docs/diseno/electrico.md]
+    unit_of_measurement: "h"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:weather-sunset-up
+  - platform: template
+    name: "Luces hora apagar"
+    id: luces_hora_off
+    min_value: 0
+    max_value: 23
+    step: 1
+    initial_value: 20
+    unit_of_measurement: "h"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:weather-sunset-down
+  # --- Alarma de helada (02-restricciones: < 6 °C en alcaldías del sur, dic–feb) --
+  - platform: template
+    name: "Alarma helada temperatura"
+    id: t_helada
+    min_value: -5
+    max_value: 15
+    step: 0.5
+    initial_value: 6
+    unit_of_measurement: "°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:snowflake-alert
+
+# Etapa de cada nivel del rack: decide qué banda de humedad aplica.
+#   vacio       → ese nivel no riega (charolas recién sembradas bajo peso o nivel libre)
+#   germinacion → banda más húmeda (los primeros días tras el destape)
+#   desarrollo  → banda de desarrollo (riego solo por abajo)
+# El nivel 5 (oscuridad) no se nebuliza: se atomiza a mano (03-instalacion §0.3).
+select:
+  - platform: template
+    name: "Etapa nivel 1"
+    id: etapa_n1
+    options: ["vacio", "germinacion", "desarrollo"]
+    initial_option: "desarrollo"
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    icon: mdi:sprout
+    on_value:
+      - script.execute: evaluar_riego
+  - platform: template
+    name: "Etapa nivel 2"
+    id: etapa_n2
+    options: ["vacio", "germinacion", "desarrollo"]
+    initial_option: "desarrollo"
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    icon: mdi:sprout
+    on_value:
+      - script.execute: evaluar_riego
+  - platform: template
+    name: "Etapa nivel 3"
+    id: etapa_n3
+    options: ["vacio", "germinacion", "desarrollo"]
+    initial_option: "desarrollo"
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    icon: mdi:sprout
+    on_value:
+      - script.execute: evaluar_riego
+  - platform: template
+    name: "Etapa nivel 4"
+    id: etapa_n4
+    options: ["vacio", "germinacion", "desarrollo"]
+    initial_option: "desarrollo"
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    icon: mdi:sprout
+    on_value:
+      - script.execute: evaluar_riego
+
+# =============================================================================
+# SENSORES
+# =============================================================================
+sensor:
+  # --- Capacitivos de sustrato MT-1…4 ------------------------------------------
+  # Dos entidades por sensor: el voltaje crudo (diagnóstico, para calibrar) y el
+  # % calibrado (median → calibrate_linear → clamp). ADC1 con atenuación 12 dB
+  # (rango completo ~0–3.1 V). Si un sensor lee ~3.1 V fijo (= 4095 crudo) está
+  # desconectado, sin alimentación o alimentado a 5 V (ver firmware.md → problemas).
+  - platform: adc
+    pin: GPIO32
+    id: mt1_raw
+    name: "MT-1 voltaje"
+    attenuation: 12db
+    update_interval: 10s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: mt1_raw
+    id: mt1
+    name: "Humedad sustrato N1"
+    unit_of_measurement: "%"
+    device_class: moisture
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:water-percent
+    filters:
+      - calibrate_linear:
+          - ${mt1_seco} -> 0.0       # al aire = 0 %
+          - ${mt1_humedo} -> 100.0   # en agua hasta la línea = 100 %
+      - clamp:
+          min_value: 0
+          max_value: 100
+    on_value:
+      - script.execute: evaluar_riego
+
+  - platform: adc
+    pin: GPIO33
+    id: mt2_raw
+    name: "MT-2 voltaje"
+    attenuation: 12db
+    update_interval: 10s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: mt2_raw
+    id: mt2
+    name: "Humedad sustrato N2"
+    unit_of_measurement: "%"
+    device_class: moisture
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:water-percent
+    filters:
+      - calibrate_linear:
+          - ${mt2_seco} -> 0.0
+          - ${mt2_humedo} -> 100.0
+      - clamp:
+          min_value: 0
+          max_value: 100
+    on_value:
+      - script.execute: evaluar_riego
+
+  - platform: adc
+    pin: GPIO34
+    id: mt3_raw
+    name: "MT-3 voltaje"
+    attenuation: 12db
+    update_interval: 10s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: mt3_raw
+    id: mt3
+    name: "Humedad sustrato N3"
+    unit_of_measurement: "%"
+    device_class: moisture
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:water-percent
+    filters:
+      - calibrate_linear:
+          - ${mt3_seco} -> 0.0
+          - ${mt3_humedo} -> 100.0
+      - clamp:
+          min_value: 0
+          max_value: 100
+    on_value:
+      - script.execute: evaluar_riego
+
+  - platform: adc
+    pin: GPIO35
+    id: mt4_raw
+    name: "MT-4 voltaje"
+    attenuation: 12db
+    update_interval: 10s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: mt4_raw
+    id: mt4
+    name: "Humedad sustrato N4"
+    unit_of_measurement: "%"
+    device_class: moisture
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:water-percent
+    filters:
+      - calibrate_linear:
+          - ${mt4_seco} -> 0.0
+          - ${mt4_humedo} -> 100.0
+      - clamp:
+          min_value: 0
+          max_value: 100
+    on_value:
+      - script.execute: evaluar_riego
+
+  # --- SHT31: temperatura y humedad ambiente (I2C 0x44) ------------------------
+  - platform: sht3xd
+    address: 0x44
+    update_interval: 30s
+    temperature:
+      name: "Temperatura ambiente"
+      id: t_amb
+      accuracy_decimals: 1
+      filters:
+        - filter_out: nan
+    humidity:
+      name: "Humedad ambiente"
+      id: hr_amb
+      accuracy_decimals: 0
+      filters:
+        - filter_out: nan
+      on_value:
+        - script.execute: evaluar_ventilacion
+
+  # Punto de rocío (fórmula de Magnus): si la superficie del plástico o de la
+  # charola está más fría que esto, condensa → moho. Dato para el agente L3.
+  - platform: template
+    name: "Punto de rocio ambiente"
+    id: punto_rocio
+    unit_of_measurement: "°C"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 1
+    update_interval: 60s
+    icon: mdi:water-thermometer
+    lambda: |-
+      const float t = id(t_amb).state, hr = id(hr_amb).state;
+      if (std::isnan(t) || std::isnan(hr) || hr <= 0.0f) return {};
+      const float a = 17.62f, b = 243.12f;
+      const float g = logf(hr / 100.0f) + a * t / (b + t);
+      return b * g / (a - g);
+
+  # --- DS18B20 del tinaco (TT-1) -----------------------------------------------
+  # Un solo sensor en el bus: no hace falta "address". Si agregas otro, copia la
+  # dirección que aparece en el log ("Found sensors: 0x…") y ponla aquí.
+  - platform: dallas_temp
+    one_wire_id: ow_tinaco
+    name: "Temperatura tinaco"
+    id: temperatura_tinaco
+    resolution: 12
+    update_interval: 60s
+    accuracy_decimals: 1
+    filters:
+      - filter_out: nan
+
+  # --- JSN-SR04T: nivel del tinaco (LT-1) --------------------------------------
+  - platform: ultrasonic
+    trigger_pin:
+      number: GPIO5
+      ignore_strapping_warning: true   # GPIO5 es pin de arranque; como salida no da problema
+    echo_pin: GPIO18                   # con divisor 10k/20k: ECHO es de 5 V
+    id: lt1_dist
+    name: "Distancia tinaco"
+    unit_of_measurement: "m"
+    device_class: distance
+    state_class: measurement
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    update_interval: 30s
+    timeout: 3m
+    pulse_time: 20us
+    filters:
+      - filter_out: nan
+      - lambda: |-
+          // Zona muerta del JSN-SR04T (~20 cm): más cerca la lectura no es válida.
+          if (x < 0.20f) return {};
+          return x;
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: lt1_dist
+    id: nivel_tinaco
+    name: "Nivel tinaco"
+    unit_of_measurement: "%"
+    state_class: measurement
+    accuracy_decimals: 0
+    icon: mdi:storage-tank
+    filters:
+      - lambda: |-
+          // % = (altura_sensor - distancia) / altura_agua_max
+          const float d_cm = x * 100.0f;
+          const float h_s = id(tinaco_altura_sensor_cm).state;
+          const float h_max = id(tinaco_altura_agua_max_cm).state;
+          if (h_max <= 0.0f) return {};
+          float nivel = (h_s - d_cm) / h_max * 100.0f;
+          if (nivel < 0.0f) nivel = 0.0f;
+          if (nivel > 100.0f) nivel = 100.0f;
+          return nivel;
+    on_value:
+      - script.execute: evaluar_riego
+  - platform: template
+    name: "Nivel tinaco litros"
+    id: nivel_tinaco_litros
+    unit_of_measurement: "L"
+    device_class: volume_storage
+    state_class: measurement
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:water
+    lambda: |-
+      // Aproximación lineal (el tinaco no es un cilindro perfecto)
+      if (std::isnan(id(nivel_tinaco).state)) return {};
+      return id(nivel_tinaco).state / 100.0f * id(tinaco_capacidad_l).state;
+
+  # --- Contadores del día (para bitácora y KPIs; se reinician a medianoche) ----
+  - platform: template
+    name: "Ciclos de riego hoy"
+    unit_of_measurement: "ciclos"
+    state_class: total_increasing
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:counter
+    lambda: return id(ciclos_riego_hoy);
+  - platform: template
+    name: "Riego minutos hoy"
+    unit_of_measurement: "min"
+    device_class: duration
+    state_class: total_increasing
+    accuracy_decimals: 1
+    update_interval: 60s
+    icon: mdi:timer-outline
+    lambda: |-
+      int s = id(riego_segundos_hoy);
+      if (id(bomba_riego).state) s += (millis() - id(riego_inicio_ms)) / 1000;
+      return s / 60.0f;
+
+  # --- Heartbeat ---------------------------------------------------------------
+  - platform: uptime
+    name: "Nodo riego uptime"
+    entity_category: diagnostic
+  - platform: wifi_signal
+    name: "Nodo riego senal WiFi"
+    update_interval: 60s
+    entity_category: diagnostic
+
+# =============================================================================
+# SENSORES BINARIOS (alarmas que Home Assistant escala; el nodo ya actuó)
+# =============================================================================
+binary_sensor:
+  - platform: status
+    name: "Nodo riego estado"     # heartbeat: HA lo ve "off" si el nodo se cae
+  - platform: template
+    name: "Tinaco bajo"           # advertencia < 40 % (push, mismo día)
+    device_class: problem
+    lambda: |-
+      if (std::isnan(id(nivel_tinaco).state)) return false;
+      return id(nivel_tinaco).state < id(nivel_tinaco_advertencia).state;
+  - platform: template
+    name: "Tinaco critico"        # < 20 %: interlock activo (crítica, push repetido)
+    device_class: problem
+    lambda: return id(tinaco_interlock);
+  - platform: template
+    name: "Riego saturado"        # watchdog: máximo de ciclos/h alcanzado (¿sensor seco para siempre?)
+    device_class: problem
+    lambda: return id(riego_saturado);
+  - platform: template
+    name: "HR alta"               # HA cuenta las 6 h seguidas (advertencia)
+    device_class: moisture
+    lambda: |-
+      if (std::isnan(id(hr_amb).state)) return false;
+      return id(hr_amb).state > id(hr_on).state;
+  - platform: template
+    name: "Riesgo de helada"      # < 6 °C: cerrar túnel / masa térmica / calefactor en K4 (HA decide)
+    device_class: cold
+    lambda: |-
+      if (std::isnan(id(t_amb).state)) return false;
+      return id(t_amb).state < id(t_helada).state;
+
+text_sensor:
+  - platform: template
+    name: "Estado riego"
+    update_interval: 10s
+    icon: mdi:sprinkler-variant
+    lambda: |-
+      char buf[96];
+      if (id(bomba_riego).state) {
+        const int d = id(riego_demanda);
+        snprintf(buf, sizeof(buf), "regando %s%s%s%s(%lu s)",
+                 (d & 1) ? "N1 " : "", (d & 2) ? "N2 " : "", (d & 4) ? "N3 " : "", (d & 8) ? "N4 " : "",
+                 (unsigned long) ((millis() - id(riego_inicio_ms)) / 1000UL));
+      } else if (id(tinaco_interlock)) {
+        snprintf(buf, sizeof(buf), "bloqueado: tinaco bajo");
+      } else if (id(riego_saturado)) {
+        snprintf(buf, sizeof(buf), "en espera: maximo de ciclos por hora");
+      } else if (!id(riego_auto).state) {
+        snprintf(buf, sizeof(buf), "manual (riego automatico apagado)");
+      } else {
+        snprintf(buf, sizeof(buf), "reposo");
+      }
+      return std::string(buf);
+  - platform: wifi_info
+    ip_address:
+      name: "Nodo riego IP"
+      entity_category: diagnostic
+  - platform: version
+    name: "Nodo riego version ESPHome"
+    entity_category: diagnostic
+
+# =============================================================================
+# ACTUADORES
+# Módulo relé de 4 canales activo en bajo → inverted: true (GPIO en bajo = relé
+# cerrado). ALWAYS_OFF: tras un reinicio todo arranca apagado y los lazos
+# deciden en segundos. Nada de esto es crítico para la vida del cultivo (el
+# NFT vive en el otro nodo y su fail-safe es físico).
+# =============================================================================
+switch:
+  - platform: gpio
+    name: "Bomba riego"           # K1 → bomba diafragma 12 V + nebulizadores (P-1 de riego)
+    id: bomba_riego
+    pin:
+      number: GPIO25
+      inverted: true
+    restore_mode: ALWAYS_OFF
+    icon: mdi:water-pump
+    on_turn_on:
+      - lambda: |-
+          id(riego_inicio_ms) = millis();
+          // Interlock físico también para encendidos manuales desde HA
+          if (id(tinaco_interlock)) {
+            ESP_LOGW("riego", "Tinaco bajo: no se permite regar (interlock)");
+            id(bomba_riego).turn_off();
+          }
+    on_turn_off:
+      - lambda: |-
+          id(riego_segundos_hoy) += (millis() - id(riego_inicio_ms)) / 1000UL;
+          id(riego_demanda) = 0;
+
+  - platform: gpio
+    name: "Ventilador"            # K2 → ventilador 12 V del túnel
+    id: ventilador
+    pin:
+      number: GPIO26
+      inverted: true
+    restore_mode: ALWAYS_OFF
+    icon: mdi:fan
+    on_turn_on:
+      - lambda: id(vent_inicio_ms) = millis();
+
+  - platform: gpio
+    name: "Luces T8"              # K3 → bobina 12 V del relé de potencia K5 (127 V en gabinete A)
+    id: luces_t8
+    pin:
+      number: GPIO27
+      inverted: true
+    restore_mode: ALWAYS_OFF
+    icon: mdi:lightbulb-fluorescent-tube
+
+  - platform: gpio
+    name: "Reserva K4"            # K4 → tapete térmico dic–feb o luz del nivel 5
+    id: reserva_k4
+    pin:
+      number: GPIO14
+      inverted: true
+    # Ojo: GPIO14 emite un pulso breve al arrancar el ESP32; el relé K4 puede
+    # parpadear un instante. Por eso es la reserva y no una carga crítica.
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: mdi:heating-coil
+
+  # --- Modos (switches lógicos, se guardan en flash) ---------------------------
+  - platform: template
+    name: "Riego automatico"      # OFF = solo manual (mantenimiento, purga de temporada)
+    id: riego_auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:auto-mode
+  - platform: template
+    name: "Ventilacion automatica"
+    id: vent_auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:auto-mode
+  - platform: template
+    name: "Ventilacion forzada cada hora"   # enciende en jun–sep (temporada de lluvia)
+    id: vent_forzado_horario
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    entity_category: config
+    icon: mdi:weather-pouring
+  - platform: template
+    name: "Luces automaticas"     # OFF = las controlas a mano (o desde HA)
+    id: luces_auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:auto-mode
+
+button:
+  - platform: template
+    name: "Riego ciclo manual"    # prueba de cebado / commissioning (hidraulico §5.2)
+    icon: mdi:play
+    on_press:
+      - script.execute: riego_ciclo_manual
+  - platform: template
+    name: "Riego rearmar saturado"
+    icon: mdi:restart-alert
+    on_press:
+      - lambda: |-
+          for (int i = 0; i < 8; i++) id(riego_inicios)[i] = 0;
+          id(riego_saturado) = false;
+      - script.execute: evaluar_riego
+  - platform: restart
+    name: "Nodo riego reiniciar"
+    entity_category: diagnostic
+
+# =============================================================================
+# LÓGICA (scripts + intervals)
+# =============================================================================
+script:
+  # ---------------------------------------------------------------------------
+  # Lazo 1 · Riego por histéresis, por nivel de rack.
+  #   ON  si algún nivel habilitado está bajo su límite inferior, el tinaco no
+  #       está en interlock y no se rebasó el máximo de ciclos/hora.
+  #   OFF cuando TODOS los niveles que pidieron agua superan su límite superior,
+  #       o se cumple t_max (watchdog), o entra el interlock del tinaco.
+  # Una sola bomba: el caudal por nivel se iguala con las válvulas manuales del
+  # manifold (control.md, Lazo 1). Se ejecuta con cada lectura y cada 15 s.
+  # ---------------------------------------------------------------------------
+  - id: evaluar_riego
+    mode: single
+    then:
+      - lambda: |-
+          // 1. Interlock de nivel con histéresis: bloquea bajo el mínimo, rearma sobre el rearme
+          const float nivel = id(nivel_tinaco).state;
+          if (!std::isnan(nivel)) {
+            if (nivel < id(nivel_tinaco_min).state) {
+              if (!id(tinaco_interlock))
+                ESP_LOGW("riego", "Tinaco %.0f %% < %.0f %%: riego BLOQUEADO", nivel, id(nivel_tinaco_min).state);
+              id(tinaco_interlock) = true;
+            } else if (nivel > id(nivel_tinaco_rearme).state) {
+              if (id(tinaco_interlock))
+                ESP_LOGI("riego", "Tinaco %.0f %%: riego rearmado", nivel);
+              id(tinaco_interlock) = false;
+            }
+          }
+
+          // 2. Demanda y satisfacción por nivel (bit i = nivel i+1)
+          const float h[4] = {id(mt1).state, id(mt2).state, id(mt3).state, id(mt4).state};
+          const std::string etapa[4] = {id(etapa_n1).state, id(etapa_n2).state,
+                                        id(etapa_n3).state, id(etapa_n4).state};
+          int demanda = 0, satisfecho = 0;
+          for (int i = 0; i < 4; i++) {
+            if (std::isnan(h[i])) continue;              // sin lectura: ese nivel no vota
+            float hmin, hmax;
+            if (etapa[i] == "germinacion") {
+              hmin = id(hum_min_germinacion).state; hmax = id(hum_max_germinacion).state;
+            } else if (etapa[i] == "desarrollo") {
+              hmin = id(hum_min_desarrollo).state; hmax = id(hum_max_desarrollo).state;
+            } else {
+              continue;                                  // "vacio": no riega
+            }
+            if (h[i] < hmin) demanda |= (1 << i);
+            if (h[i] > hmax) satisfecho |= (1 << i);
+          }
+
+          const uint32_t ahora = millis();
+          if (!id(bomba_riego).state) {
+            // ---- Bomba apagada: ¿arrancar? ----
+            if (demanda == 0 || !id(riego_auto).state) { id(riego_saturado) = false; return; }
+            if (id(tinaco_interlock)) return;
+            // Máximo de ciclos por hora (ventana móvil sobre los últimos arranques)
+            int n = 0;
+            for (int i = 0; i < 8; i++) {
+              const uint32_t t = id(riego_inicios)[i];
+              if (t != 0 && (ahora - t) < 3600000UL) n++;
+            }
+            if (n >= (int) id(riego_ciclos_max_hora).state) {
+              if (!id(riego_saturado))
+                ESP_LOGW("riego", "%d ciclos en la ultima hora: espera. Revisa si un sensor 'se seco' para siempre", n);
+              id(riego_saturado) = true;
+              return;
+            }
+            id(riego_saturado) = false;
+            id(riego_demanda) = demanda;
+            id(riego_inicios)[id(riego_inicios_idx)] = ahora;
+            id(riego_inicios_idx) = (id(riego_inicios_idx) + 1) % 8;
+            id(ciclos_riego_hoy) += 1;
+            ESP_LOGI("riego", "Riego ON: demanda=0x%X, ciclo %d del dia", demanda, id(ciclos_riego_hoy));
+            id(bomba_riego).turn_on();
+          } else {
+            // ---- Bomba encendida: ¿apagar? ----
+            id(riego_demanda) |= demanda;                // un nivel puede sumarse a medio ciclo
+            const uint32_t dur_ms = ahora - id(riego_inicio_ms);
+            const char *motivo = nullptr;
+            if (id(tinaco_interlock)) {
+              motivo = "interlock de tinaco";
+            } else if (dur_ms > (uint32_t) (id(riego_t_max).state * 1000.0f)) {
+              motivo = "t_max alcanzado (watchdog riego sin fin)";
+            } else if (id(riego_demanda) != 0 && (id(riego_demanda) & ~satisfecho) == 0) {
+              motivo = "todos los niveles sobre el limite superior";
+            }
+            if (motivo != nullptr) {
+              ESP_LOGI("riego", "Riego OFF: %s (%.0f s)", motivo, dur_ms / 1000.0f);
+              id(bomba_riego).turn_off();
+            }
+          }
+
+  # Ciclo manual de duración fija (botón). Respeta el interlock; cuenta como ciclo.
+  - id: riego_ciclo_manual
+    mode: single
+    then:
+      - if:
+          condition:
+            lambda: return id(tinaco_interlock);
+          then:
+            - logger.log:
+                level: WARN
+                format: "Ciclo manual rechazado: tinaco en interlock"
+          else:
+            - lambda: |-
+                id(riego_inicios)[id(riego_inicios_idx)] = millis();
+                id(riego_inicios_idx) = (id(riego_inicios_idx) + 1) % 8;
+                id(ciclos_riego_hoy) += 1;
+            - switch.turn_on: bomba_riego
+            - delay: !lambda "return (uint32_t) (id(riego_manual_s).state * 1000.0f);"
+            - switch.turn_off: bomba_riego
+
+  # ---------------------------------------------------------------------------
+  # Lazo 3 · Ventilación por histéresis de HR y T con tiempo mínimo encendido.
+  #   ON  si HR > hr_on  o  T > t_vent_on
+  #   OFF si HR < hr_off  y  T < t_vent_off  y  lleva encendido ≥ vent_t_min
+  # ---------------------------------------------------------------------------
+  - id: evaluar_ventilacion
+    mode: single
+    then:
+      - lambda: |-
+          const float hr = id(hr_amb).state, t = id(t_amb).state;
+          if (std::isnan(hr) || std::isnan(t)) return;
+          if (!id(vent_auto).state || id(vent_forzado)) return;
+          const uint32_t ahora = millis();
+          if (!id(ventilador).state) {
+            if (hr > id(hr_on).state || t > id(t_vent_on).state) {
+              ESP_LOGI("vent", "Ventilador ON (HR %.0f %%, T %.1f C)", hr, t);
+              id(ventilador).turn_on();
+            }
+          } else {
+            const bool t_min_ok = (ahora - id(vent_inicio_ms)) >= (uint32_t) (id(vent_t_min).state * 60000.0f);
+            if (hr < id(hr_off).state && t < id(t_vent_off).state && t_min_ok) {
+              ESP_LOGI("vent", "Ventilador OFF (HR %.0f %%, T %.1f C)", hr, t);
+              id(ventilador).turn_off();
+            }
+          }
+
+  # Forzado: N minutos encendido, luego vuelve a la histéresis
+  - id: ventilacion_forzada
+    mode: single
+    then:
+      - lambda: |-
+          id(vent_forzado) = true;
+          ESP_LOGI("vent", "Ventilacion forzada %.0f min", id(vent_forzado_min).state);
+      - switch.turn_on: ventilador
+      - delay: !lambda "return (uint32_t) (id(vent_forzado_min).state * 60000.0f);"
+      - lambda: id(vent_forzado) = false;
+      - switch.turn_off: ventilador
+      - script.execute: evaluar_ventilacion
+
+  # ---------------------------------------------------------------------------
+  # Luces T8 · fotoperiodo local. Usa la hora de HA y, si no hay, la de SNTP.
+  # Sin hora válida no toca las luces (quedan como las dejaste).
+  # ---------------------------------------------------------------------------
+  - id: evaluar_luces
+    mode: single
+    then:
+      - lambda: |-
+          if (!id(luces_auto).state) return;
+          auto t = id(ha_time).now();
+          if (!t.is_valid()) t = id(sntp_time).now();
+          if (!t.is_valid()) return;
+          const int on_h = (int) id(luces_hora_on).state;
+          const int off_h = (int) id(luces_hora_off).state;
+          bool deseado;
+          if (on_h < off_h) deseado = (t.hour >= on_h && t.hour < off_h);
+          else              deseado = (t.hour >= on_h || t.hour < off_h);   // cruza medianoche
+          if (deseado != id(luces_t8).state) {
+            ESP_LOGI("luces", "Fotoperiodo: luces %s (%02d:%02d)", deseado ? "ON" : "OFF", t.hour, t.minute);
+            if (deseado) id(luces_t8).turn_on(); else id(luces_t8).turn_off();
+          }
+
+interval:
+  - interval: 15s          # red de seguridad: evalúa t_max e interlock aunque no lleguen lecturas
+    then:
+      - script.execute: evaluar_riego
+  - interval: 30s
+    then:
+      - script.execute: evaluar_ventilacion
+  - interval: 60s
+    then:
+      - script.execute: evaluar_luces
+  - interval: 60min        # forzado 10 min/h si el modo está activo (jun–sep)
+    then:
+      - if:
+          condition:
+            switch.is_on: vent_forzado_horario
+          then:
+            - script.execute: ventilacion_forzada

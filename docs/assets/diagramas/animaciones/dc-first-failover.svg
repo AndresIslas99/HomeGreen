@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2937">
+<title>DC-first: qué pasa cuando CFE se corta — animación</title>
+<desc>Animación del bus DC-first de Fase 2: CFE 127 V, breaker GFCI, cargador LiFePO4 en flotación, batería 12.8 V 100 Ah siempre en paralelo, fusiblera, bomba NFT de 12 V por contacto K1 normalmente cerrado y nodo ESP32 siempre vivo. Secuencia: operación normal, corte de CFE, la bomba sigue desde batería sin conmutación, el voltaje baja lentamente, alerta al teléfono a los 30 s, modo ahorro 15/15 al bajar de 12.9 V, regreso de CFE con notificación de duración del corte. Fuente: docs/research/electrico-respaldo-seguridad.md §2.4 y §5, docs/referencia/03-instalacion.md §2.3.</desc>
+<style>
+  .h { font-size: 16px; font-weight: 600; fill: #1f2937; }
+  .sub { font-size: 12px; fill: #6b7280; }
+  .lb { font-size: 12px; fill: #1f2937; }
+  .sm { font-size: 11px; fill: #6b7280; }
+  .b { font-weight: 600; }
+  .ink { fill: none; stroke: #1f2937; stroke-width: 1.5; }
+  .pipe { fill: none; stroke: #1f2937; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .pipein { fill: none; stroke: #ffffff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .green { fill: #2e7d32; }
+  .amber { fill: #b45309; }
+  .box { fill: #ffffff; stroke: #1f2937; stroke-width: 1.5; }
+  .boxg { fill: #f0fdf4; stroke: #2e7d32; stroke-width: 1.5; }
+  .boxa { fill: #fff7ed; stroke: #b45309; stroke-width: 1.5; }
+  .boxn { fill: #f9fafb; stroke: #6b7280; stroke-width: 1.2; }
+</style>
+<rect width="900" height="500" fill="#ffffff"/>
+<text x="20" y="30" class="h">DC-first: qué pasa cuando CFE se corta</text>
+<text x="20" y="48" class="sub">Batería LiFePO4 12.8 V 100 Ah siempre en paralelo: el corte no se conmuta, no se nota · HA solo avisa y optimiza · ciclo de 24 s = ~30 h reales</text>
+<rect x="30" y="115" width="100" height="50" rx="4" class="box"/>
+<text x="80.0" y="137.0" class="lb b" text-anchor="middle">CFE</text>
+<text x="80.0" y="152.0" class="sm" text-anchor="middle">127 V CA</text>
+<rect x="180" y="115" width="100" height="50" rx="4" class="box"/>
+<text x="230.0" y="137.0" class="lb b" text-anchor="middle">GFCI</text>
+<text x="230.0" y="152.0" class="sm" text-anchor="middle">QO120GFI 20 A</text>
+<rect x="330" y="115" width="130" height="50" rx="4" class="box"/>
+<text x="395.0" y="137.0" class="lb b" text-anchor="middle">Cargador LiFePO4</text>
+<text x="395.0" y="152.0" class="sm" text-anchor="middle">flotación ≤ 13.6 V</text>
+<line x1="500" y1="140" x2="800" y2="140" stroke="#1f2937" stroke-width="5"/>
+<text x="650" y="128" class="lb b" text-anchor="middle">BUS 12.8 V · fusiblera 6 vías (F0 30 A en el borne)</text>
+<line x1="130" y1="140" x2="150" y2="140" class="ink" stroke-width="2.5"/>
+<line x1="162" y1="140" x2="180" y2="140" class="ink" stroke-width="2.5"/>
+<line x1="150" y1="140" x2="162" y2="140" stroke="#1f2937" stroke-width="2.5"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></line>
+<g opacity="0"><line x1="148" y1="130" x2="164" y2="150" stroke="#b45309" stroke-width="3"/><line x1="164" y1="130" x2="148" y2="150" stroke="#b45309" stroke-width="3"/><text x="156" y="167" class="sm amber b" text-anchor="middle">corte</text><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></g>
+<line x1="280" y1="140" x2="330" y2="140" class="ink" stroke-width="2.5"/>
+<line x1="460" y1="140" x2="500" y2="140" class="ink" stroke-width="2.5"/>
+<circle cx="500" cy="140" r="5" fill="#1f2937"/>
+<text x="395" y="185" class="sm green b" text-anchor="middle">cargando / flotación<animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></text>
+<text x="395" y="185" class="sm amber b" text-anchor="middle" opacity="0">sin entrada · no conmuta nada<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></text>
+<line x1="505.0" y1="140" x2="505.0" y2="230" class="ink" stroke-width="2.5"/>
+<rect x="495.0" y="222" width="20" height="8" fill="#1f2937"/>
+<rect x="470" y="230" width="70" height="130" rx="6" class="box" stroke-width="2"/>
+<rect x="475" y="235" width="60" height="120" rx="3" fill="#2e7d32" opacity="0.85"><animate attributeName="height" values="120;120;42.0;42.0;96.0;120" keyTimes="0.0000;0.2500;0.7500;0.8750;0.9583;1.0000" dur="24.0s" repeatCount="indefinite"/><animate attributeName="y" values="235;235;313.0;313.0;259.0;235" keyTimes="0.0000;0.2500;0.7500;0.8750;0.9583;1.0000" dur="24.0s" repeatCount="indefinite"/></rect>
+<text x="505.0" y="378" class="lb b" text-anchor="middle">LiFePO4</text>
+<text x="505.0" y="392" class="sm" text-anchor="middle">12.8 V 100 Ah</text>
+<text x="505.0" y="406" class="sm" text-anchor="middle">28–30 h continuas</text>
+<rect x="585" y="230" width="16" height="130" fill="#f9fafb" stroke="#1f2937" stroke-width="1.2"/>
+<line x1="601" y1="230.0" x2="607" y2="230.0" stroke="#1f2937" stroke-width="1"/>
+<text x="611" y="234.0" class="sm">14.6</text>
+<line x1="601" y1="280.0" x2="607" y2="280.0" stroke="#1f2937" stroke-width="1"/>
+<text x="611" y="284.0" class="sm">13.6 flot.</text>
+<line x1="601" y1="315.0" x2="607" y2="315.0" stroke="#1f2937" stroke-width="1"/>
+<text x="611" y="319.0" class="sm">12.9 ahorro</text>
+<line x1="601" y1="360.0" x2="607" y2="360.0" stroke="#1f2937" stroke-width="1"/>
+<text x="611" y="364.0" class="sm">12.0</text>
+<line x1="601" y1="315.0" x2="585" y2="315.0" stroke="#b45309" stroke-width="1.5" stroke-dasharray="3 2"/>
+<rect x="587" y="288.0" width="12" height="4" fill="#b45309"><animate attributeName="y" values="288.0;288.0;293.0;313.0;318.0;238.0;278.0;288.0" keyTimes="0.0000;0.2500;0.2750;0.7500;0.8750;0.9000;0.9583;1.0000" dur="24.0s" repeatCount="indefinite"/></rect>
+<text x="593" y="220" class="lb b" text-anchor="middle">V bus</text>
+<text x="593" y="376" class="sm" text-anchor="middle">GPIO36 · 47k/10k</text>
+<line x1="720" y1="140" x2="720" y2="203" class="ink" stroke-width="2.5"/>
+<line x1="710" y1="203" x2="730" y2="203" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="710" y1="203" x2="732" y2="195" stroke="#2e7d32" stroke-width="2.5"/>
+<text x="704" y="201" class="sm" text-anchor="end">K1 NC: reposo = ON</text>
+<line x1="720" y1="203" x2="720" y2="213" class="ink" stroke-width="2.5"/>
+<g transform="translate(720,235)">
+<circle r="22" class="box" stroke-width="2"/>
+<g>
+<path d="M0,-15 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(0)"/>
+<path d="M0,-15 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(120)"/>
+<path d="M0,-15 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(240)"/>
+<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.5s" repeatCount="indefinite"/>
+</g>
+<circle r="3" fill="#ffffff" stroke="#1f2937"/>
+</g>
+<text x="720" y="273" class="lb b" text-anchor="middle">Bomba NFT 12 V</text>
+<text x="720" y="287" class="sm" text-anchor="middle">40 W · sigue corriendo</text>
+<text x="720" y="301" class="sm green b" text-anchor="middle">FT-1: 8–16 L/min</text>
+<text x="720" y="317" class="sm amber b" text-anchor="middle" opacity="0">modo ahorro 15/15<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.7500;0.7542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></text>
+<line x1="575" y1="140" x2="575" y2="392" class="ink" stroke-width="2.5" stroke-dasharray="4 3"/>
+<rect x="575" y="392" width="125" height="56" rx="4" class="box"/>
+<text x="637" y="408" class="lb b" text-anchor="middle">Nodo NFT v2 (ESP32)</text>
+<text x="637" y="422" class="sm" text-anchor="middle">siempre vivo · F3 2 A del bus</text>
+<text x="637" y="438" class="sm green b" text-anchor="middle">red_cfe (GPIO23): ON<animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></text>
+<text x="637" y="438" class="sm amber b" text-anchor="middle" opacity="0">red_cfe (GPIO23): OFF<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/></text>
+<defs>
+<path id="eCFE" d="M30,140 L500,140 L500,140 L720,140 L720,213"/>
+<path id="eCARGA" d="M500,140 L505.0,140 L505.0,222"/>
+<path id="eBAT" d="M505.0,222 L505.0,140 L720,140 L720,213"/>
+</defs>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-0.00s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-0.67s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-1.34s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-2.01s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-2.68s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-3.35s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-4.02s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-4.69s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="6s" begin="-5.36s" repeatCount="indefinite"><mpath xlink:href="#eCFE"/></animateMotion></rect>
+<rect width="6" height="6" x="-3" y="-3" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="2s" begin="-0.00s" repeatCount="indefinite"><mpath xlink:href="#eCARGA"/></animateMotion></rect>
+<rect width="6" height="6" x="-3" y="-3" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="2s" begin="-0.67s" repeatCount="indefinite"><mpath xlink:href="#eCARGA"/></animateMotion></rect>
+<rect width="6" height="6" x="-3" y="-3" fill="#2e7d32"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="2s" begin="-1.34s" repeatCount="indefinite"><mpath xlink:href="#eCARGA"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-0.00s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-0.50s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-1.00s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-1.50s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-2.00s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect width="7" height="7" x="-3.5" y="-3.5" fill="#b45309"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.2500;0.2542;0.8750;0.8792;1.0000" dur="24.0s" repeatCount="indefinite"/><animateMotion dur="3s" begin="-2.50s" repeatCount="indefinite"><mpath xlink:href="#eBAT"/></animateMotion></rect>
+<rect x="790" y="215" width="100" height="170" rx="10" class="box" stroke-width="2"/>
+<rect x="795" y="229" width="90" height="142" rx="3" fill="#f9fafb"/>
+<circle cx="840.0" cy="378" r="3" fill="none" stroke="#1f2937"/>
+<text x="840.0" y="207" class="lb b" text-anchor="middle">app HA</text>
+<g opacity="0"><rect x="798" y="235" width="84" height="40" rx="3" class="boxa"/><text x="802" y="248" class="amber b" font-size="10">Corte de luz</text><text x="802" y="260" font-size="9" fill="#1f2937">NFT en batería 13.3 V</text><text x="802" y="271" font-size="9" fill="#6b7280">autonomía 24–30 h</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.2708;0.2833;1.0000" dur="24.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="798" y="279" width="84" height="40" rx="3" class="boxa"/><text x="802" y="292" class="amber b" font-size="10">Bateria &lt; 12.9 V</text><text x="802" y="304" font-size="9" fill="#1f2937">modo ahorro 15/15</text><text x="802" y="315" font-size="9" fill="#6b7280">script ciclo_bomba</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.7500;0.7625;1.0000" dur="24.0s" repeatCount="indefinite"/></g>
+<g opacity="0"><rect x="798" y="323" width="84" height="40" rx="3" class="boxa"/><text x="802" y="336" class="amber b" font-size="10">Luz restaurada</text><text x="802" y="348" font-size="9" fill="#1f2937">corte de 15 h</text><text x="802" y="359" font-size="9" fill="#6b7280">sin falso 'sin flujo'</text><animate attributeName="opacity" values="0;0;1;1" keyTimes="0.0000;0.8833;0.8958;1.0000" dur="24.0s" repeatCount="indefinite"/></g>
+<path d="M700,420 L775,420 L775,340 L788,340" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="5 4" opacity="0.2"><animate attributeName="opacity" values="0.2;0.2;1;1;0.2;0.2;1;1;0.2;0.2;1;1;0.2" keyTimes="0.0000;0.2667;0.2708;0.3125;0.3167;0.7458;0.7500;0.7917;0.7958;0.8792;0.8833;0.9250;1.0000" dur="24.0s" repeatCount="indefinite"/></path>
+<text x="737" y="436" class="sm" text-anchor="middle">Wi-Fi + UPS</text>
+<line x1="40" y1="452" x2="860" y2="452" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="40.0" y1="446" x2="40.0" y2="458" stroke="#1f2937" stroke-width="1.5"/>
+<text x="44.0" y="472" class="sm" text-anchor="start">normal: cargador flota, bomba corre</text>
+<line x1="245.0" y1="446" x2="245.0" y2="458" stroke="#1f2937" stroke-width="1.5"/>
+<text x="249.0" y="472" class="sm" text-anchor="start">corte de CFE → alerta a los 30 s</text>
+<line x1="655.0" y1="446" x2="655.0" y2="458" stroke="#1f2937" stroke-width="1.5"/>
+<text x="651.0" y="472" class="sm" text-anchor="end">&lt; 12.9 V: modo ahorro 15/15</text>
+<line x1="757.5" y1="446" x2="757.5" y2="458" stroke="#1f2937" stroke-width="1.5"/>
+<text x="761.5" y="472" class="sm" text-anchor="start">regresa CFE → aviso</text>
+<circle cx="40" cy="452" r="5" fill="#b45309"><animate attributeName="cx" from="40" to="860" dur="24.0s" repeatCount="indefinite"/></circle>
+<text x="40" y="438" class="sm">tiempo (ciclo de 24 s ≈ 30 h reales; el corte real típico dura 1–8 h)</text>
+<rect x="30" y="200" width="330" height="0" fill="none"/>
+<text x="30" y="215" class="lb b">Reglas que hacen que esto funcione</text>
+<text x="30" y="233" class="sm">1. La batería está SIEMPRE en paralelo: cero conmutación, cero inversor.</text>
+<text x="30" y="249" class="sm">2. K1 por contacto NC + restore_mode RESTORE_DEFAULT_ON: sin ESP32,</text>
+<text x="30" y="265" class="sm">   sin Wi-Fi y sin Home Assistant, la bomba sigue.</text>
+<text x="30" y="281" class="sm">3. Bomba de 12 V 40 W: 100 Ah × 0.9 × 12.8 V ÷ 40 W ≈ 28–30 h.</text>
+<text x="30" y="297" class="sm">4. HA solo avisa (30 s tras el corte) y optimiza (modo ahorro).</text>
+<text x="30" y="313" class="sm">5. Router + cerebro en UPS DataShield: sin internet no hay alertas.</text>
+<text x="30" y="329" class="sm">6. Se prueba cada mes botando el breaker 10 min (V11).</text>
+<rect x="30" y="352" width="7" height="7" fill="#2e7d32"/><text x="42" y="359" class="sm">energía desde CFE</text>
+<rect x="160" y="352" width="7" height="7" fill="#b45309"/><text x="172" y="359" class="sm">energía desde batería / alerta</text>
+<text x="30" y="380" class="sm">Detector de red: cargador USB 5 V → optoacoplador PC817 → GPIO23 (GND aislado).</text>
+<text x="30" y="396" class="sm">Voltaje: divisor 47 kΩ / 10 kΩ → GPIO36, attenuation 12 dB, multiply 5.7.</text>
+<text x="30" y="412" class="sm">Diagrama estático del bus: docs/assets/diagramas/electrico/bus-dc-first.svg</text>
+<text x="880" y="494" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>
+</svg>
