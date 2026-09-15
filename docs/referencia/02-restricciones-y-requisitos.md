@@ -2,9 +2,9 @@
 
 Lo que la realidad de la Ciudad de México exige del proyecto: clima a 2,240 msnm, agua con
 tandeo, y el marco fiscal/sanitario para venderle a restaurantes. Fuentes y detalle completo:
-[research/clima-agronomia.md](research/clima-agronomia.md) ·
-[research/agua-captacion.md](research/agua-captacion.md) ·
-[research/normativa-fiscal.md](research/normativa-fiscal.md).
+[research/clima-agronomia.md](../research/clima-agronomia.md) ·
+[research/agua-captacion.md](../research/agua-captacion.md) ·
+[research/normativa-fiscal.md](../research/normativa-fiscal.md).
 
 ---
 
@@ -75,7 +75,7 @@ Hierbabuena, cilantro y arúgula: cero problema (el cilantro agradece el fresco)
    del mes siguiente al cobro (un REP mensual agrupado por cliente basta; la multa por no
    emitirlo es de $22,300–127,530 por comprobante). En RESICO el ISR se causa sobre lo
    **cobrado**, no lo facturado. Política de cobro completa y machote de acuerdo de
-   suministro: [research/cobranza-b2b.md](research/cobranza-b2b.md).
+   suministro: [research/cobranza-b2b.md](../research/cobranza-b2b.md).
 5. La factura es el contrato: formalizar con el administrador del restaurante, no con el
    chef (rotación de chefs = riesgo #4 del plan). Remisión firmada en cada entrega.
 

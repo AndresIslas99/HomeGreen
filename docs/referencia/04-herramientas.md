@@ -2,7 +2,7 @@
 
 Lista completa para construir y operar las Fases 0–2, organizada **por fase de compra** (la
 regla del proyecto: nada se compra antes de su gate). Detalle con todos los precios y fichas:
-[research/herramientas.md](research/herramientas.md).
+[research/herramientas.md](../research/herramientas.md).
 
 **Presupuesto consolidado:** maker ya equipado (taladro, multímetro, cautín, protoboard,
 pinzas): **~$2,900–4,100 total**. Desde cero: ~$6,000–7,700.

@@ -4,8 +4,8 @@ Ruta de estudio alineada a las fases. Regla general que salió de la investigaci
 recursos canónicos de producción y electrónica están en inglés** (On The Grow, Donny Greens,
 SmartHomeScene, GitHub); **los recursos donde el contexto local importa** (materiales de
 tlapalería, NFT con PVC nacional, captación pluvial, normativa) **están en español y de
-fuentes mexicanas**. Detalle completo: [research/tutoriales-videos.md](research/tutoriales-videos.md)
-y [research/libros-cursos.md](research/libros-cursos.md).
+fuentes mexicanas**. Detalle completo: [research/tutoriales-videos.md](../research/tutoriales-videos.md)
+y [research/libros-cursos.md](../research/libros-cursos.md).
 
 ---
 

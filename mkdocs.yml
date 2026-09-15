@@ -1,0 +1,204 @@
+site_name: HomeGreen — Huerto comercial automatizado CDMX
+site_description: Guía-brújula para construir y operar un huerto comercial de microgreens y hierbas NFT en un patio de 80 m² en la Ciudad de México, automatizado con ESP32 + ESPHome + Home Assistant.
+site_url: https://andresislas99.github.io/HomeGreen/
+repo_url: https://github.com/AndresIslas99/HomeGreen
+repo_name: AndresIslas99/HomeGreen
+edit_uri: edit/main/docs/
+copyright: HomeGreen · documentación viva del proyecto
+
+theme:
+  name: material
+  language: es
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Modo oscuro
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - navigation.instant
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+    - content.action.edit
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search:
+      lang: es
+  - glightbox
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Inicio: index.md
+  - Empieza aquí:
+      - Antes de gastar un peso: empieza-aqui/antes-de-gastar-un-peso.md
+      - Cómo usar esta guía: empieza-aqui/como-usar-esta-guia.md
+      - Línea de tiempo: empieza-aqui/linea-de-tiempo.md
+  - Fases:
+      - Fase 0 · Validación comercial:
+          - fases/fase-0/index.md
+          - Compras: fases/fase-0/compras.md
+          - Montaje del rack: fases/fase-0/montaje.md
+          - Primeras siembras: fases/fase-0/siembra.md
+          - Vender a chefs: fases/fase-0/ventas.md
+          - Gate G0→1: fases/fase-0/gate.md
+      - Fase 1 · Túnel y automatización v1:
+          - fases/fase-1/index.md
+          - Compras: fases/fase-1/compras.md
+          - Túnel: fases/fase-1/tunel.md
+          - Agua y captación: fases/fase-1/agua.md
+          - Automatización v1: fases/fase-1/automatizacion-v1.md
+          - Gate G1→2: fases/fase-1/gate.md
+      - Fase 2 · NFT y automatización v2:
+          - fases/fase-2/index.md
+          - Compras: fases/fase-2/compras.md
+          - Sistema NFT: fases/fase-2/nft.md
+          - Dosificación pH/EC: fases/fase-2/dosificacion-v2.md
+          - Eléctrico y respaldo: fases/fase-2/electrico-respaldo.md
+          - Clientes y cobranza: fases/fase-2/clientes-y-cobranza.md
+          - Gate G2→3: fases/fase-2/gate.md
+      - Fase 3 · Consolidación: fases/fase-3/index.md
+  - Guías:
+      - Cultivo:
+          - Sembrar una charola: guias/sembrar-una-charola.md
+          - Sanitizar semilla: guias/sanitizar-semilla.md
+          - Prueba de germinación: guias/prueba-de-germinacion.md
+          - Cosechar y empacar: guias/cosechar-y-empacar.md
+          - Lavar y desinfectar charolas: guias/lavar-y-desinfectar-charolas.md
+          - Germinar en invierno: guias/germinar-en-invierno.md
+          - Control de plagas: guias/control-de-plagas.md
+      - Construcción:
+          - Anclar el túnel: guias/anclar-el-tunel.md
+          - Tensar plástico y mallas: guias/tensar-plastico-y-mallas.md
+          - Canaleta y captación: guias/instalar-canaleta-y-captacion.md
+          - Armar una línea NFT: guias/armar-linea-nft.md
+      - Hidroponía:
+          - Preparar solución nutritiva: guias/preparar-solucion-nutritiva.md
+          - Calibrar sondas pH/EC: guias/calibrar-sondas-ph-ec.md
+          - Cambiar la solución NFT: guias/cambiar-solucion-nft.md
+      - Eléctrico y software:
+          - Instalar GFCI y tierra: guias/instalar-gfci-y-tierra.md
+          - Armar el respaldo DC: guias/armar-respaldo-dc.md
+          - Montar gabinete IP65: guias/montar-gabinete-ip65.md
+          - Flashear ESPHome: guias/flashear-esphome.md
+          - Configurar Home Assistant: guias/configurar-home-assistant.md
+          - Simulacro de apagón: guias/simulacro-de-apagon.md
+      - Comercial y fiscal:
+          - Visitar a un chef: guias/visitar-a-un-chef.md
+          - Hoja de precios: guias/hoja-de-precios.md
+          - Ruta de reparto: guias/ruta-de-reparto.md
+          - Facturar CFDI: guias/facturar-cfdi.md
+          - Cobrar y suspender: guias/cobrar-y-suspender.md
+          - Aplicar a Cosecha de Lluvia: guias/aplicar-cosecha-de-lluvia.md
+          - Aviso COFEPRIS: guias/aviso-cofepris.md
+          - Mock recall: guias/mock-recall.md
+          - Timesheet semanal: guias/timesheet-semanal.md
+  - Diseño:
+      - diseno/index.md
+      - Eléctrico: diseno/electrico.md
+      - Hidráulico: diseno/hidraulico.md
+      - Control: diseno/control.md
+      - Datos: diseno/datos.md
+      - Layout del patio: diseno/layout-patio.md
+      - Estructura del túnel: diseno/estructura-tunel.md
+      - Rack y charolas: diseno/rack-y-charolas.md
+  - Validación:
+      - validacion/index.md
+      - V1 Germinación: validacion/v01-germinacion.md
+      - V2 Rendimiento: validacion/v02-rendimiento.md
+      - V3 Dry-run HIL: validacion/v03-dry-run.md
+      - V4 Smoke test comercial: validacion/v04-smoke-test.md
+      - V5 Ausencia: validacion/v05-ausencia.md
+      - V6 Experimento A/B: validacion/v06-experimento-ab.md
+      - V7 Agua: validacion/v07-agua.md
+      - V8 Sanitaria: validacion/v08-sanitaria.md
+      - V9 Timesheet: validacion/v09-timesheet.md
+      - V10 Mock recall: validacion/v10-mock-recall.md
+      - V11 Apagón: validacion/v11-apagon.md
+      - KPIs: validacion/kpis.md
+      - Gates: validacion/gates.md
+  - Software:
+      - software/index.md
+      - Firmware ESPHome: software/firmware.md
+      - Home Assistant: software/home-assistant.md
+      - Herramientas CLI: software/herramientas-cli.md
+  - Aprendizaje:
+      - Videos: aprendizaje/videos.md
+      - Libros: aprendizaje/libros.md
+      - Cursos: aprendizaje/cursos.md
+  - Referencia:
+      - BOM por fase: referencia/bom.md
+      - Normativa: referencia/normativa.md
+      - Clima CDMX: referencia/clima.md
+      - Glosario: referencia/glosario.md
+      - FAQ: referencia/faq.md
+      - Documentos base:
+          - Plan maestro: referencia/00-plan-maestro.md
+          - Proveedores CDMX: referencia/01-proveedores-cdmx.md
+          - Restricciones y requisitos: referencia/02-restricciones-y-requisitos.md
+          - Instalación (resumen): referencia/03-instalacion.md
+          - Herramientas: referencia/04-herramientas.md
+          - Aprendizaje (resumen): referencia/05-aprendizaje.md
+          - Validación y lazos agénticos: referencia/06-validacion-y-lazos-agenticos.md
+          - Puntos ciegos y riesgos: referencia/07-puntos-ciegos-y-riesgos.md
+          - Recetas y economía unitaria: referencia/08-recetas-y-economia-unitaria.md
+      - Investigación (17 informes):
+          - Semillas, sustrato y charolas: research/semillas-sustrato-charolas.md
+          - Estructura del invernadero: research/estructura-invernadero.md
+          - Electrónica y automatización: research/electronica-automatizacion.md
+          - Hidroponía NFT: research/hidroponia-nft.md
+          - Agua y captación: research/agua-captacion.md
+          - Normativa y fiscal: research/normativa-fiscal.md
+          - Clima y agronomía: research/clima-agronomia.md
+          - Mercado y precios: research/mercado-precios.md
+          - Tutoriales y videos: research/tutoriales-videos.md
+          - Libros y cursos: research/libros-cursos.md
+          - Herramientas: research/herramientas.md
+          - Puntos ciegos: research/puntos-ciegos.md
+          - Inocuidad operativa: research/inocuidad-operativa.md
+          - Eléctrico, respaldo y seguridad: research/electrico-respaldo-seguridad.md
+          - Recetas y economía: research/recetas-produccion-economia.md
+          - Cobranza B2B: research/cobranza-b2b.md
+          - Instalación del túnel (detalle): research/instalacion-tunel-detalle.md

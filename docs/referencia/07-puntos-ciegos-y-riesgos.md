@@ -1,7 +1,7 @@
 # Puntos ciegos y riesgos — lo que el plan no estaba considerando
 
 Investigación al 12-sep-2026 con números duros. Fuente completa con todas las referencias:
-[research/puntos-ciegos.md](research/puntos-ciegos.md).
+[research/puntos-ciegos.md](../research/puntos-ciegos.md).
 
 **Veredicto en una línea:** el plan es sólido en lo técnico y lo comercial básico, pero
 subestima 4 cosas que sí matan proyectos así: la tarifa DAC de CFE, el tiempo real de
@@ -20,7 +20,7 @@ cortado.
   DAC ella solita** (~$2,600/mes de recibo). La bomba correcta —sumergible/magnética de
   35–60 W— consume ~32 kWh/mes. Está sobredimensionada ~8×; la diferencia son
   ~$1,600–2,000/mes, 15–20 % del neto proyectado. (Ya corregido en
-  [03-instalacion](03-instalacion.md) y [bom/fase2.csv](../bom/fase2.csv).)
+  [03-instalacion](03-instalacion.md) y [bom/fase2.csv](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase2.csv).)
 - Fase 2 bien diseñada ≈ 85–90 kWh/mes adicionales al hogar; con un hogar de 150+ kWh/mes
   ya rozas los 250. **Acciones esta semana (~$340):** medidor de enchufe Steren HER-432
   ($336) para auditar el consumo base 7 días; leer el promedio anual en el recibo CFE;
@@ -39,7 +39,7 @@ En NFT las raíces cuelgan en una película de agua: estrés en 1–2 h sin fluj
   24 Ah (~$2,500–2,900) para cortes ≤7 h, ampliable después. Paquete completo respaldo +
   seguridad eléctrica (GFCI, tierra física, gabinetes IP65, electricista): **$8,500–14,500**
   — partida obligatoria de Fase 2, detallada en
-  [research/electrico-respaldo-seguridad.md](research/electrico-respaldo-seguridad.md) y
+  [research/electrico-respaldo-seguridad.md](../research/electrico-respaldo-seguridad.md) y
   [03 §2.3](03-instalacion.md).
 - Mini-UPS ($529) para módem + cerebro: sin internet no hay alarmas.
 - Tras cada corte el sistema debe **auto-recuperarse** (ESPHome/HA arrancan solos) y el
@@ -101,7 +101,7 @@ El estándar foodservice es crédito de 15–45 días y el proveedor chico es el
 fila; el jugador CDMX establecido (MIJARDIIN) lo evita cobrando suscripción prepagada.
 Política por fase, machote de acuerdo de suministro de 1 página, señales de alerta de
 restaurantes que no van a pagar y protocolo de cobranza escalonado (7/14/45 días) en
-[research/cobranza-b2b.md](research/cobranza-b2b.md). Lo no negociable:
+[research/cobranza-b2b.md](../research/cobranza-b2b.md). Lo no negociable:
 
 - **Fase 0: SPEI contra entrega, cero excepciones** — estás validando que *pagan*, no que
   *quieren*. Fase 1: factura semanal, pago a 7 días. Crédito a 15 días solo GANADO (8+

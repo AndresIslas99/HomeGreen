@@ -4,7 +4,7 @@ La tabla operativa que gobierna qué se siembra, con cuánta semilla y a qué pr
 Síntesis de 3 fuentes cruzadas (Johnny's Yield Trial 2017 —el único dataset público con
 rendimientos pesados por charola 1020—, Bootstrap Farmer y True Leaf Market) con precios de
 semilla mexicanos verificados al 12-sep-2026. Fuente completa:
-[research/recetas-produccion-economia.md](research/recetas-produccion-economia.md).
+[research/recetas-produccion-economia.md](../research/recetas-produccion-economia.md).
 
 ## Tabla operativa por especie (charola 1020, 25×50 cm)
 

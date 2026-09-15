@@ -36,7 +36,7 @@ producción sin pasar su checklist. Las compras exactas y enlaces están en
    flotantes; para brócoli/rábano sensibles, 10 min a temperatura ambiente. Cuando un
    cliente hotelero pida el estándar duro: hipoclorito de calcio 20,000 ppm (31 g/L del
    granular al 65 %), 15 min con agitación, triple enjuague — protocolo completo, opciones y
-   dónde comprar en [research/inocuidad-operativa.md](research/inocuidad-operativa.md).
+   dónde comprar en [research/inocuidad-operativa.md](../research/inocuidad-operativa.md).
 3. **Remojo** (solo girasol y chícharo): 8–12 h en agua limpia; cambiarla si pasa de 12 h;
    escurrir. Lavar y desinfectar la cubeta entre lotes.
 4. **Sustrato:** hidratar la fibra de coco; llenar charola CON drenaje ~3 cm, compactar
@@ -71,7 +71,7 @@ producción sin pasar su checklist. Las compras exactas y enlaces están en
 1. **Trazo:** marcar planta del túnel con hilo y estacas; verificar escuadra midiendo
    diagonales (deben ser iguales ±1 cm).
 2. **Anclaje** (procedimiento completo y comparativa de métodos en
-   [research/instalacion-tunel-detalle.md](research/instalacion-tunel-detalle.md)): sobre
+   [research/instalacion-tunel-detalle.md](../research/instalacion-tunel-detalle.md)): sobre
    losa de concreto, **placa base de 10–15 cm (solera 3/16") soldada al pie de cada columna
    + 4 anclas de cuña 3/8"×5" por placa** ($36 c/u en Home Depot ⇒ ~$864 el túnel). Perforar
    con rotomartillo, aspirar el polvo (el polvo reduce la carga de extracción a la mitad),
@@ -120,7 +120,7 @@ producción sin pasar su checklist. Las compras exactas y enlaces están en
    no del sensor); DS18B20 sumergido en tinaco; JSN-SR04T apuntando al agua sin obstáculos.
 3. **Alimentación y seguridad eléctrica (obligatorio ANTES del primer relé en el patio;
    detalle y cotizaciones en
-   [research/electrico-respaldo-seguridad.md](research/electrico-respaldo-seguridad.md)):**
+   [research/electrico-respaldo-seguridad.md](../research/electrico-respaldo-seguridad.md)):**
    fuente 12 V 5 A para bomba/válvulas; buck a 5 V para ESP32; tierra común. El patio es
    "lugar mojado" según la NOM-001-SEDE: **GFCI en todo el circuito exterior** (breaker
    Square D QO120GFI $1,159 en el centro de carga, o mínimo contacto GFCI $389 aguas arriba
@@ -183,7 +183,7 @@ En NFT las raíces cuelgan en una película de 1–3 mm: sin recirculación, mar
 irreversible en 2–4 h con el túnel caliente. Respaldar la periférica de 120 V con inversor
 exigiría ~680 Ah de batería (>$30k): descartado con números. La arquitectura correcta
 (análisis y cotizaciones completas en
-[research/electrico-respaldo-seguridad.md](research/electrico-respaldo-seguridad.md)):
+[research/electrico-respaldo-seguridad.md](../research/electrico-respaldo-seguridad.md)):
 
 ```
 CFE 127 V ──[GFCI]──> Cargador en flotación ──┬──> Bomba NFT 12 V DC 40–60 W (24/7)

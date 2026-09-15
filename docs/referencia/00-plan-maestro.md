@@ -30,7 +30,7 @@ falla, la pérdida total es ~$6k y termina el experimento.
 
 Rack bajo techo, sin túnel, sin NFT. Equipo: rack 4–5 niveles, 20 charolas 10×20, semilla
 (girasol, chícharo, rábano, betabel, brócoli), fibra de coco, atomizador, báscula, empaques.
-BOM completa con enlaces: [`bom/fase0.csv`](../bom/fase0.csv).
+BOM completa con enlaces: [`bom/fase0.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase0.csv).
 
 Proceso productivo: [03 §Fase 0](03-instalacion.md). Antes de la primera compra grande de
 semilla: prueba de germinación **V1**; antes de vender una variedad: ensayo de rendimiento
@@ -54,7 +54,7 @@ La parte que decide todo (semanas 3–6) — smoke test comercial **V4**:
   El sistema corre 100 % de reserva propia (tandeo). Ver [02 §Agua](02-restricciones-y-requisitos.md).
 - **Automatización v1:** 2×ESP32, sensores T/HR/sustrato/nivel/temp-agua, relés, bomba 12 V
   con nebulizadores, Home Assistant en Raspberry/mini-PC. Riego, ventilación y alarmas
-  automáticos. BOM: [`bom/fase1.csv`](../bom/fase1.csv). Antes de producción: dry-run **V3**.
+  automáticos. BOM: [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv). Antes de producción: dry-run **V3**.
 - **Producción objetivo:** 25–35 charolas/semana vendidas (siembras lunes y jueves).
 - **Precios corregidos con mercado real 2026** (ver [01 §7](01-proveedores-cdmx.md)):
   charola viva girasol/chícharo **$90–120 lista** ($70–80 en volumen; el $60–90 del plan
@@ -65,7 +65,7 @@ La parte que decide todo (semanas 3–6) — smoke test comercial **V4**:
   restaurantes.
 - **Realidad presupuestal:** la Fase 1 completa con racks de verdad ($2,000–2,600 c/u, no
   $1,200–1,800), iluminación T8 y UPS sale en **$31–42k** (BOM detallada:
-  [`bom/fase1.csv`](../bom/fase1.csv)); el rango $18–28k del plan original era optimista.
+  [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)); el rango $18–28k del plan original era optimista.
 
 ## Fase 2 — Túnel NFT de hierbas + automatización v2 (Meses 5–9)
 
@@ -78,7 +78,7 @@ La parte que decide todo (semanas 3–6) — smoke test comercial **V4**:
   [03 §Fase 2](03-instalacion.md).
 - **Automatización v2:** sondas pH y EC, 3 peristálticas (A, B, pH−), solenoides,
   ESP32-CAM, sensor de flujo. Control por histéresis con tiempo de mezcla; interlocks por
-  nivel. BOM: [`bom/fase2.csv`](../bom/fase2.csv).
+  nivel. BOM: [`bom/fase2.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase2.csv).
 - **Mantenimiento honesto:** calibración quincenal de sondas (buffers 4.0/6.86), sonda pH
   nueva cada año (~$400/año), cambio completo de solución cada 2–3 semanas.
 - El dashboard con histórico pH/EC/temp es también material de venta: "hierbas
@@ -121,7 +121,7 @@ Detalle y mitigaciones completas (incluyendo lo que el plan original no consider
 
 ## Checklist — próximos 14 días
 
-- [ ] Comprar rack, 20 charolas, semilla (girasol, chícharo, rábano) y coco — enlaces en [`bom/fase0.csv`](../bom/fase0.csv)
+- [ ] Comprar rack, 20 charolas, semilla (girasol, chícharo, rábano) y coco — enlaces en [`bom/fase0.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase0.csv)
 - [ ] Prueba de germinación V1 del lote recibido
 - [ ] Primera siembra de prueba: 6 charolas, 2 variedades
 - [ ] Mapear 15 restaurantes objetivo en radio de 5 km

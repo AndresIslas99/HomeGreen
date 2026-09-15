@@ -216,7 +216,7 @@ Una vez al año: elegir un lote al azar y demostrar en **< 2 horas** a qué clie
 de qué costal de semilla salió, con los registros de la bitácora. Documentarlo. Es la
 pregunta estándar de auditoría de hoteles y la prueba de que la trazabilidad funciona de
 verdad (formato de lote y campos por charola en
-[research/inocuidad-operativa.md](research/inocuidad-operativa.md)).
+[research/inocuidad-operativa.md](../research/inocuidad-operativa.md)).
 
 ### V11 — Simulacro mensual de apagón
 Botar el breaker del patio 10 minutos, una vez al mes: la bomba NFT debe seguir corriendo

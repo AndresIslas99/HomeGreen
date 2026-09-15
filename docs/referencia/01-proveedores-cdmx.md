@@ -3,9 +3,9 @@
 Guía de compra curada por categoría: **la opción recomendada primero**, alternativas después.
 Precios en MXN al 12-sep-2026; "aprox." = visto en resultados de búsqueda sin confirmar en la
 ficha. El detalle completo (tablas de precios escalonados, teléfonos, análisis $/charola) está
-en los informes de [`docs/research/`](research/) enlazados en cada sección. Las cantidades
-exactas por fase están en los BOM: [`bom/fase0.csv`](../bom/fase0.csv) ·
-[`bom/fase1.csv`](../bom/fase1.csv) · [`bom/fase2.csv`](../bom/fase2.csv).
+en los informes de [`docs/research/`](../research/) enlazados en cada sección. Las cantidades
+exactas por fase están en los BOM: [`bom/fase0.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase0.csv) ·
+[`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv) · [`bom/fase2.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase2.csv).
 
 ## Los 8 proveedores núcleo del proyecto
 
@@ -22,7 +22,7 @@ exactas por fase están en los BOM: [`bom/fase0.csv`](../bom/fase0.csv) ·
 
 ---
 
-## 1. Semilla, sustrato, charolas y empaque → [informe completo](research/semillas-sustrato-charolas.md)
+## 1. Semilla, sustrato, charolas y empaque → [informe completo](../research/semillas-sustrato-charolas.md)
 
 | Insumo | Compra recomendada | Precio | Enlace |
 |---|---|---|---|
@@ -39,14 +39,14 @@ exactas por fase están en los BOM: [`bom/fase0.csv`](../bom/fase0.csv) ·
 **Costo variable por charola de girasol optimizado: ~$9** (semilla CEDA + coco + agua +
 desinfección + etiqueta) contra venta de $90–120 → margen bruto ~90 %. Hallazgos
 posteriores que completan el abasto nacional (fichas en
-[research/recetas-produccion-economia.md](research/recetas-produccion-economia.md)):
+[research/recetas-produccion-economia.md](../research/recetas-produccion-economia.md)):
 Hydroenv también vende **girasol forrajero $300/kg, cilantro $450/kg, amaranto nacional
 $300/kg** (ojo: criollo de grano, probablemente micro VERDE — validar color) y **arúgula
 $2,800/kg** (4.7× el precio internacional: solo para arrancar). ⚠️ **El chícharo a $340/kg
 NO es negocio** (lleva 275 g/charola = $93.50 solo de semilla): conseguir arvejón grado
 alimento en CEDA (~$40–60/kg) antes de sembrarlo — ver [08-recetas](08-recetas-y-economia-unitaria.md).
 
-## 2. Estructura del túnel → [informe completo](research/estructura-invernadero.md)
+## 2. Estructura del túnel → [informe completo](../research/estructura-invernadero.md)
 
 Veredicto hacer-vs-comprar: **DIY con PTR sale en $550–750/m² vs $1,200–1,600/m² del
 prefabricado serio** (y el prefabricado barato de ML no aguanta granizo). Túnel 3×6 m a dos
@@ -65,7 +65,7 @@ público solo muestra malla sombra, no antigranizo (verificado): la antigranizo 
 con Capi Agrícola / ICAPSA / Hydroenv. Y el presupuesto de racks era irreal:
 $2,000–2,600/rack real, no $1,200–1,800 (esos son racks de 30–50 kg/nivel que se oxidan).
 
-## 3. Electrónica y automatización → [informe completo](research/electronica-automatizacion.md)
+## 3. Electrónica y automatización → [informe completo](../research/electronica-automatizacion.md)
 
 Estrategia: **un pedido grande a UNIT** (ESP32, sensores, relés, TDS, ESP32-CAM),
 **hidráulica por Mercado Libre Full** (diafragma, peristálticas, solenoides NC),
@@ -84,7 +84,7 @@ Salvador 20-F) por gabinetes/cable/borneras y para conocer al proveedor de emerg
 
 Subtotales realistas: **v1 $3,500–5,500 · v2 $2,600–4,600** (dentro del plan).
 
-## 4. NFT e hidroponia → [informe completo](research/hidroponia-nft.md)
+## 4. NFT e hidroponia → [informe completo](../research/hidroponia-nft.md)
 
 ⚠️ **Corrección técnica importante:** usar tubo **PVC sanitario** 4" ($415/tramo Amanco en
 Home Depot), NO hidráulico cédula 40 ($1,401) — el NFT corre sin presión, la diferencia es
@@ -106,7 +106,7 @@ periférica 0.5 HP del plan (370 W ≈ $260/mes): la periférica queda para tras
 Sistema NFT completo 8 líneas (sin túnel ni electrónica): **~$7,200–8,700** — 3× la capacidad
 del paquete comercial de $5,779 con 5 ductos.
 
-## 5. Agua → [informe completo](research/agua-captacion.md)
+## 5. Agua → [informe completo](../research/agua-captacion.md)
 
 | Partida | Recomendado | Precio | Enlace |
 |---|---|---|---|
@@ -116,7 +116,7 @@ del paquete comercial de $5,779 con 5 ductos.
 | Anticloro (línea NFT) | Dúplex sedimento 5 µm + carbón activado 10" | ~$800–1,200 | [Agua Limpia](https://www.agualimpia.mx/collections/filtro-para-sedimento-y-carbon-activado) |
 | **Gratis** | Programa Cosecha de Lluvia SEDEMA (enero–febrero, si la alcaldía califica): sistema de ~$20k sin costo | $0 | [programa](https://www.sedema.cdmx.gob.mx/programas/programa/cosecha-de-lluvia) · programascall@sedema.cdmx.gob.mx |
 
-## 6. Fitosanitario y clima → [informe completo](research/clima-agronomia.md)
+## 6. Fitosanitario y clima → [informe completo](../research/clima-agronomia.md)
 
 Botiquín completo por ~$600: **jabón potásico** 1 kg ($250,
 [Soluciones Naturales Pro](https://solucionesnaturalespro.com.mx/product/jabon-potasico/)) +
@@ -130,7 +130,7 @@ Iluminación: **tubos T8 18 W 6500K estándar ($121 c/u, [JWJ](https://jwjlight.
 Malla sombra 35 % ($129/m, [Hydroenv](https://hydroenv.com.mx/producto/malla-sombra-por-metro-al-35-de-3-7-m-de-ancho/))
 solo marzo–mayo.
 
-## 6b. Inocuidad: sanitizantes y laboratorios → [informe completo](research/inocuidad-operativa.md)
+## 6b. Inocuidad: sanitizantes y laboratorios → [informe completo](../research/inocuidad-operativa.md)
 
 Sanitización de semilla: agua oxigenada 3 % de farmacia (~$40) para el protocolo estándar;
 hipoclorito de calcio 65 % 1 kg (~$250 aprox., [ML](https://listado.mercadolibre.com.mx/hipoclorito-de-calcio))
@@ -141,7 +141,7 @@ para el estándar duro de 20,000 ppm. Laboratorios de análisis microbiológico:
 verificado** — el monitoreo económico recurrente). Presupuesto anual de muestreo:
 ~$6,000–10,000. Autocontrol barato: placas Petrifilm (~$40–70/placa aprox.).
 
-## 6c. Respaldo eléctrico y seguridad → [informe completo](research/electrico-respaldo-seguridad.md)
+## 6c. Respaldo eléctrico y seguridad → [informe completo](../research/electrico-respaldo-seguridad.md)
 
 **Batería LiFePO4 12.8 V 100 Ah Epcom $4,459** (verificado,
 [Cyberpuerta](https://www.cyberpuerta.mx/index.php?cl=search&searchparam=bateria+LiFePO4));
@@ -151,7 +151,7 @@ DS-600 $1,189 para el cerebro; **breaker GFCI Square D QO120GFI $1,159 o contact
 (Home Depot), tapa intemperie ~$249, varilla copperweld + conector ~$400–800. Paquete
 completo: $8,500–14,500 — partida obligatoria de Fase 2.
 
-## 7. Mercado y precios de venta → [informe completo](research/mercado-precios.md)
+## 7. Mercado y precios de venta → [informe completo](../research/mercado-precios.md)
 
 El mercado CDMX existe y está poco servido: MIJARDIIN vende clamshells a $100–110/50–60 g
 (~$2,000/kg) con suscripciones; Arca Tierra surte >40 restaurantes; no hay líder B2B de
