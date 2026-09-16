@@ -19,9 +19,12 @@ vez y por OTA después, calibrar cada sensor, cambiar setpoints y arreglar lo qu
 | [`nodo-nft-v2.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/nodo-nft-v2.yaml) | 2 | Gabinete B del NFT, en el **bus de batería** | pH/EC calibrados con compensación de temperatura; dosificación por histéresis con tiempo muerto de mezcla (A → B → pH−) e interlocks por nivel, bomba y flujo; watchdog "bomba ON sin flujo" que arranca el respaldo; detector de red CFE; voltaje de batería; modo ahorro 15/15; llenado y purga con tiempo máximo; timeout de 30 s en cada peristáltica | F3 de la fusiblera del bus 12.8 V → buck 5 V |
 | [`secrets.example.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/secrets.example.yaml) | — | Se copia a `secrets.yaml` (no se sube a Git) | Wi-Fi, clave API por nodo, contraseña OTA, red de rescate | — |
 
-Los tres se validaron con `esphome config` **y compilaron completos** con `esphome compile` en
-ESPHome 2026.6.5 (ESP-IDF 5.5.4, toolchain xtensa 14.2): riego 52.7 % de flash / 16.5 % de RAM,
-NFT 52.3 % / 16.9 %, ambiente 50.3 % / 14.3 %. Exigen `min_version: 2025.1.0`. Framework `esp-idf`,
+Los tres **pasan `esphome config` sin un solo error** en ESPHome 2026.6.5 (verificado el
+2026-09-16): la configuración completa se expande y valida, con `secrets.yaml` propio. Las
+cifras de un `esphome compile` completo —riego 52.7 % de flash / 16.5 % de RAM, NFT 52.3 % /
+16.9 %, ambiente 50.3 % / 14.3 % con ESP-IDF 5.5.4 y toolchain xtensa 14.2— vienen de una
+corrida anterior `[POR VERIFICAR: reprodúcelas tú con "esphome compile nodo-riego-v1.yaml";
+la primera vez descarga ~1 GB de toolchain y tarda 10–20 min]`. Exigen `min_version: 2025.1.0`. Framework `esp-idf`,
 board `esp32dev` (DevKit V1 de 30 pines, [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)).
 Lo que **no** está probado todavía es el comportamiento en la placa real: eso lo hacen las pruebas
 de la sección "Probar sin plantas" y el dry-run V3.

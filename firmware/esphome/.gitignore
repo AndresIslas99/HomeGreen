@@ -1,0 +1,4 @@
+# Artefactos de ESPHome: la carpeta de compilación y tus claves.
+# La plantilla que sí se versiona es secrets.example.yaml.
+/.esphome/
+/secrets.yaml

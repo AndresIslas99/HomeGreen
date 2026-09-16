@@ -129,8 +129,14 @@ def extraer_urls(texto: str) -> list[str]:
     return out
 
 
+#: El reporte que genera este mismo script: escanearlo duplicaría cada URL y ensuciaría la
+#: columna "Dónde" con la página que solo las está listando.
+AUTOGENERADOS = ("docs/referencia/enlaces.md",)
+
+
 def archivos_fuente(raiz: Path, extras: list[str] | None) -> list[Path]:
     rutas = sorted((raiz / "docs").rglob("*.md")) if (raiz / "docs").exists() else []
+    rutas = [r for r in rutas if r.relative_to(raiz).as_posix() not in AUTOGENERADOS]
     if (raiz / "README.md").exists():
         rutas.append(raiz / "README.md")
     for patron in extras or []:
@@ -175,18 +181,30 @@ def es_ignorable(url: str) -> bool:
 RE_YT_ID = re.compile(r"(?:youtube\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/)|youtu\.be/)([A-Za-z0-9_-]{11})")
 
 
-def es_youtube_video(url: str) -> bool:
+RE_YT_LISTA = re.compile(r"[?&]list=([A-Za-z0-9_-]{10,})")
+
+
+def es_youtube(url: str) -> bool:
     u = url.lower()
-    return ("youtube.com/watch" in u or "youtu.be/" in u or "youtube.com/embed/" in u) and "playlist" not in u
+    return "youtube.com/watch" in u or "youtu.be/" in u or "youtube.com/embed/" in u or "youtube.com/playlist" in u
 
 
 def id_youtube(url: str) -> str | None:
+    """ID de un video de 11 caracteres, o ``None`` si la URL es de playlist o de canal.
+
+    Ojo con ``/embed/videoseries?list=...``: "videoseries" mide exactamente 11 caracteres y
+    el regex de ID lo casaría; una playlist se resuelve por ``list=``, nunca por ID.
+    """
+    if RE_YT_LISTA.search(url) or "/playlist" in url.lower():
+        return None
     m = RE_YT_ID.search(url)
-    return m.group(1) if m else None
+    if m and m.group(1).lower() != "videoseries":
+        return m.group(1)
+    return None
 
 
 def verificar_youtube(url: str, timeout: float = 15.0) -> dict | None:
-    """Verifica un video de YouTube con la API oEmbed en vez de leer el HTML.
+    """Verifica un video o una playlist de YouTube con la API oEmbed, no leyendo el HTML.
 
     ``https://www.youtube.com/oembed?url=...&format=json`` contesta 200 con el título si el
     video existe y es incrustable, y 401/403/404 si no. Es determinista: la heurística de
@@ -195,9 +213,16 @@ def verificar_youtube(url: str, timeout: float = 15.0) -> dict | None:
     y otro no. Devuelve ``None`` si la URL no es un video (el llamador sigue por HTTP).
     """
     vid = id_youtube(url)
-    if vid is None:
-        return None
-    api = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={vid}&format=json"
+    lista = RE_YT_LISTA.search(url)
+    if vid is not None:
+        destino = f"https://www.youtube.com/watch?v={vid}"
+        que = "video"
+    elif lista is not None:
+        destino = f"https://www.youtube.com/playlist?list={lista.group(1)}"
+        que = "playlist"
+    else:
+        return None  # canal, /results, /user: se verifica por HTTP normal
+    api = f"https://www.youtube.com/oembed?url={destino}&format=json"
     base = {"url": url, "final": url, "ms": 0}
     try:
         req = urllib.request.Request(api, headers=CABECERAS)
@@ -213,14 +238,14 @@ def verificar_youtube(url: str, timeout: float = 15.0) -> dict | None:
         # al autor equivocado, que es tan engañoso como un enlace roto.
         desc = " · ".join(x for x in (titulo, autor) if x)
         return {**base, "estado": "ok", "codigo": "oembed",
-                "nota": f"video disponible: {desc}" if desc else "video disponible (oEmbed)"}
+                "nota": f"{que} disponible: {desc}" if desc else f"{que} disponible (oEmbed)"}
     except urllib.error.HTTPError as e:
         if e.code in (401, 403):
             return {**base, "estado": "blocked", "codigo": str(e.code),
-                    "nota": "el video existe pero no permite incrustarse: enlázalo en vez de usar <iframe>"}
+                    "nota": f"el {que} existe pero no permite incrustarse: enlázalo en vez de usar <iframe>"}
         if e.code in (404, 400):
             return {**base, "estado": "dead", "codigo": str(e.code),
-                    "nota": "YouTube: el video no existe, es privado o fue retirado (oEmbed)"}
+                    "nota": f"YouTube: el {que} no existe, es privado o fue retirado (oEmbed)"}
         return {**base, "estado": "blocked", "codigo": str(e.code), "nota": f"oEmbed HTTP {e.code}"}
     except Exception as e:  # noqa: BLE001 — sin prueba de muerte, no se marca muerto
         return {**base, "estado": "blocked", "codigo": "oembed",
@@ -272,7 +297,7 @@ def verificar(url: str, timeout: float = 15.0, reintentos: int = 2, dinamicos: t
         propio = verificar_propio(url, raiz)
         if propio is not None:
             return propio
-    if es_youtube_video(url):
+    if es_youtube(url):
         yt = verificar_youtube(url, timeout)
         if yt is not None:
             yt["ms"] = int((time.monotonic() - t0) * 1000)

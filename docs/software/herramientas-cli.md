@@ -261,6 +261,8 @@ python3 tools/check_links.py --salida enlaces.md --incluir 'bom/*.csv'
 python3 tools/check_links.py --listar
 ```
 
+El último reporte está publicado en la wiki: [Referencia → Verificación de enlaces](../referencia/enlaces.md).
+
 **Los cuatro estados**
 
 | Estado | Qué pasó | Qué haces |

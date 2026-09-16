@@ -43,7 +43,7 @@ V1–V11 y gates), y el firmware listo para flashear.
 | [Validación](docs/validacion/index.md) | Lazos L0–L4, métodos V1–V11 con checklists imprimibles, [KPIs](docs/validacion/kpis.md) y [gates](docs/validacion/gates.md) |
 | [Software](docs/software/index.md) | [Firmware ESPHome](docs/software/firmware.md), [Home Assistant](docs/software/home-assistant.md) (automatizaciones y dashboard), [herramientas CLI](docs/software/herramientas-cli.md) |
 | [Aprendizaje](docs/aprendizaje/videos.md) | Videos verificados (incrustados), libros y cursos por fase |
-| [Referencia](docs/referencia/bom.md) | BOM por fase, normativa, clima, glosario, FAQ, los 9 documentos base y los 17 informes de investigación |
+| [Referencia](docs/referencia/bom.md) | BOM por fase, normativa, clima, glosario, FAQ, [verificación de enlaces](docs/referencia/enlaces.md), los 9 documentos base y los 17 informes de investigación |
 
 ## Archivos que no son documentación
 

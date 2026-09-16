@@ -10,6 +10,10 @@ informes/
 # La plantilla que sí se versiona es firmware/esphome/secrets.example.yaml
 firmware/esphome/secrets.yaml
 
-# Reportes generados por tools/check_links.py
-enlaces.md
-resumen.txt
+# Carpeta de compilación de ESPHome
+.esphome/
+
+# Reportes sueltos de tools/check_links.py en la raíz (el que sí se versiona es
+# docs/referencia/enlaces.md, la página de la wiki).
+/enlaces.md
+/resumen.txt
