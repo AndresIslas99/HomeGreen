@@ -61,7 +61,7 @@ fecha,fuente,ec_ms_cm,ph,temp_c,observaciones
 ```
 
 - `fuente`: `red` · `lluvia` · `tinaco` (mezcla) · `tambo_base` (antes de nutriente) · `ro`.
-- Si `tools/kpis.py` lee este archivo, las cuatro primeras columnas no cambian `[POR VERIFICAR: en software/herramientas-cli.md cuando el script esté en el repositorio]`.
+- `tools/kpis.py` **no** lee este archivo (solo usa `produccion.csv` y `ventas.csv`, ver [Herramientas CLI](../software/herramientas-cli.md#kpispy)): es tu registro de agua y el que se pega en el informe del agente con `--ha`. Aun así, no muevas las cuatro primeras columnas: son las que se grafican.
 
 `bitacora/inocuidad/laboratorio.csv` (una fila por análisis):
 

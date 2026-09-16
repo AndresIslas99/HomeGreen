@@ -115,17 +115,22 @@ flowchart TD
 
 ## Cómo los calcula `tools/kpis.py`
 
-Python 3.11, solo biblioteca estándar, lee `bitacora/*.csv` y escribe una tabla Markdown ([Software](../software/index.md), [Datos §4](../diseno/datos.md)). Uso propuesto `[POR VERIFICAR: la interfaz exacta se documenta en software/herramientas-cli.md cuando el script esté en el repositorio; la lógica que debe implementar es la de las tablas de arriba]`:
+Python 3.11, solo biblioteca estándar, lee `bitacora/*.csv` y escribe una tabla Markdown ([Software](../software/index.md), [Datos §4](../diseno/datos.md)). Opciones completas y convenciones de la bitácora: [Herramientas CLI § `kpis.py`](../software/herramientas-cli.md#kpispy).
 
 ```bash
-# La semana ISO que cerró (por defecto, la anterior a hoy) y las 4 previas para comparar
-python3 tools/kpis.py --semana 2026-W43
+# Todo el histórico por semana ISO, con semáforo
+python3 tools/kpis.py
 
-# Un rango explícito, con salida a archivo para pegarla en el informe del domingo
-python3 tools/kpis.py --desde 2026-09-21 --hasta 2026-10-25 --md bitacora/informes/kpis-2026-W43.md
+# Solo las últimas 4 semanas (lo normal en la revisión del domingo), ya con la
+# semilla de CEDA validada por V1 en lugar del costo conservador del 08
+python3 tools/kpis.py --semanas 4 --costo girasol=9.10 > bitacora/informes/kpis-2026-W43.md
+
+# Antes de tener bitácora propia: los datos de ejemplo de 6 semanas de Fase 0
+python3 tools/kpis.py --produccion bitacora/ejemplo/produccion.csv \
+                      --ventas bitacora/ejemplo/ventas.csv
 ```
 
-Lo que debe hacer, paso a paso:
+Lo que hace, paso a paso:
 
 | Paso | Qué hace | Con qué |
 |---|---|---|

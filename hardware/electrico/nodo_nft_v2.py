@@ -120,7 +120,7 @@ with schemdraw.Drawing(file=SALIDA, show=False) as d:
            ('GPIO23 · red CFE', 'g23')]
     der = [('VIN (5 V)', 'vin'), ('GND', 'gndr'), ('GPIO25 · A', 'g25'), ('GPIO26 · B', 'g26'),
            ('GPIO33 · pH−', 'g33'), ('GPIO12 · sol. llenado', 'g12'), ('GPIO13 · sol. purga', 'g13'),
-           ('GPIO14 · K1 principal', 'g14'), ('GPIO32 · K2 respaldo', 'g32')]
+           ('GPIO32 · K1 principal', 'g32'), ('GPIO14 · K2 respaldo', 'g14')]
     esp = {}
     for (etq, nom), py in zip(izq, ys):
         d.add(elm.Line().at((X0, py)).left(0.6))
@@ -265,8 +265,8 @@ with schemdraw.Drawing(file=SALIDA, show=False) as d:
     rect(d, (RX, RY), (RX + RW, RY + RH))
     texto(d, RX + RW / 2, RY + RH + 0.28, 'Módulo relé 2 ch 5 V (bombas NFT)', fs=10.5, halign='center')
     for nom, ein, eout, etq1, etq2 in [
-            ('g14', 'IN1', 'K1 NC', '→ bomba principal 12 V por contacto NC:', 'sin ESP32 o GPIO14 = 0 → bomba ON (fail-safe)'),
-            ('g32', 'IN2', 'K2 NO', '→ bomba respaldo 12 V por contacto NO:', 'GPIO32 = 1 → respaldo ON')]:
+            ('g32', 'IN1', 'K1 NC', '→ bomba principal 12 V por contacto NC:', 'sin ESP32 o GPIO32 = 0 → bomba ON (fail-safe)'),
+            ('g14', 'IN2', 'K2 NO', '→ bomba respaldo 12 V por contacto NO:', 'GPIO14 = 1 → respaldo ON')]:
         py = esp[nom][1]
         d.add(elm.Line().at((RX, py)).left(0.6))
         texto(d, RX + 0.12, py, ein, fs=9.5)

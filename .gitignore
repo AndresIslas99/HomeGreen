@@ -5,3 +5,11 @@ informes/
 .cache/
 *.stl
 .DS_Store
+
+# Secretos de ESPHome: claves de API, OTA y Wi-Fi. Nunca se suben.
+# La plantilla que sí se versiona es firmware/esphome/secrets.example.yaml
+firmware/esphome/secrets.yaml
+
+# Reportes generados por tools/check_links.py
+enlaces.md
+resumen.txt

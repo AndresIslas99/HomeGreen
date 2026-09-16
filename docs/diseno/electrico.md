@@ -80,7 +80,7 @@ Los cinco SVG viven en `docs/assets/diagramas/electrico/` y se regeneran con `py
 - **Detector de red CFE aislado.** Un cargador USB de 5 V enchufado al contacto GFCI del patio alimenta el LED de un optoacoplador PC817 (470 Ω en serie); el fototransistor lleva GPIO23 a 3V3 cuando hay 127 V. GPIO23 se configura `INPUT_PULLDOWN` (más 10 kΩ externo). El GND del cargador USB **no** se une al GND del nodo: esa es la gracia del optoacoplador.
 - **Divisor de batería 47k/10k → GPIO36:** 14.6 V (absorción del cargador) se vuelven 2.56 V; en ESPHome `attenuation: 12db` y `multiply: 5.7` ([research/electrico-respaldo-seguridad.md §5.1](../research/electrico-respaldo-seguridad.md)).
 - **GPIO12 es pin de arranque (strapping):** si está alto al encender, el ESP32 no arranca. Lleva pull-down de 10 kΩ obligatorio y se maneja por MOSFET (no por módulo relé activo en bajo, que lo dejaría alto).
-- **K1 por contacto NC:** con el ESP32 apagado o GPIO14 en bajo, la bomba principal está encendida. Solo se energiza K1 para apagarla (mantenimiento). K2 (NO) enciende la bomba de respaldo cuando el YF-S201 reporta flujo cero con bomba comandada.
+- **K1 por contacto NC:** con el ESP32 apagado o GPIO32 en bajo, la bomba principal está encendida. Solo se energiza K1 para apagarla (mantenimiento). K2 (NO, en GPIO14) enciende la bomba de respaldo cuando el YF-S201 reporta flujo cero con bomba comandada. **La principal va en GPIO32 y no en GPIO14 a propósito:** GPIO14 emite un pulso al arrancar el ESP32 y en la principal eso sería un corte breve del riego.
 - Solenoides **NC**: un corte de luz no vacía el tinaco ([bom/fase2.csv](../referencia/bom.md)).
 
 ### 3. Bus DC-first
@@ -151,14 +151,17 @@ Los pines de esta tabla son los que usa el firmware (`firmware/esphome/nodo-rieg
 | 33 | — | salida | Peristáltica pH− (AquAcid) | `switch` | |
 | 12 | — | salida | Solenoide llenado ½" NC | `switch` | **pin de arranque: pull-down 10 kΩ obligatorio** |
 | 13 | — | salida | Solenoide purga ½" NC | `switch` | |
-| 14 | — | salida | Relé K1 (contacto **NC**) → bomba NFT principal | `switch`, `restore_mode` | reposo = bomba ON; propuesta de este diseño [POR VERIFICAR: que coincida con `firmware/esphome/nodo-nft-v2.yaml`] |
-| 32 | — | salida | Relé K2 (contacto NO) → bomba NFT respaldo | `switch` | propuesta de este diseño [POR VERIFICAR: ídem] |
+| 32 | — | salida | Relé K1 (contacto **NC**) → bomba NFT principal | `switch`, `RESTORE_DEFAULT_ON` | reposo = bomba ON (fail-safe) |
+| 14 | — | salida | Relé K2 (contacto NO) → bomba NFT respaldo | `switch` `inverted: true`, `RESTORE_DEFAULT_OFF` | GPIO14 emite un pulso al arrancar el ESP32: en el respaldo (NO) es un parpadeo inofensivo; en la principal sería un corte |
+| 16, 17 | — | entradas | Flotadores "tambo alto" / "tambo bajo" (LT-2, **opcionales**) | `binary_sensor` gpio, `INPUT_PULLUP` | cierran a GND; sin flotador, pines al aire y el interlock de nivel queda desactivado. LT-2 no está en `bom/fase2.csv` [POR VERIFICAR: elegir flotador con contacto o un segundo JSN-SR04T y agregarlo al BOM] |
 | VIN | — | 5 V | buck desde F3 del bus | — | |
 
 !!! note "Diferencias con el YAML del informe de investigación"
-    El YAML de ejemplo en [research/electrico-respaldo-seguridad.md §5.1](../research/electrico-respaldo-seguridad.md) usa GPIO34 para el voltaje de batería, GPIO26 para la red CFE y GPIO25/33 para las bombas. Aquí GPIO34/35 quedan para pH/TDS (ADC1 de solo entrada), el voltaje va a GPIO36, la red CFE a GPIO23 y las bombas a GPIO14/32, para que un solo nodo cubra dosificación **y** continuidad. La lógica de las 5 automatizaciones del informe no cambia; solo los pines.
+    El YAML de ejemplo en [research/electrico-respaldo-seguridad.md §5.1](../research/electrico-respaldo-seguridad.md) usa GPIO34 para el voltaje de batería, GPIO26 para la red CFE y GPIO25/33 para las bombas. Aquí GPIO34/35 quedan para pH/TDS (ADC1 de solo entrada), el voltaje va a GPIO36, la red CFE a GPIO23 y las bombas a GPIO32 (principal, K1 NC) y GPIO14 (respaldo, K2 NO), para que un solo nodo cubra dosificación **y** continuidad. La lógica de las 5 automatizaciones del informe no cambia; solo los pines.
 
-**Pines que no se usan en ningún nodo y por qué:** GPIO0, GPIO2 y GPIO15 (pines de arranque: pueden impedir el flasheo o el boot), GPIO6–11 (flash interna), GPIO1/3 (UART0 del USB). GPIO16/17/19 quedan libres para ampliaciones (p. ej. un segundo DS18B20 o un LED de estado).
+    La asignación que manda es siempre la de [`firmware/esphome/nodo-nft-v2.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/nodo-nft-v2.yaml): si esta tabla y el YAML difieren, el YAML es el que se flashea ([Firmware § Nodo NFT v2](../software/firmware.md#nodo-nft-v2)).
+
+**Pines que no se usan en ningún nodo y por qué:** GPIO0, GPIO2 y GPIO15 (pines de arranque: pueden impedir el flasheo o el boot), GPIO6–11 (flash interna), GPIO1/3 (UART0 del USB). GPIO19 queda libre para ampliaciones (p. ej. un segundo DS18B20 o un LED de estado); GPIO16/17 quedan libres **solo si no pones los flotadores opcionales del tambo**.
 
 ## Tabla de cableado
 
@@ -251,7 +254,7 @@ Normativa (nivel divulgativo, no asesoría legal): NOM-001-SEDE-2012, texto en e
     Los capacitivos leen bien en la mesa y "se vuelven locos" al conectar Wi-Fi: estaban en GPIO0/2/4/12–15/25–27 (ADC2). Solo ADC1 (GPIO32–39) para analógicos.
 
 !!! warning "GPIO12 alto en el arranque"
-    El nodo NFT arranca en la mesa pero no en campo: el módulo relé activo en bajo o el cable largo dejan GPIO12 alto al encender. Pull-down de 10 kΩ y driver MOSFET; o mueve el solenoide a GPIO16/17.
+    El nodo NFT arranca en la mesa pero no en campo: el módulo relé activo en bajo o el cable largo dejan GPIO12 alto al encender. Pull-down de 10 kΩ y driver MOSFET; o mueve el solenoide a GPIO19 (o a GPIO16/17 si no usas los flotadores del tambo).
 
 !!! warning "Buck sin ajustar"
     El LM2596 sale de fábrica con la salida cerca de la entrada (≈ 12 V). Ajústalo a 5.0 V con multímetro **antes** de conectar el ESP32; si no, es un ESP32 menos.

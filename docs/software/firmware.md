@@ -84,15 +84,17 @@ y [electrico.md](../diseno/electrico.md). Si cambias uno, cámbialo en los tres.
 | 17 | Entrada | Flotador "tambo bajo" (LT-2) | `binary_sensor` `INPUT_PULLUP`, `inverted: true`, `delayed_on/off: 10s` | Contacto que **cierra cuando la boya cae** (nivel bajo). Sin flotador, los dos pines leen "abierto" y el interlock de nivel queda desactivado |
 | VIN | 5 V | Buck desde F3 del bus | — | |
 
-!!! note "Diferencia con la tabla de electrico.md"
-    La tabla de [electrico.md](../diseno/electrico.md) propone K1 en GPIO14 y K2 en GPIO32 y lo marca
-    `[POR VERIFICAR: que coincida con el YAML]`. El firmware usa **GPIO32 para la principal (K1 NC) y
-    GPIO14 para el respaldo (K2 NO)**, porque GPIO14 emite un pulso breve al arrancar el ESP32: en el
-    respaldo (normalmente apagado) es un parpadeo inofensivo; en la principal sería un corte breve
-    en cada reinicio. El YAML es la fuente de verdad; la tabla de electrico.md y el script
-    `hardware/electrico/nodo_nft_v2.py` deben actualizarse `[POR VERIFICAR]`. Los pines del YAML
-    del informe ([research/electrico-respaldo-seguridad §5.1](../research/electrico-respaldo-seguridad.md))
-    también difieren (usaba GPIO34 batería, GPIO26 red, GPIO25/33 bombas); la lógica es la misma.
+!!! note "Por qué la principal va en GPIO32 y no en GPIO14"
+    **GPIO32 = K1 bomba principal (contacto NC); GPIO14 = K2 bomba de respaldo (contacto NO).**
+    GPIO14 emite un pulso breve al arrancar el ESP32: en el respaldo (normalmente apagado) es un
+    parpadeo inofensivo, pero en la principal sería un corte de riego en cada reinicio. El YAML es
+    la fuente de verdad y [electrico.md](../diseno/electrico.md), [control.md](../diseno/control.md),
+    [datos.md](../diseno/datos.md), [dosificación v2](../fases/fase-2/dosificacion-v2.md),
+    [Armar el respaldo DC](../guias/armar-respaldo-dc.md) y los esquemas de `hardware/electrico/`
+    ya siguen esta asignación. Los pines del YAML del informe
+    ([research/electrico-respaldo-seguridad §5.1](../research/electrico-respaldo-seguridad.md))
+    sí difieren (usaba GPIO34 batería, GPIO26 red, GPIO25/33 bombas); la lógica es la misma, solo
+    cambian los pines.
 
 ## Instalar ESPHome
 
@@ -242,7 +244,7 @@ reinicios y cortes.
 | Riego | `Riego humedad min/max germinacion`, `Riego humedad min/max desarrollo`, `Etapa nivel 1…4` (opciones `vacio` / `germinacion` / `desarrollo`; "vacio" = ese nivel no riega) | 60–80 % y 45–70 % `[POR VERIFICAR en V3]` | [control.md Lazo 1](../diseno/control.md) |
 | Riego watchdogs | `Riego duracion max ciclo` (120 s), `Riego ciclos max por hora` (4) | `[POR VERIFICAR en V3]` | [06 §L0](../referencia/06-validacion-y-lazos-agenticos.md) |
 | Tinaco | `Tinaco nivel minimo interlock` (20 %), `Tinaco nivel rearme` (25 %), `Tinaco nivel advertencia` (40 %) | 06 §L0 | [hidraulico §6](../diseno/hidraulico.md) |
-| Ventilación | `Ventilacion HR encender` (75 %), `HR apagar` (70 %), `T encender` (28 °C), `T apagar` (26 °C), `tiempo minimo ON` (5 min), switch `Ventilacion forzada cada hora` (jun–sep) | 06 §L0; banda `[POR VERIFICAR]` | [control.md Lazo 3](../diseno/control.md) |
+| Ventilación | `Ventilacion HR encender` (75 %), `HR apagar` (70 %), `T encender` (28 °C), `T apagar` (26 °C), `tiempo minimo ON` (5 min), switch `Ventilacion forzada cada hora` (jun–sep) | 06 §L0; banda `[POR VERIFICAR: la histéresis de 5 puntos de HR y 2 °C es el punto de partida; ajústala con 72 h de dry-run V3 y anota los valores finales con su evidencia]` | [control.md Lazo 3](../diseno/control.md) |
 | Luces | `Luces hora encender` (6), `Luces hora apagar` (20), switch `Luces automaticas` | 14 h `[POR VERIFICAR: 12–14 h]` | [electrico.md](../diseno/electrico.md) |
 | pH / EC | `pH minimo` (5.8), `pH maximo` (6.2), `EC minima` (1.2), `EC maxima` (1.8 mS/cm) | 06 §L0 | [control.md Lazo 2](../diseno/control.md) |
 | Dosificación | `Dosis A/B/pH- segundos`, `Tiempo muerto de mezcla` (12 min), `Dosis maximas por dia` (12), `Dosis tope de seguridad` (30 s) | dosis `[POR VERIFICAR en el dry-run de Fase 2]` | [03 §2.2](../referencia/03-instalacion.md) |

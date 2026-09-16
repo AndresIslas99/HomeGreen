@@ -190,13 +190,13 @@ with schemdraw.Drawing(file=SALIDA, show=False) as d:
     d.add(elm.Switch(nc=True).at((XO, y1)).right().length(1.8).label('K1 (NC)', fontsize=9, loc='bottom'))
     d.add(elm.Motor().at((XO + 1.8, y1)).right().length(1.8).label('Bomba principal 12 V 40–60 W · 24/7', fontsize=9, loc='top'))
     d.add(elm.Ground().at((XO + 3.6, y1)))
-    texto(d, XO + 4.1, y1 - 0.05, 'sin ESP32 o GPIO14 = 0 → bomba ON', fs=8.5, color=GRIS)
+    texto(d, XO + 4.1, y1 - 0.05, 'sin ESP32 o GPIO32 = 0 → bomba ON', fs=8.5, color=GRIS)
     texto(d, XO + 4.1, y1 - 0.45, 'bobinas K1/K2 ← relé 2 ch del nodo NFT; contactos ≥ 10 A', fs=8.5, color=GRIS)
     y2 = ysal['bomba2']
     d.add(elm.Switch().at((XO, y2)).right().length(1.8).label('K2 (NO)', fontsize=9, loc='bottom'))
     d.add(elm.Motor().at((XO + 1.8, y2)).right().length(1.8).label('Bomba respaldo 12 V (idéntica)', fontsize=9, loc='top'))
     d.add(elm.Ground().at((XO + 3.6, y2)))
-    texto(d, XO + 4.1, y2 - 0.05, 'GPIO32 = 1 → respaldo ON (sin flujo en YF-S201)', fs=8.5, color=GRIS)
+    texto(d, XO + 4.1, y2 - 0.05, 'GPIO14 = 1 → respaldo ON (sin flujo en YF-S201)', fs=8.5, color=GRIS)
 
     # Nodo NFT
     y3 = ysal['nodo']

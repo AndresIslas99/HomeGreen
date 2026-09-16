@@ -3,7 +3,7 @@
 Guía de compra curada por categoría: **la opción recomendada primero**, alternativas después.
 Precios en MXN al 12-sep-2026; "aprox." = visto en resultados de búsqueda sin confirmar en la
 ficha. El detalle completo (tablas de precios escalonados, teléfonos, análisis $/charola) está
-en los informes de [`docs/research/`](../research/) enlazados en cada sección. Las cantidades
+en los informes de [`docs/research/`](../research/semillas-sustrato-charolas.md) enlazados en cada sección. Las cantidades
 exactas por fase están en los BOM: [`bom/fase0.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase0.csv) ·
 [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv) · [`bom/fase2.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase2.csv).
 

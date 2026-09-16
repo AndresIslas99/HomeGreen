@@ -41,6 +41,19 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
+# Con --strict, cualquiera de estos avisos rompe el build: un enlace interno roto,
+# un ancla que no existe, una página fuera del nav o un enlace absoluto que debería ser
+# relativo. Es lo que revisa .github/workflows/docs.yml en cada pull request.
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
+  nav:
+    omitted_files: warn
+    not_found: warn
+    absolute_links: warn
+
 plugins:
   - search:
       lang: es

@@ -58,7 +58,7 @@ flowchart LR
 
 ## Cómo auditar con `tools/gate_audit.py`
 
-Python 3.11, solo biblioteca estándar; lee la bitácora, evalúa el gate y escribe un informe Markdown en `bitacora/gates/Gx-y-AAAA-MM-DD.md` ([Software](../software/index.md)). Interfaz propuesta por las páginas de gate `[POR VERIFICAR: la interfaz exacta se documenta en software/herramientas-cli.md cuando el script esté en el repositorio; la lógica que debe implementar es la de estas tablas]`:
+Python 3.11, solo biblioteca estándar; lee la bitácora, evalúa el gate y escribe un informe Markdown en `bitacora/gates/Gx-y-AAAA-MM-DD.md` ([Software](../software/index.md)). Opciones completas y esquemas de CSV que espera: [Herramientas CLI § `gate_audit.py`](../software/herramientas-cli.md#gate_auditpy). Agrega `--guardar` para que escriba el informe (sin esa bandera solo lo imprime); la salida del proceso es `0` = GO, `1` = NO-GO o datos insuficientes, `2` = error de uso:
 
 ```bash
 # G0→1: fin de la semana 6

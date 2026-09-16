@@ -85,8 +85,8 @@ python3 tools/gate_audit.py --gate G2-3 \
   --desde 2027-04-01 --hasta 2027-06-30
 ```
 
-[POR VERIFICAR: la interfaz exacta se documenta en [software/herramientas-cli](../../software/herramientas-cli.md)
-cuando el script esté en el repositorio; la lógica que debe implementar es la de esta tabla.]
+Agrega `--guardar` y el informe queda en `bitacora/gates/G2-3-AAAA-MM-DD.md`. Opciones
+completas: [software/herramientas-cli § `gate_audit.py`](../../software/herramientas-cli.md#gate_auditpy).
 
 | Paso | Qué hace | Salida |
 |---|---|---|

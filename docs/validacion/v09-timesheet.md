@@ -68,7 +68,7 @@ fecha,semana,rubro,minutos,unidades,observaciones
 2027-04-11,2027-W14,otro,20,,"informe L3 y plan de siembra"
 ```
 
-Resumen semanal para el gate (propuesta; lo puede generar `tools/gate_audit.py` a partir del CSV `[POR VERIFICAR: interfaz en software/herramientas-cli.md]`), `bitacora/validacion/v09-resumen.csv`:
+Resumen semanal para el gate. `tools/gate_audit.py --gate G2-3 --timesheet bitacora/timesheet.csv` ya calcula el promedio de 4 semanas y el rubro más caro a partir del CSV de arriba (le bastan `fecha,semana,rubro,minutos`; las demás columnas las ignora — ver [Herramientas CLI § `gate_audit.py`](../software/herramientas-cli.md#gate_auditpy)). Esta tabla, en `bitacora/validacion/v09-resumen.csv`, es la versión que se lee de un vistazo:
 
 ```csv
 semana,siembra_h,cosecha_empaque_h,lavado_h,reparto_h,ventas_cobranza_h,sistema_h,compras_h,otro_h,total_h,charolas_sem,min_por_charola_siembra,min_por_charola_cosecha,min_por_parada,observaciones

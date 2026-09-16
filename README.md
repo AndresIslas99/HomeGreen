@@ -54,8 +54,9 @@ hardware/electrico/      scripts schemdraw que generan los esquemas eléctricos 
 hardware/cad/            modelos OpenSCAD paramétricos (túnel, rack, línea NFT, patio) + renders
 hardware/hidraulico/     generador de diagramas P&ID
 bom/                     listas de materiales por fase (CSV con enlace y estado del precio)
-bitacora/                plantillas CSV de producción y ventas (+ datos de ejemplo)
-tools/                   check_links.py · kpis.py · informe_semanal.py · gate_audit.py
+bitacora/                plantillas CSV (producción, ventas, cobranza, costos, timesheet) + datos de ejemplo
+tools/                   check_links.py · kpis.py · informe_semanal.py · gate_audit.py (Python 3.11, sin dependencias)
+.github/workflows/       docs.yml (publica la wiki) · links.yml (verifica enlaces cada lunes)
 docs/assets/diagramas/   SVG eléctricos, hidráulicos, plantas, animaciones; PNG de CAD
 ```
 
@@ -82,5 +83,17 @@ docs/assets/diagramas/   SVG eléctricos, hidráulicos, plantas, animaciones; PN
 ## Contribuir
 
 Los precios caducan: si encuentras uno distinto, corrige la fila en `bom/*.csv` o en
-`docs/referencia/01-proveedores-cdmx.md` con la fecha y abre un PR. Los enlaces se verifican cada
-semana con `python3 tools/check_links.py` (workflow `links.yml`).
+`docs/referencia/01-proveedores-cdmx.md` con la fecha y abre un PR.
+
+Dos comprobaciones corren solas y conviene correrlas antes de abrir el PR:
+
+```bash
+mkdocs build --strict        # falla con cualquier enlace interno, ancla o imagen rota
+python3 tools/check_links.py # verifica los ~680 enlaces externos
+```
+
+`--strict` valida las 112 páginas: enlaces relativos, anclas, imágenes y que no haya páginas
+fuera del `nav`. `check_links.py` corre cada lunes (workflow `links.yml`) y **solo falla con un
+enlace muerto nuevo**: los ya conocidos y anotados viven en
+[`tools/enlaces-muertos-conocidos.txt`](tools/enlaces-muertos-conocidos.txt), así un `dead`
+nuevo —una partida del BOM que ya no se puede comprar— no se pierde entre el ruido viejo.

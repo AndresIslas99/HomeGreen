@@ -30,7 +30,7 @@ Nota técnica: para albahaca/cilantro el tubo redondo de 4" funciona, pero el fo
 | Canaleta hidropónica por metro, 35 cm ancho (5×25×5 cm) | **$39.90/m** (verificado) | Hydro Environment | https://hydroenv.com.mx/producto/canaleta-hidroponica-por-metro-de-largo-35cm-de-ancho-5x25x5/ | Ojo: es canaleta abierta tipo charola (para bolsas/sustrato), no gully NFT cerrado; útil como cama de drenaje |
 | Canaleta/ducto NFT "UL" PVC grado alimenticio | Cotización (la web muestra $0.00) | Hydrocultura | https://hydrocultura.com/products/canaleta-o-ductos-para-sistema-hidroponia-nft-ul | Tel +52 (55) 9435-6905; venden tapa riego, tapa drenaje y conector por separado |
 | Canaleta NFT móvil MGS 100 mm × 37 mm (+riel 13 mm), PVC virgen | Cotización | Hydrocultura | https://hydrocultura.com/products/canaleta-o-ductos-para-sistema-hidroponico-nft-movil-mgs | Perfil rectangular profesional, el que usan lechugueros comerciales |
-| Paquete completo NFT con medidores pH/EC | — (catálogo viejo) | Hydro Environment | https://hydroenv.com.mx/catalogo/index.php?main_page=product_info&products_id=140 | URL de catálogo antiguo, puede redirigir |
+| Paquete completo NFT con medidores pH/EC | — (catálogo viejo) | Hydro Environment | https://hydroenv.com.mx/catalogo/index.php?main_page=product_info&products_id=140 | URL de catálogo antiguo. **[enlace muerto al 2026-09-16 — `tools/check_links.py`]** Buscar el paquete en el catálogo nuevo de hydroenv.com.mx. |
 
 Conclusión (b): el DIY con PVC sanitario cuesta **~25–30% de lo comercial equipado**. La canaleta rectangular profesional (Hydrocultura) solo se justificaría si se escala a >20 líneas o se quiere trasplante/cosecha más rápida.
 
@@ -94,7 +94,7 @@ Ojo con Hakaphos **Violeta** (13-40-13): es alto fósforo (floración). Para hoj
 | Canastilla hidropónica 3" | **$12.80 c/u** (verificado) | Hydro Environment | https://hydroenv.com.mx/producto/canastilla-hidroponica-de-3-pulgadas/ | 8 líneas × 10 = 80 pzas ≈ $1,024 |
 | Cubos lana de roca p/germinación (49 pzas) | precio en ficha volátil | Mercado Libre | https://listado.mercadolibre.com.mx/cubos-lana-de-roca-hidroponia | Grodan Plantop desde ~$18.6/cubo aprox |
 | Espuma Oasis AeroMax 3.7 | — | Inverfarms | https://inverfarms.com/product/espuma-hidroponica-oasis-aero-max/ | Marca Oasis (Smithers), estándar de la industria |
-| Cubo lana de roca 3×3×2.5 | — | Cultivarte | http://www.cultivarte.com.mx/producto/cubo-lana-de-roca-3x3x25 | Tienda CDMX |
+| Cubo lana de roca 3×3×2.5 | — | Cultivarte | http://www.cultivarte.com.mx/producto/cubo-lana-de-roca-3x3x25 | Tienda CDMX. **[enlace muerto al 2026-09-16 — `tools/check_links.py`]** Cotizar por teléfono o usar Hydro Environment. |
 
 **Recomendación (f)**: espuma fenólica nacional de Hydro Environment ($0.32–0.68/planta) para albahaca/arúgula; la lana de roca importada (Grodan) cuesta 5–20× más por planta y solo aporta ventaja en cultivos largos (jitomate). Peat pellets (Jiffy) no convienen en NFT: sueltan turba que tapa la malla 120 y ensucia la solución.
 

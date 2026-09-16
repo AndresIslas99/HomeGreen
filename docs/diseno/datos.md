@@ -234,7 +234,7 @@ Sin actuadores.
 | Export CSV semanal (`recorder` → `bitacora/ha/AAAA-Www.csv`) | Insumo del informe L3 | §3 y §5 |
 
 Pines y esquemas por nodo: [electrico.md](electrico.md) `[POR VERIFICAR: su tabla propone K1/K2
-del NFT en GPIO14/32 y el YAML usa GPIO32/14; el YAML manda y electrico.md debe actualizarse]`.
+del NFT: el YAML manda y todas las páginas ya lo siguen (K1 principal GPIO32, K2 respaldo GPIO14)]`.
 Qué corre dónde: [control.md](control.md).
 
 ## 3. Retención y exportación

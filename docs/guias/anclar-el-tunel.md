@@ -60,7 +60,7 @@ flowchart TD
 
     - Ancla de expansión de cuña **½" × 3-¾"**, $60 c/u → $1,440 el túnel ([Home Depot](https://www.homedepot.com.mx/s/ancla%20de%20cu%C3%B1a)).
     - Placas con barrenos para ½" y **broca de concreto de ½"**: el rotomartillo de 650 W la mueve, pero más lento; barrenos de mayor diámetro = más polvo = más limpieza.
-    - Empotramiento y profundidad de barreno según la ficha del ancla [POR VERIFICAR].
+    - Empotramiento y profundidad de barreno según la ficha del ancla `[POR VERIFICAR: la ficha técnica viene en la caja y en el sitio del fabricante (Hilti, Fischer, Tornillos Marisa); anota marca, modelo, diámetro y profundidad en la bitácora antes de barrenar]`.
     - Úsalo si la losa se ve pobre (desconchados, agregado expuesto) o si la ampliación a 5 × 6 m de Fase 2 va a reutilizar estas mismas bases con más carga ([Estructura del túnel §2](../diseno/estructura-tunel.md)).
 
 === "Plan B · contrapesos sin perforar (renta / condominio)"

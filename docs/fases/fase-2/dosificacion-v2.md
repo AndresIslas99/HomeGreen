@@ -24,8 +24,8 @@ semanas — porque una sonda sin calibrar es un generador de números aleatorios
 | Red CFE presente | GPIO23 (INPUT_PULLDOWN) | Cargador USB del patio → optoacoplador | 127 V presente → GPIO23 = 1 |
 | Peristáltica A / B / pH− | GPIO25 / GPIO26 / GPIO33 | MOSFET de nivel lógico ×3 | Dosifican al tambo, junto a la succión |
 | Solenoide llenado / purga | GPIO12 / GPIO13 | MOSFET ×2, válvulas ½" NC | **GPIO12 es pin de arranque: pull-down obligatorio** |
-| K1 bomba principal | GPIO14 | Relé por contacto **NC** | Sin ESP32 o GPIO14 = 0 → bomba ON (fail-safe físico) |
-| K2 bomba respaldo | GPIO32 | Relé por contacto NO | GPIO32 = 1 → respaldo ON |
+| K1 bomba principal | GPIO32 | Relé por contacto **NC** | Sin ESP32 o GPIO32 = 0 → bomba ON (fail-safe físico) |
+| K2 bomba respaldo | GPIO14 | Relé por contacto NO | GPIO14 = 1 → respaldo ON. Va en GPIO14 porque ese pin emite un pulso al arrancar el ESP32: en el respaldo es un parpadeo, en la principal sería un corte |
 
 GPIO34/35/36 son solo entrada. El nodo se alimenta del bus de batería (fusible F3 de 2 A) vía
 buck a 5 V ([alimentación](../../assets/diagramas/electrico/alimentacion-esp32.svg)), así sigue

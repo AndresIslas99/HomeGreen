@@ -132,7 +132,8 @@ nodo puede corregirlo (riego, dosis), HA no lo toca; si HA lo detecta pero no lo
    `api:`: un router caído no borra el tiempo muerto de mezcla ni los contadores de riego.
 3. **API cifrada y OTA con contraseña.** Las claves viven en `secrets.yaml`, que **no** se
    sube a Git ([`secrets.example.yaml`](https://github.com/AndresIslas99/HomeGreen/blob/main/firmware/esphome/secrets.example.yaml)
-   explica cómo generarlas) `[POR VERIFICAR: agregar firmware/esphome/secrets.yaml al .gitignore]`.
+   explica cómo generarlas). `firmware/esphome/secrets.yaml` está en `.gitignore`: si lo ves
+   aparecer en un `git status`, algo se rompió.
 4. **Los setpoints viven en el nodo** como `number`, `select` y `switch` de ESPHome; se
    cambian desde HA sin reflashear y se guardan en la flash del ESP32. El valor "oficial"
    se commitea después en el YAML con su evidencia ([control.md](../diseno/control.md);

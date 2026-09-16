@@ -1,0 +1,64 @@
+name: links
+
+# Verifica cada semana que los enlaces de la wiki sigan vivos.
+# Los precios y los catalogos de los proveedores de CDMX caducan: cuando una tienda
+# retira un producto, el enlace muere y la partida del BOM deja de ser accionable.
+# El job falla solo si hay enlaces `dead` (404/410/DNS/timeout); los `blocked`
+# (403 de Mercado Libre, Cloudflare) se reportan pero no rompen nada.
+
+on:
+  schedule:
+    # Lunes 13:00 UTC = 7:00 en CDMX (UTC-6); el reporte esta listo antes del lazo semanal.
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+    inputs:
+      solo_dead:
+        description: 'Imprimir solo los enlaces muertos'
+        type: boolean
+        default: false
+  pull_request:
+    paths:
+      - 'tools/check_links.py'
+      - '.github/workflows/links.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verificar enlaces
+        id: check
+        run: |
+          python3 tools/check_links.py \
+            --hilos 8 --timeout 20 \
+            --salida enlaces.md \
+            ${{ inputs.solo_dead && '--only-dead' || '' }} \
+            | tee resumen.txt
+
+      - name: Resumen en el job
+        if: always()
+        run: |
+          {
+            echo '## Verificacion de enlaces'
+            echo
+            tail -n 20 resumen.txt 2>/dev/null || echo 'sin resumen'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Guardar el reporte completo
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enlaces
+          path: |
+            enlaces.md
+            resumen.txt
+          retention-days: 90
