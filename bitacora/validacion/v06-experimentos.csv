@@ -1,0 +1,1 @@
+experimento_id,fecha_inicio,fecha_fin,propuesto_por,variedad,variable,control,prueba,n_por_brazo,metrica_primaria,control_media,prueba_media,mejora_pct,cv_control_pct,cv_prueba_pct,secundarias_ok,decision,commit,observaciones

@@ -1,0 +1,1440 @@
+# =============================================================================
+#  HomeGreen · firmware/esphome/nodo-nft-v2.yaml
+#  Nodo NFT v2 (Fase 2) · ESP32 DevKit V1 30 pines · ESPHome >= 2025.1
+#  Alimentado desde el BUS DE BATERÍA (F3 de la fusiblera): sigue midiendo,
+#  dosificando y avisando durante un corte de CFE.
+#
+#  Qué hace este nodo (lazos L0 locales; HA solo avisa, escala y optimiza):
+#    · pH y EC de la solución (sondas en el RETORNO), con calibración de 2 puntos
+#      (buffers 4.01 / 6.86), patrón EC 1.413 mS/cm y compensación de temperatura.
+#    · Dosificación por histéresis con TIEMPO MUERTO de mezcla (10–15 min):
+#      dosis fija pequeña → esperar → re-medir. Orden A → mezcla → B → mezcla → pH−.
+#      Interlocks: nivel de tambo, bomba encendida y flujo real; tope de dosis/día;
+#      sonda "no confiable" (salto > 1.5 pH en 5 min o voltaje fuera de rango).
+#    · Continuidad del NFT: bomba principal con restore_mode RESTORE_DEFAULT_ON
+#      (K1 por contacto NC: sin ESP32 la bomba corre), watchdog "bomba ON sin
+#      flujo" que arranca la bomba de respaldo, detector de red CFE, voltaje de
+#      batería y modo ahorro 15/15 (lo activa HA o tú).
+#    · Llenado y purga del tambo con solenoides NC, con tiempo máximo de seguridad.
+#    · Cada peristáltica se apaga sola a los 30 s como máximo (timeout físico en
+#      firmware, aunque HA la haya encendido).
+#    · Heartbeat: uptime, estado, señal Wi-Fi.
+#
+#  Tabla de pines (idéntica a docs/software/firmware.md; ver nota en electrico.md):
+#    GPIO34  ADC1_CH6  placa pH PH-4502C (Po) vía RC 1 kΩ / 100 nF  (solo entrada)
+#    GPIO35  ADC1_CH7  placa TDS SEN0244 (AOUT) vía RC             (solo entrada)
+#    GPIO36  ADC1_CH0  divisor 47 kΩ / 10 kΩ del bus 12.8 V (×5.7) (solo entrada)
+#    GPIO4   1-Wire    DS18B20 del tambo (TT-2), pull-up 4.7 kΩ
+#    GPIO27  PCNT      YF-S201 caudal (≈ 450 pulsos/L) vía divisor 10k/20k (señal 5 V)
+#    GPIO23  entrada   detector de red CFE (PC817 desde cargador USB), INPUT_PULLDOWN
+#    GPIO25  MOSFET    peristáltica A (DP-1)
+#    GPIO26  MOSFET    peristáltica B (DP-2)
+#    GPIO33  MOSFET    peristáltica pH− (DP-3, AquAcid)
+#    GPIO12  MOSFET    solenoide llenado SV-1 (½" NC)  ← pin de arranque: pull-down 10 kΩ OBLIGATORIO
+#    GPIO13  MOSFET    solenoide purga   SV-2 (½" NC)
+#    GPIO32  relé K1   bomba NFT principal P-1 por contacto NC (reposo = bomba ON)
+#    GPIO14  relé K2   bomba NFT respaldo  P-2 por contacto NO
+#    GPIO16  entrada   flotador "tambo alto"  (LT-2, opcional; INPUT_PULLUP, cierra a GND = lleno)
+#    GPIO17  entrada   flotador "tambo bajo"  (LT-2, opcional; INPUT_PULLUP, cierra a GND = bajo)
+#  Por qué GPIO32 para la principal y GPIO14 para el respaldo: GPIO14 emite un
+#  pulso al arrancar el ESP32; en K2 (NO, normalmente apagado) ese pulso es un
+#  parpadeo inofensivo del respaldo; en K1 sería un corte breve de la principal.
+#  LT-2 no está en bom/fase2.csv [POR VERIFICAR: elegir flotador con contacto o un
+#  segundo JSN-SR04T y agregarlo al BOM]; sin flotador, deja los pines al aire y
+#  el interlock de nivel queda desactivado (ver "nivel_tambo_bajo").
+#
+#  Fuentes: docs/research/electrico-respaldo-seguridad.md §5 (base de este YAML),
+#           docs/referencia/06-validacion-y-lazos-agenticos.md (L0, watchdogs),
+#           docs/diseno/control.md (Lazos 2 y 4), docs/diseno/hidraulico.md §5.3 y §6,
+#           docs/referencia/03-instalacion.md §2.2–2.3.
+# =============================================================================
+
+substitutions:
+  nodo: nodo-nft-v2
+
+esphome:
+  name: ${nodo}
+  # Sin friendly_name: los entity_id quedan como en docs/diseno/datos.md §2
+  comment: "HomeGreen · pH/EC con dosificación por histéresis, continuidad DC-first del NFT"
+  min_version: "2025.1.0"
+  project:
+    name: "homegreen.nodo_nft"
+    version: "1.0.0"
+  on_boot:
+    priority: -100
+    then:
+      - lambda: |-
+          const uint32_t ahora = millis();
+          id(dosis_ventana_inicio_ms) = ahora;
+          id(bomba_arranque_ms) = ahora;     // gracia para el watchdog de flujo tras un reinicio
+          id(corte_inicio_ms) = ahora;       // referencia si el nodo arranca ya en batería
+          ESP_LOGI("boot", "Nodo NFT v2 listo. Bomba principal=%s", id(bomba_nft).state ? "ON" : "OFF");
+      # El detector de red tiene delayed_on: 5s; esperamos a que se asiente antes de
+      # decidir si arrancamos en batería (reinicio en medio de un corte, simulacro V11).
+      - delay: 10s
+      - lambda: |-
+          if (!id(red_cfe_presente).state) {
+            id(en_corte) = true;
+            ESP_LOGW("boot", "Arranque SIN red CFE: NFT en bateria (%.2f V)", id(voltaje_bateria_nft).state);
+          } else {
+            ESP_LOGI("boot", "Red CFE presente");
+          }
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# reboot_timeout: 0s → el nodo nunca se reinicia por perder Wi-Fi o HA
+# (un reinicio cada 15 min borraría el tiempo muerto de mezcla y los contadores).
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none
+  reboot_timeout: 0s
+  ap:
+    ssid: "${nodo} rescate"
+    password: !secret ap_password
+
+captive_portal:
+
+api:
+  encryption:
+    key: !secret api_key_nft
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+logger:
+  level: INFO
+  baud_rate: 115200
+
+web_server:
+  port: 80
+  version: 3
+
+time:
+  - platform: homeassistant
+    id: ha_time
+  - platform: sntp
+    id: sntp_time
+
+preferences:
+  flash_write_interval: 5min
+
+one_wire:
+  - platform: gpio
+    id: ow_tambo
+    pin: GPIO4                # pull-up 4.7 kΩ entre DQ y 3V3
+
+# -----------------------------------------------------------------------------
+# Variables de estado
+# -----------------------------------------------------------------------------
+globals:
+  # --- dosificación ---
+  - id: mezcla_hasta_ms            # millis() hasta el que dura el tiempo muerto (0 = ninguno)
+    type: uint32_t
+    initial_value: '0'
+  - id: pendiente_b                # tras dosificar A toca B en el siguiente turno
+    type: bool
+    initial_value: 'false'
+  - id: dosis_ventana_inicio_ms    # ventana móvil de 24 h para el tope de dosis (no depende de la hora)
+    type: uint32_t
+    initial_value: '0'
+  - id: dosis_hoy
+    type: int
+    initial_value: '0'
+  - id: dosif_suspendida           # true = tope de dosis/día alcanzado (rearme manual)
+    type: bool
+    initial_value: 'false'
+  - id: ml_hoy_a
+    type: float
+    initial_value: '0'
+  - id: ml_hoy_b
+    type: float
+    initial_value: '0'
+  - id: ml_hoy_ph
+    type: float
+    initial_value: '0'
+  - id: dp_a_dosis_s               # segundos pedidos para la dosis en curso (0 = encendido manual)
+    type: float
+    initial_value: '0'
+  - id: dp_b_dosis_s
+    type: float
+    initial_value: '0'
+  - id: dp_ph_dosis_s
+    type: float
+    initial_value: '0'
+  - id: dp_a_on_ms
+    type: uint32_t
+    initial_value: '0'
+  - id: dp_b_on_ms
+    type: uint32_t
+    initial_value: '0'
+  - id: dp_ph_on_ms
+    type: uint32_t
+    initial_value: '0'
+  - id: ph_prev                    # pH hace 5 min (regla del salto > 1.5)
+    type: float
+    initial_value: 'NAN'
+  # --- continuidad ---
+  - id: sin_flujo_s                # segundos acumulados con bomba ON y flujo bajo
+    type: int
+    initial_value: '0'
+  - id: alarma_flujo               # true = watchdog disparado (respaldo activo), rearme manual
+    type: bool
+    initial_value: 'false'
+  - id: bomba_arranque_ms          # último arranque de una bomba (gracia del watchdog)
+    type: uint32_t
+    initial_value: '0'
+  - id: corte_inicio_ms
+    type: uint32_t
+    initial_value: '0'
+  - id: en_corte
+    type: bool
+    initial_value: 'false'
+  - id: ahorro_inicio_ms
+    type: uint32_t
+    initial_value: '0'
+
+# =============================================================================
+# SETPOINTS Y CALIBRACIÓN (editables desde HA, guardados en flash)
+# =============================================================================
+number:
+  # --- Bandas (06 §L0 / control.md): pH 5.8–6.2 · EC 1.2–1.8 mS/cm según cultivo ---
+  - platform: template
+    name: "pH minimo"
+    id: ph_min
+    min_value: 4
+    max_value: 8
+    step: 0.05
+    initial_value: 5.8
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:ph
+  - platform: template
+    name: "pH maximo"
+    id: ph_max
+    min_value: 4
+    max_value: 8
+    step: 0.05
+    initial_value: 6.2
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:ph
+  - platform: template
+    name: "EC minima"
+    id: ec_min
+    min_value: 0.2
+    max_value: 4
+    step: 0.05
+    initial_value: 1.2
+    unit_of_measurement: "mS/cm"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:flash-triangle-outline
+  - platform: template
+    name: "EC maxima"
+    id: ec_max
+    min_value: 0.2
+    max_value: 4
+    step: 0.05
+    initial_value: 1.8
+    unit_of_measurement: "mS/cm"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:flash-triangle
+  # --- Calibración pH: voltajes leídos en "pH voltaje" con la sonda en cada buffer ---
+  # Ajusta primero el potenciómetro de offset de la PH-4502C para que en buffer
+  # 4.01 el voltaje quede ≤ 3.05 V (el ADC satura a ~3.1 V). Valores de EJEMPLO
+  # [POR VERIFICAR: calibra con tus buffers cada 15 días; guia calibrar-sondas-ph-ec].
+  - platform: template
+    name: "pH calibracion V en buffer 4.01"
+    id: ph_cal_v_401
+    min_value: 0
+    max_value: 3.3
+    step: 0.001
+    initial_value: 3.000
+    unit_of_measurement: "V"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:tune
+  - platform: template
+    name: "pH calibracion V en buffer 6.86"
+    id: ph_cal_v_686
+    min_value: 0
+    max_value: 3.3
+    step: 0.001
+    initial_value: 2.520
+    unit_of_measurement: "V"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:tune
+  - platform: template
+    name: "pH calibracion temperatura"     # temperatura de los buffers al calibrar
+    id: ph_cal_temp
+    min_value: 5
+    max_value: 40
+    step: 0.5
+    initial_value: 25
+    unit_of_measurement: "°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:thermometer
+  # --- Calibración EC: k = 1.413 / (lectura con k = 1 en el patrón 1.413 mS/cm) ---
+  - platform: template
+    name: "EC factor de calibracion k"
+    id: ec_k
+    min_value: 0.2
+    max_value: 5
+    step: 0.001
+    initial_value: 1.000     # [POR VERIFICAR: con el patrón Hanna HI7031L 1.413 mS/cm]
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:tune
+  - platform: template
+    name: "EC coeficiente de temperatura"
+    id: ec_temp_coef
+    min_value: 0
+    max_value: 0.05
+    step: 0.001
+    initial_value: 0.02      # ~2 %/°C, referido a 25 °C
+    unit_of_measurement: "1/°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:tune
+  # --- Dosis (segundos de bomba; los mL salen de la calibración mL/s) ------------
+  # Dosis fija: la que mueva el pH/EC menos de una décima en 200 L
+  # [POR VERIFICAR: fijarla en el dry-run de dosificación del commissioning de Fase 2].
+  - platform: template
+    name: "Dosis A segundos"
+    id: dosis_a_s
+    min_value: 0.5
+    max_value: 30
+    step: 0.5
+    initial_value: 5
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer
+  - platform: template
+    name: "Dosis B segundos"
+    id: dosis_b_s
+    min_value: 0.5
+    max_value: 30
+    step: 0.5
+    initial_value: 5
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer
+  - platform: template
+    name: "Dosis pH- segundos"
+    id: dosis_ph_s
+    min_value: 0.5
+    max_value: 30
+    step: 0.5
+    initial_value: 3
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer
+  - platform: template
+    name: "Dosis tope de seguridad"       # ninguna peristáltica corre más que esto, ni a mano
+    id: dosis_max_s
+    min_value: 1
+    max_value: 30
+    step: 1
+    initial_value: 30
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-alert
+  - platform: template
+    name: "Tiempo muerto de mezcla"       # 10–15 min (06 §L0, 03 §2.2)
+    id: t_mezcla_min
+    min_value: 5
+    max_value: 30
+    step: 1
+    initial_value: 12
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-sand
+  - platform: template
+    name: "Dosis maximas por dia"         # watchdog de deriva local (HA hace el 2× del promedio de 7 días)
+    id: dosis_max_dia
+    min_value: 1
+    max_value: 100
+    step: 1
+    initial_value: 12      # [POR VERIFICAR: ajustar tras 2 semanas de datos en HA]
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:counter
+  # Calibración mL/s de cada peristáltica: 60 s a una probeta → mL ÷ 60
+  - platform: template
+    name: "Peristaltica A mL por segundo"
+    id: dp_a_ml_s
+    min_value: 0.05
+    max_value: 10
+    step: 0.01
+    initial_value: 1.0     # [POR VERIFICAR: medir con probeta]
+    unit_of_measurement: "mL/s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:beaker
+  - platform: template
+    name: "Peristaltica B mL por segundo"
+    id: dp_b_ml_s
+    min_value: 0.05
+    max_value: 10
+    step: 0.01
+    initial_value: 1.0     # [POR VERIFICAR: medir con probeta]
+    unit_of_measurement: "mL/s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:beaker
+  - platform: template
+    name: "Peristaltica pH- mL por segundo"
+    id: dp_ph_ml_s
+    min_value: 0.05
+    max_value: 10
+    step: 0.01
+    initial_value: 1.0     # [POR VERIFICAR: medir con probeta]
+    unit_of_measurement: "mL/s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:beaker
+  - platform: template
+    name: "pH salto maximo en 5 min"      # sonda no confiable si salta más (06 watchdogs)
+    id: ph_salto_max
+    min_value: 0.2
+    max_value: 5
+    step: 0.1
+    initial_value: 1.5
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:alert-decagram
+  # --- Continuidad (research §5, control.md Lazo 4) ------------------------------
+  - platform: template
+    name: "Flujo minimo"                  # < 2 L/min = "sin flujo"
+    id: flujo_min_lmin
+    min_value: 0.2
+    max_value: 20
+    step: 0.1
+    initial_value: 2.0
+    unit_of_measurement: "L/min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-alert
+  - platform: template
+    name: "Flujo segundos sin flujo para alarma"   # 60 s (06) — el YAML del informe usaba 2 min
+    id: flujo_sin_flujo_s
+    min_value: 20
+    max_value: 600
+    step: 10
+    initial_value: 60      # [POR VERIFICAR: ajustar tras medir el caudal real]
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-alert
+  - platform: template
+    name: "Flujo gracia tras arranque"    # evita el falso "sin flujo" al restaurar (07 §2)
+    id: flujo_gracia_s
+    min_value: 5
+    max_value: 120
+    step: 5
+    initial_value: 20
+    unit_of_measurement: "s"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-sand
+  - platform: template
+    name: "Bateria voltaje bajo"          # 12.9 V ≈ 30–40 % restante en LiFePO4 (research §5.2)
+    id: v_bat_baja
+    min_value: 10
+    max_value: 14
+    step: 0.05
+    initial_value: 12.9
+    unit_of_measurement: "V"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:battery-alert
+  - platform: template
+    name: "Bateria factor divisor"        # 47k/10k ≈ 5.7; afina contra un multímetro
+    id: v_bat_factor
+    min_value: 1
+    max_value: 10
+    step: 0.001
+    initial_value: 5.7
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:tune
+  - platform: template
+    name: "Modo ahorro minutos ON"
+    id: ahorro_on_min
+    min_value: 1
+    max_value: 60
+    step: 1
+    initial_value: 15
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:battery-clock
+  - platform: template
+    name: "Modo ahorro minutos OFF"
+    id: ahorro_off_min
+    min_value: 1
+    max_value: 60
+    step: 1
+    initial_value: 15
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:battery-clock-outline
+  # --- Llenado y purga (hidraulico §5.3) -----------------------------------------
+  - platform: template
+    name: "Llenado tiempo maximo"         # respaldo del flotador; calcúlalo con el caudal medido en 5.1
+    id: llenado_max_min
+    min_value: 1
+    max_value: 120
+    step: 1
+    initial_value: 20      # [POR VERIFICAR: 200 L ÷ caudal de llenado medido]
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-alert
+  - platform: template
+    name: "Llenado tinaco minimo"         # no llenar el tambo si LT-1 < 20 % (interlock vía HA)
+    id: llenado_tinaco_min
+    min_value: 0
+    max_value: 60
+    step: 1
+    initial_value: 20
+    unit_of_measurement: "%"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:water-alert
+  - platform: template
+    name: "Purga tiempo maximo"
+    id: purga_max_min
+    min_value: 1
+    max_value: 120
+    step: 1
+    initial_value: 30      # [POR VERIFICAR: tiempo real de vaciar 200 L por SV-2]
+    unit_of_measurement: "min"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:timer-alert
+  - platform: template
+    name: "Solucion temperatura maxima"   # > 25 °C cae el oxígeno disuelto (hidraulico §6)
+    id: t_solucion_max
+    min_value: 15
+    max_value: 35
+    step: 0.5
+    initial_value: 25
+    unit_of_measurement: "°C"
+    optimistic: true
+    restore_value: true
+    mode: box
+    entity_category: config
+    icon: mdi:thermometer-alert
+
+# =============================================================================
+# SENSORES
+# =============================================================================
+sensor:
+  # --- pH (AT-1): voltaje crudo + pH calibrado con compensación de temperatura ---
+  - platform: adc
+    pin: GPIO34
+    id: ph_raw
+    name: "pH voltaje"
+    attenuation: 12db
+    update_interval: 5s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 9
+          send_every: 3
+          send_first_at: 3
+    on_value_range:
+      # Fuera del rango útil = sonda fuera del agua, BNC suelto o ADC saturado
+      - above: 3.05
+        then:
+          - script.execute: sonda_fuera_de_rango
+      - below: 0.10
+        then:
+          - script.execute: sonda_fuera_de_rango
+  - platform: copy
+    source_id: ph_raw
+    id: ph_nft
+    name: "pH NFT"
+    device_class: ph
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:ph
+    filters:
+      - lambda: |-
+          // Calibración de 2 puntos (4.01 y 6.86): recta voltaje → pH
+          const float v401 = id(ph_cal_v_401).state, v686 = id(ph_cal_v_686).state;
+          if (fabsf(v686 - v401) < 0.05f) return {};                 // calibración inválida
+          const float pendiente = (6.86f - 4.01f) / (v686 - v401);   // pH por volt (negativa en la PH-4502C)
+          float ph = 4.01f + (x - v401) * pendiente;
+          // Compensación de temperatura (Nernst): la pendiente del electrodo crece con la
+          // temperatura absoluta; el punto isopotencial del electrodo está en pH ≈ 7.
+          float t = id(temperatura_solucion).state;
+          const float t_cal = id(ph_cal_temp).state;
+          if (std::isnan(t)) t = t_cal;
+          ph = 7.0f + (ph - 7.0f) * (t_cal + 273.15f) / (t + 273.15f);
+          if (ph < 0.0f || ph > 14.0f) return {};
+          return ph;
+
+  # --- EC (AT-2): placa TDS SEN0244 leída como EC en mS/cm -----------------------
+  - platform: adc
+    pin: GPIO35
+    id: ec_raw
+    name: "EC voltaje"
+    attenuation: 12db
+    update_interval: 5s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 9
+          send_every: 3
+          send_first_at: 3
+  - platform: copy
+    source_id: ec_raw
+    id: ec_nft
+    name: "EC NFT"
+    unit_of_measurement: "mS/cm"
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:flash-triangle-outline
+    filters:
+      - lambda: |-
+          // 1) Compensación a 25 °C: la conductividad sube ~2 %/°C
+          float t = id(temperatura_solucion).state;
+          if (std::isnan(t)) t = 25.0f;
+          const float v = x / (1.0f + id(ec_temp_coef).state * (t - 25.0f));
+          // 2) Curva voltaje → µS/cm de la placa TDS (polinomio del código de ejemplo del
+          //    fabricante; su TDS en ppm es esto × 0.5) [POR VERIFICAR: contra el código de
+          //    ejemplo de la placa comprada; el factor k absorbe la diferencia]
+          const float ec_us = 133.42f * v * v * v - 255.86f * v * v + 857.39f * v;
+          // 3) Factor de calibración con el patrón 1.413 mS/cm
+          float ec_ms = ec_us / 1000.0f * id(ec_k).state;
+          if (ec_ms < 0.0f) ec_ms = 0.0f;
+          return ec_ms;
+
+  # --- DS18B20 del tambo (TT-2) ---------------------------------------------------
+  - platform: dallas_temp
+    one_wire_id: ow_tambo
+    name: "Temperatura solucion"
+    id: temperatura_solucion
+    resolution: 12
+    update_interval: 30s
+    accuracy_decimals: 1
+    filters:
+      - filter_out: nan
+
+  # --- YF-S201 caudal (FT-1): 450 pulsos/L → L/min; total en litros --------------
+  - platform: pulse_counter
+    pin:
+      number: GPIO27
+      mode:
+        input: true            # con divisor 10k/20k no lleva pull-up; si conectas directo a 3V3 usa pullup: true
+    id: flujo_nft
+    name: "Flujo NFT"
+    unit_of_measurement: "L/min"
+    device_class: volume_flow_rate
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:water-pump
+    count_mode:
+      rising_edge: INCREMENT
+      falling_edge: DISABLE
+    internal_filter: 13us
+    update_interval: 10s
+    filters:
+      - lambda: return x / 450.0f;     # pulsos/min ÷ 450 pulsos/L = L/min (YF-S201 ≈ 450 pulsos/L)
+    total:
+      name: "Volumen NFT acumulado"
+      unit_of_measurement: "L"
+      device_class: water
+      state_class: total_increasing
+      accuracy_decimals: 1
+      icon: mdi:counter
+      filters:
+        - lambda: return x / 450.0f;
+
+  # --- Voltaje de la batería (divisor 47k/10k → GPIO36) ---------------------------
+  - platform: adc
+    pin: GPIO36
+    id: v_bat_raw
+    name: "Bateria voltaje ADC"
+    attenuation: 12db
+    update_interval: 30s
+    unit_of_measurement: "V"
+    accuracy_decimals: 3
+    entity_category: diagnostic
+    filters:
+      - median:
+          window_size: 5
+          send_every: 1
+          send_first_at: 1
+  - platform: copy
+    source_id: v_bat_raw
+    id: voltaje_bateria_nft
+    name: "Voltaje bateria NFT"
+    unit_of_measurement: "V"
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 2
+    icon: mdi:battery-heart-variant
+    filters:
+      - lambda: return x * id(v_bat_factor).state;   # 14.6 V → 2.56 V en el ADC
+
+  # --- Contadores de dosificación (ventana móvil de 24 h; insumo del watchdog de deriva) ---
+  - platform: template
+    name: "Dosis hoy"
+    unit_of_measurement: "dosis"
+    state_class: total_increasing
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:counter
+    lambda: return id(dosis_hoy);
+  - platform: template
+    name: "mL dosificados hoy A"
+    unit_of_measurement: "mL"
+    state_class: total_increasing
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:beaker-outline
+    lambda: return id(ml_hoy_a);
+  - platform: template
+    name: "mL dosificados hoy B"
+    unit_of_measurement: "mL"
+    state_class: total_increasing
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:beaker-outline
+    lambda: return id(ml_hoy_b);
+  - platform: template
+    name: "mL dosificados hoy pH"
+    unit_of_measurement: "mL"
+    state_class: total_increasing
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:beaker-outline
+    lambda: return id(ml_hoy_ph);
+
+  # --- Cortes de CFE --------------------------------------------------------------
+  - platform: template
+    name: "Tiempo en bateria actual"
+    unit_of_measurement: "min"
+    device_class: duration
+    state_class: measurement
+    accuracy_decimals: 0
+    update_interval: 60s
+    icon: mdi:battery-clock
+    lambda: |-
+      if (!id(en_corte)) return 0.0f;
+      return (millis() - id(corte_inicio_ms)) / 60000.0f;
+  - platform: template
+    name: "Duracion ultimo corte"
+    id: duracion_ultimo_corte
+    unit_of_measurement: "min"
+    device_class: duration
+    accuracy_decimals: 0
+    update_interval: never          # se publica al volver la red
+    icon: mdi:transmission-tower-off
+
+  # Nivel del tinaco (LT-1) importado de HA para no llenar el tambo con el tinaco
+  # bajo. Si HA está caído queda "nan" y el llenado se permite con aviso en el log.
+  - platform: homeassistant
+    entity_id: sensor.nivel_tinaco
+    id: nivel_tinaco_ha
+    internal: true
+
+  # --- Heartbeat ------------------------------------------------------------------
+  - platform: uptime
+    name: "Nodo NFT uptime"
+    entity_category: diagnostic
+  - platform: wifi_signal
+    name: "Nodo NFT senal WiFi"
+    update_interval: 60s
+    entity_category: diagnostic
+
+# =============================================================================
+# SENSORES BINARIOS
+# =============================================================================
+binary_sensor:
+  - platform: status
+    name: "Nodo NFT estado"
+
+  # Detector de red CFE: cargador USB en el contacto GFCI del patio → PC817 → GPIO23.
+  # 127 V presente = 1. delayed_on/off de 5 s filtran parpadeos de la red.
+  - platform: gpio
+    pin:
+      number: GPIO23
+      mode:
+        input: true
+        pulldown: true
+    name: "Red CFE presente"
+    id: red_cfe_presente
+    device_class: power
+    filters:
+      - delayed_on: 5s
+      - delayed_off: 5s
+    on_release:                       # se fue la luz
+      - lambda: |-
+          id(corte_inicio_ms) = millis();
+          id(en_corte) = true;
+          ESP_LOGW("cfe", "CORTE DE CFE: NFT corriendo en bateria (%.2f V)", id(voltaje_bateria_nft).state);
+    on_press:                         # volvió la luz
+      - lambda: |-
+          if (id(en_corte)) {
+            const float minutos = (millis() - id(corte_inicio_ms)) / 60000.0f;
+            id(en_corte) = false;
+            id(duracion_ultimo_corte).publish_state(minutos);
+            ESP_LOGI("cfe", "Regreso CFE tras %.0f min", minutos);
+          }
+
+  # Nivel del tambo (LT-2) con flotadores [POR VERIFICAR: sensor no definido en bom/fase2].
+  # Cableado supuesto: dos flotadores tipo boya con contacto, cada uno entre su GPIO y GND
+  # (INPUT_PULLUP: contacto abierto = 1, cerrado = 0), montados para que el contacto
+  # CIERRE cuando la condición que vigilan es verdadera:
+  #   · "tambo bajo" (GPIO17): boya en la altura mínima, montada al revés → cierra
+  #     cuando la boya CAE (no hay agua) = nivel bajo.
+  #   · "tambo alto" (GPIO16): boya en la altura máxima → cierra cuando la boya SUBE
+  #     (hay agua) = tambo lleno.
+  # Con inverted: true en los dos, "0 = activo". Si tu flotador cierra al revés, gíralo
+  # (la mayoría se puede montar en ambos sentidos) o cambia inverted a false en ese pin.
+  # Sin flotador conectado, el pull-up deja los dos pines en 1 → "bajo" = false y
+  # "alto" = false: el interlock de nivel queda desactivado y el llenado solo lo detiene
+  # el tiempo máximo (no dejes el nodo así en producción).
+  - platform: gpio
+    pin:
+      number: GPIO17
+      mode:
+        input: true
+        pullup: true
+      inverted: true                   # 0 (contacto cerrado: boya caída) = tambo bajo
+    name: "Nivel tambo bajo"
+    id: nivel_tambo_bajo
+    device_class: problem
+    filters:
+      - delayed_on: 10s               # el oleaje del retorno no debe disparar el interlock
+      - delayed_off: 10s
+  - platform: gpio
+    pin:
+      number: GPIO16
+      mode:
+        input: true
+        pullup: true
+      inverted: true                   # 0 (contacto cerrado: boya arriba) = tambo alto
+    name: "Nivel tambo alto"
+    id: nivel_tambo_alto
+    filters:
+      - delayed_on: 3s
+      - delayed_off: 10s
+    on_press:                          # lleno: cierra el llenado de inmediato
+      - switch.turn_off: solenoide_llenado
+
+  # --- Alarmas que HA escala ---------------------------------------------------------
+  - platform: template
+    name: "NFT sin flujo"              # watchdog disparado (crítica)
+    device_class: problem
+    lambda: return id(alarma_flujo);
+  - platform: template
+    name: "NFT emergencia"             # corte de CFE Y sin flujo → alert cada 10 min en HA
+    device_class: problem
+    lambda: return (!id(red_cfe_presente).state) && id(alarma_flujo);
+  - platform: template
+    name: "Bateria baja"               # < 12.9 V sostenido 5 min → HA activa el modo ahorro
+    device_class: battery
+    lambda: |-
+      if (std::isnan(id(voltaje_bateria_nft).state)) return false;
+      return id(voltaje_bateria_nft).state < id(v_bat_baja).state;
+    filters:
+      - delayed_on: 5min
+      - delayed_off: 1min
+  - platform: template
+    name: "pH fuera de banda"
+    device_class: problem
+    lambda: |-
+      const float ph = id(ph_nft).state;
+      if (std::isnan(ph)) return false;
+      return ph < id(ph_min).state || ph > id(ph_max).state;
+    filters:
+      - delayed_on: 30min               # tras una dosis y su mezcla; antes es normal estar fuera
+  - platform: template
+    name: "EC fuera de banda"
+    device_class: problem
+    lambda: |-
+      const float ec = id(ec_nft).state;
+      if (std::isnan(ec)) return false;
+      return ec < id(ec_min).state || ec > id(ec_max).state;
+    filters:
+      - delayed_on: 30min
+  - platform: template
+    name: "Solucion caliente"          # > 25 °C: sombra, cambio de solución
+    device_class: heat
+    lambda: |-
+      if (std::isnan(id(temperatura_solucion).state)) return false;
+      return id(temperatura_solucion).state > id(t_solucion_max).state;
+  - platform: template
+    name: "Dosificacion suspendida"    # sonda no confiable o tope de dosis: rearme manual
+    device_class: problem
+    lambda: return (!id(sonda_confiable).state) || id(dosif_suspendida);
+
+text_sensor:
+  - platform: template
+    name: "Estado dosificacion"
+    update_interval: 10s
+    icon: mdi:test-tube
+    lambda: |-
+      char buf[96];
+      const uint32_t ahora = millis();
+      if (id(modo_calibracion).state) {
+        snprintf(buf, sizeof(buf), "calibracion (dosificacion pausada)");
+      } else if (!id(sonda_confiable).state) {
+        snprintf(buf, sizeof(buf), "SUSPENDIDA: sonda no confiable (calibra y rearma)");
+      } else if (id(dosif_suspendida)) {
+        snprintf(buf, sizeof(buf), "SUSPENDIDA: tope de dosis en 24 h (rearma)");
+      } else if (!id(dosificacion_auto).state) {
+        snprintf(buf, sizeof(buf), "manual");
+      } else if (id(nivel_tambo_bajo).state) {
+        snprintf(buf, sizeof(buf), "bloqueada: nivel de tambo bajo");
+      } else if (!id(bomba_nft).state && !id(bomba_nft_respaldo).state) {
+        snprintf(buf, sizeof(buf), "bloqueada: bomba apagada");
+      } else if (id(peristaltica_a).state) {
+        snprintf(buf, sizeof(buf), "dosificando A");
+      } else if (id(peristaltica_b).state) {
+        snprintf(buf, sizeof(buf), "dosificando B");
+      } else if (id(peristaltica_ph).state) {
+        snprintf(buf, sizeof(buf), "dosificando pH-");
+      } else if (id(mezcla_hasta_ms) != 0 && (int32_t) (id(mezcla_hasta_ms) - ahora) > 0) {
+        snprintf(buf, sizeof(buf), "mezclando: %ld s restantes%s",
+                 (long) ((id(mezcla_hasta_ms) - ahora) / 1000UL), id(pendiente_b) ? " (B pendiente)" : "");
+      } else {
+        snprintf(buf, sizeof(buf), "midiendo / en banda");
+      }
+      return std::string(buf);
+  - platform: template
+    name: "Estado continuidad NFT"
+    update_interval: 10s
+    icon: mdi:heart-pulse
+    lambda: |-
+      char buf[96];
+      if (id(alarma_flujo)) {
+        snprintf(buf, sizeof(buf), "ALARMA sin flujo: respaldo %s, principal %s",
+                 id(bomba_nft_respaldo).state ? "ON" : "OFF", id(bomba_nft).state ? "ON" : "OFF");
+      } else if (id(modo_ahorro_15_15).state) {
+        snprintf(buf, sizeof(buf), "modo ahorro %s (bomba %s)",
+                 id(red_cfe_presente).state ? "con red" : "en bateria", id(bomba_nft).state ? "ON" : "OFF");
+      } else if (!id(red_cfe_presente).state) {
+        snprintf(buf, sizeof(buf), "en bateria: %.2f V, %lu min",
+                 id(voltaje_bateria_nft).state, (unsigned long) ((millis() - id(corte_inicio_ms)) / 60000UL));
+      } else if (!id(bomba_nft).state) {
+        snprintf(buf, sizeof(buf), "bomba principal APAGADA (mantenimiento)");
+      } else {
+        snprintf(buf, sizeof(buf), "normal: %.1f L/min", id(flujo_nft).state);
+      }
+      return std::string(buf);
+  - platform: wifi_info
+    ip_address:
+      name: "Nodo NFT IP"
+      entity_category: diagnostic
+  - platform: version
+    name: "Nodo NFT version ESPHome"
+    entity_category: diagnostic
+
+# =============================================================================
+# ACTUADORES
+# =============================================================================
+switch:
+  # --- Bomba NFT principal (P-1): K1 por contacto NC en el módulo relé activo en bajo ---
+  # GPIO alto → relé sin excitar → contacto NC cerrado → BOMBA CORRIENDO.
+  # GPIO bajo → relé excitado → NC abierto → bomba parada (solo mantenimiento).
+  # Con el ESP32 apagado o el cable suelto la bomba corre: fail-safe físico.
+  # RESTORE_DEFAULT_ON: tras cualquier reinicio la bomba SIEMPRE arranca.
+  # Si tu módulo relé es activo en alto (o usas MOSFET), pon inverted: true.
+  - platform: gpio
+    name: "Bomba NFT"
+    id: bomba_nft
+    pin:
+      number: GPIO32
+      inverted: false
+    restore_mode: RESTORE_DEFAULT_ON
+    icon: mdi:water-pump
+    on_turn_on:
+      - lambda: |-
+          id(bomba_arranque_ms) = millis();
+          id(sin_flujo_s) = 0;
+    on_turn_off:
+      - lambda: |-
+          ESP_LOGW("bomba", "Bomba NFT principal APAGADA (mantenimiento/purga o watchdog)");
+  # --- Bomba NFT respaldo (P-2): K2 por contacto NO, mismo módulo activo en bajo ---
+  # GPIO bajo → relé excitado → NO cerrado → respaldo corriendo → inverted: true.
+  - platform: gpio
+    name: "Bomba NFT respaldo"
+    id: bomba_nft_respaldo
+    pin:
+      number: GPIO14
+      inverted: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: mdi:water-pump-off
+    on_turn_on:
+      - lambda: |-
+          id(bomba_arranque_ms) = millis();
+          id(sin_flujo_s) = 0;
+
+  # --- Peristálticas (DP-1/2/3) por MOSFET activo en alto -----------------------------
+  # Cada una se apaga sola a los "dosis_max_s" (≤ 30 s) aunque la enciendas a mano
+  # desde HA: timeout físico en firmware. mL = segundos reales × mL/s.
+  - platform: gpio
+    name: "Peristaltica A"
+    id: peristaltica_a
+    pin: GPIO25
+    restore_mode: ALWAYS_OFF
+    icon: mdi:pump
+    on_turn_on:
+      - lambda: id(dp_a_on_ms) = millis();
+      - script.execute: timeout_dp_a
+    on_turn_off:
+      - script.stop: timeout_dp_a
+      - lambda: |-
+          const float s = (millis() - id(dp_a_on_ms)) / 1000.0f;
+          id(ml_hoy_a) += s * id(dp_a_ml_s).state;
+          id(dp_a_dosis_s) = 0;
+  - platform: gpio
+    name: "Peristaltica B"
+    id: peristaltica_b
+    pin: GPIO26
+    restore_mode: ALWAYS_OFF
+    icon: mdi:pump
+    on_turn_on:
+      - lambda: id(dp_b_on_ms) = millis();
+      - script.execute: timeout_dp_b
+    on_turn_off:
+      - script.stop: timeout_dp_b
+      - lambda: |-
+          const float s = (millis() - id(dp_b_on_ms)) / 1000.0f;
+          id(ml_hoy_b) += s * id(dp_b_ml_s).state;
+          id(dp_b_dosis_s) = 0;
+  - platform: gpio
+    name: "Peristaltica pH"
+    id: peristaltica_ph
+    pin: GPIO33
+    restore_mode: ALWAYS_OFF
+    icon: mdi:pump
+    on_turn_on:
+      - lambda: id(dp_ph_on_ms) = millis();
+      - script.execute: timeout_dp_ph
+    on_turn_off:
+      - script.stop: timeout_dp_ph
+      - lambda: |-
+          const float s = (millis() - id(dp_ph_on_ms)) / 1000.0f;
+          id(ml_hoy_ph) += s * id(dp_ph_ml_s).state;
+          id(dp_ph_dosis_s) = 0;
+
+  # --- Solenoides NC por MOSFET (un corte de luz no vacía el tinaco) --------------------
+  - platform: gpio
+    name: "Solenoide llenado"          # SV-1: tinaco → dúplex F-2 → tambo
+    id: solenoide_llenado
+    pin:
+      number: GPIO12
+      ignore_strapping_warning: true   # pull-down de 10 kΩ en la placa, obligatorio (electrico.md)
+    restore_mode: ALWAYS_OFF
+    icon: mdi:valve
+    on_turn_on:
+      - lambda: |-
+          if (id(nivel_tambo_alto).state) {
+            ESP_LOGW("llenado", "Tambo ya lleno: no se abre SV-1");
+            id(solenoide_llenado).turn_off();
+            return;
+          }
+          const float lt1 = id(nivel_tinaco_ha).state;
+          if (!std::isnan(lt1) && lt1 < id(llenado_tinaco_min).state) {
+            ESP_LOGW("llenado", "Tinaco %.0f %% < %.0f %%: no se llena el tambo", lt1, id(llenado_tinaco_min).state);
+            id(solenoide_llenado).turn_off();
+            return;
+          }
+          if (std::isnan(lt1)) ESP_LOGW("llenado", "Sin dato del tinaco (HA caido): llenando solo con tiempo maximo");
+          ESP_LOGI("llenado", "SV-1 abierta; tiempo maximo %.0f min", id(llenado_max_min).state);
+      - script.execute: timeout_llenado
+    on_turn_off:
+      - script.stop: timeout_llenado
+  - platform: gpio
+    name: "Solenoide purga"            # SV-2: tambo → coladera
+    id: solenoide_purga
+    pin: GPIO13
+    restore_mode: ALWAYS_OFF
+    icon: mdi:valve
+    on_turn_on:
+      - lambda: |-
+          ESP_LOGI("purga", "SV-2 abierta; tiempo maximo %.0f min", id(purga_max_min).state);
+      - script.execute: timeout_purga
+    on_turn_off:
+      - script.stop: timeout_purga
+
+  # --- Modos ---------------------------------------------------------------------------
+  - platform: template
+    name: "Dosificacion automatica"    # OFF durante las 48 h con agua sola y al cambiar solución
+    id: dosificacion_auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:auto-mode
+  - platform: template
+    name: "Sonda confiable"            # lo apaga el watchdog; lo rearmas tú tras calibrar
+    id: sonda_confiable
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:check-decagram
+  - platform: template
+    name: "Modo calibracion"           # ON mientras metes la sonda en los buffers: no dosifica ni marca "no confiable"
+    id: modo_calibracion
+    optimistic: true
+    restore_mode: ALWAYS_OFF
+    entity_category: config
+    icon: mdi:flask
+    turn_off_action:
+      - lambda: id(ph_prev) = NAN;     # al salir, olvida el pH de hace 5 min (evita un falso salto)
+  - platform: template
+    name: "Respaldo automatico por flujo"   # OFF solo para pruebas de banco
+    id: respaldo_auto
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    entity_category: config
+    icon: mdi:shield-check
+  - platform: template
+    name: "Modo ahorro 15-15"          # HA lo enciende con batería < 12.9 V y red ausente (research §5.2 #4)
+    id: modo_ahorro_15_15
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: mdi:battery-clock
+    turn_on_action:
+      - lambda: |-
+          id(ahorro_inicio_ms) = millis();
+          ESP_LOGW("ahorro", "Modo ahorro: %.0f min ON / %.0f min OFF", id(ahorro_on_min).state, id(ahorro_off_min).state);
+    turn_off_action:
+      - lambda: |-
+          ESP_LOGI("ahorro", "Modo ahorro OFF: bomba continua");
+      - switch.turn_on: bomba_nft
+
+button:
+  - platform: template
+    name: "Rearmar alarma de flujo"    # tras revisar en sitio (bomba, línea, sensor)
+    icon: mdi:restart-alert
+    on_press:
+      - lambda: |-
+          id(alarma_flujo) = false;
+          id(sin_flujo_s) = 0;
+          id(bomba_arranque_ms) = millis();
+      - switch.turn_on: bomba_nft
+      - switch.turn_off: bomba_nft_respaldo
+  - platform: template
+    name: "Rearmar dosificacion"       # tras calibrar y confirmar con el medidor de mano
+    icon: mdi:restart
+    on_press:
+      - lambda: |-
+          id(dosif_suspendida) = false;
+          id(ph_prev) = NAN;
+          id(mezcla_hasta_ms) = 0;
+          id(pendiente_b) = false;
+      - switch.turn_on: sonda_confiable
+  - platform: template
+    name: "Purgar tambo"               # cambio de solución, paso 1 (hidraulico §5.3 #5)
+    icon: mdi:water-off
+    on_press:
+      - script.execute: purgar_tambo
+  - platform: template
+    name: "Llenar tambo"               # cambio de solución, paso 2 (luego bomba ON y dosificación ON)
+    icon: mdi:water-plus
+    on_press:
+      - switch.turn_on: solenoide_llenado
+  - platform: restart
+    name: "Nodo NFT reiniciar"
+    entity_category: diagnostic
+
+# =============================================================================
+# LÓGICA
+# =============================================================================
+script:
+  # --- Timeouts de seguridad de las peristálticas (mode: restart) -------------------
+  - id: timeout_dp_a
+    mode: restart
+    then:
+      - delay: !lambda |-
+          float s = id(dp_a_dosis_s);
+          if (s <= 0.0f) s = id(dosis_max_s).state;                 // encendido manual: tope
+          if (s > id(dosis_max_s).state) s = id(dosis_max_s).state;
+          return (uint32_t) (s * 1000.0f);
+      - switch.turn_off: peristaltica_a
+  - id: timeout_dp_b
+    mode: restart
+    then:
+      - delay: !lambda |-
+          float s = id(dp_b_dosis_s);
+          if (s <= 0.0f) s = id(dosis_max_s).state;
+          if (s > id(dosis_max_s).state) s = id(dosis_max_s).state;
+          return (uint32_t) (s * 1000.0f);
+      - switch.turn_off: peristaltica_b
+  - id: timeout_dp_ph
+    mode: restart
+    then:
+      - delay: !lambda |-
+          float s = id(dp_ph_dosis_s);
+          if (s <= 0.0f) s = id(dosis_max_s).state;
+          if (s > id(dosis_max_s).state) s = id(dosis_max_s).state;
+          return (uint32_t) (s * 1000.0f);
+      - switch.turn_off: peristaltica_ph
+
+  # --- Timeouts de solenoides ------------------------------------------------------
+  - id: timeout_llenado
+    mode: restart
+    then:
+      - delay: !lambda "return (uint32_t) (id(llenado_max_min).state * 60000.0f);"
+      - logger.log:
+          level: WARN
+          format: "Llenado detenido por tiempo maximo (¿flotador LT-2 alto no cerro?)"
+      - switch.turn_off: solenoide_llenado
+  - id: timeout_purga
+    mode: restart
+    then:
+      - delay: !lambda "return (uint32_t) (id(purga_max_min).state * 60000.0f);"
+      - switch.turn_off: solenoide_purga
+
+  # --- Cambio de solución, paso 1: P-1 OFF → dosificación OFF → SV-2 abre ----------
+  - id: purgar_tambo
+    mode: single
+    then:
+      - switch.turn_off: dosificacion_auto
+      - switch.turn_off: bomba_nft_respaldo
+      - switch.turn_off: bomba_nft
+      - lambda: |-
+          id(mezcla_hasta_ms) = 0;
+          id(pendiente_b) = false;
+          ESP_LOGW("purga", "Cambio de solucion: bomba OFF, dosificacion OFF, purgando. Al terminar: Llenar tambo → Bomba NFT ON → Dosificacion automatica ON");
+      - switch.turn_on: solenoide_purga
+
+  # --- Sonda fuera de rango de voltaje (fuera del agua, BNC suelto, ADC saturado) --
+  - id: sonda_fuera_de_rango
+    mode: single
+    then:
+      - if:
+          condition:
+            and:
+              - switch.is_off: modo_calibracion
+              - switch.is_on: sonda_confiable
+          then:
+            - lambda: |-
+                ESP_LOGE("sonda", "pH voltaje %.3f V fuera de rango: sonda NO confiable", id(ph_raw).state);
+            - switch.turn_off: sonda_confiable
+
+  # ---------------------------------------------------------------------------------
+  # Lazo 2 · Dosificación por histéresis con tiempo muerto (cada 60 s).
+  #   Interlocks: modo auto ON, sin calibración en curso, sonda confiable, nivel de
+  #   tambo OK, bomba encendida y flujo real (sin recirculación no hay mezcla).
+  #   Tiempo muerto: tras cada dosis no se decide nada durante t_mezcla.
+  #   Orden en un depósito nuevo: A → mezcla → B → mezcla → pH− → medir.
+  #   pH < mínimo o EC > máxima no tienen actuador (no hay pH+ ni dilución
+  #   automática): quedan como alarma para HA.
+  # ---------------------------------------------------------------------------------
+  - id: evaluar_dosificacion
+    mode: single
+    then:
+      - lambda: |-
+          const uint32_t ahora = millis();
+          // Ventana móvil de 24 h para los contadores (no depende de la hora de HA)
+          if ((ahora - id(dosis_ventana_inicio_ms)) > 86400000UL) {
+            id(dosis_ventana_inicio_ms) = ahora;
+            id(dosis_hoy) = 0;
+            id(ml_hoy_a) = 0; id(ml_hoy_b) = 0; id(ml_hoy_ph) = 0;
+          }
+          if (!id(dosificacion_auto).state || id(modo_calibracion).state) return;
+          if (!id(sonda_confiable).state || id(dosif_suspendida)) return;
+          if (id(nivel_tambo_bajo).state) return;                                   // interlock nivel
+          if (!id(bomba_nft).state && !id(bomba_nft_respaldo).state) return;        // interlock bomba
+          const float f = id(flujo_nft).state;
+          if (std::isnan(f) || f < id(flujo_min_lmin).state) return;                // interlock flujo
+          if (id(mezcla_hasta_ms) != 0 && (int32_t) (id(mezcla_hasta_ms) - ahora) > 0) return;   // tiempo muerto
+          id(mezcla_hasta_ms) = 0;
+          if (id(peristaltica_a).state || id(peristaltica_b).state || id(peristaltica_ph).state) return;
+          if (id(dosis_hoy) >= (int) id(dosis_max_dia).state) {
+            if (!id(dosif_suspendida))
+              ESP_LOGE("dosif", "Tope de %d dosis en 24 h: SUSPENDIDA (¿fuga, sonda mintiendo, deposito contaminado?)", id(dosis_hoy));
+            id(dosif_suspendida) = true;
+            return;
+          }
+          const float ph = id(ph_nft).state, ec = id(ec_nft).state;
+          uint32_t hasta = ahora + (uint32_t) (id(t_mezcla_min).state * 60000.0f);
+          if (hasta == 0) hasta = 1;
+          if (id(pendiente_b)) {                       // turno de B tras la mezcla de A
+            id(pendiente_b) = false;
+            id(dp_b_dosis_s) = id(dosis_b_s).state;
+            id(dosis_hoy) += 1;
+            id(mezcla_hasta_ms) = hasta;
+            ESP_LOGI("dosif", "Dosis B %.1f s (EC %.2f) → mezcla %.0f min", id(dosis_b_s).state, ec, id(t_mezcla_min).state);
+            id(peristaltica_b).turn_on();
+            return;
+          }
+          if (!std::isnan(ec) && ec < id(ec_min).state) {
+            id(dp_a_dosis_s) = id(dosis_a_s).state;
+            id(pendiente_b) = true;
+            id(dosis_hoy) += 1;
+            id(mezcla_hasta_ms) = hasta;
+            ESP_LOGI("dosif", "EC %.2f < %.2f: dosis A %.1f s → mezcla → B", ec, id(ec_min).state, id(dosis_a_s).state);
+            id(peristaltica_a).turn_on();
+            return;
+          }
+          if (!std::isnan(ph) && ph > id(ph_max).state) {
+            id(dp_ph_dosis_s) = id(dosis_ph_s).state;
+            id(dosis_hoy) += 1;
+            id(mezcla_hasta_ms) = hasta;
+            ESP_LOGI("dosif", "pH %.2f > %.2f: dosis pH- %.1f s → mezcla", ph, id(ph_max).state, id(dosis_ph_s).state);
+            id(peristaltica_ph).turn_on();
+            return;
+          }
+          // En banda (o fuera de banda sin actuador): no hacer nada, HA avisa.
+
+  # ---------------------------------------------------------------------------------
+  # Lazo 4 · Watchdog "bomba comandada ON y sin flujo" (cada 10 s), local.
+  #   Con gracia tras cada arranque (evita el falso "sin flujo" al restaurar la red).
+  #   1ª etapa: respaldo ON, principal OFF, alarma crítica.
+  #   2ª etapa: si el respaldo tampoco da flujo, enciende las dos (no sabemos quién
+  #   miente: bomba, línea o sensor). Rearme manual tras revisar en sitio.
+  # ---------------------------------------------------------------------------------
+  - id: watchdog_flujo
+    mode: single
+    then:
+      - lambda: |-
+          const uint32_t ahora = millis();
+          const bool comandada = id(bomba_nft).state || id(bomba_nft_respaldo).state;
+          const float f = id(flujo_nft).state;
+          if (!comandada || std::isnan(f) || !id(respaldo_auto).state) { id(sin_flujo_s) = 0; return; }
+          if ((ahora - id(bomba_arranque_ms)) < (uint32_t) (id(flujo_gracia_s).state * 1000.0f)) return;
+          if (f >= id(flujo_min_lmin).state) { id(sin_flujo_s) = 0; return; }
+          id(sin_flujo_s) += 10;
+          const int umbral = (int) id(flujo_sin_flujo_s).state;
+          if (!id(alarma_flujo) && id(sin_flujo_s) >= umbral) {
+            id(alarma_flujo) = true;
+            ESP_LOGE("flujo", "BOMBA ON y flujo %.2f L/min < %.1f por %d s: respaldo ON, principal OFF", f, id(flujo_min_lmin).state, umbral);
+            id(bomba_nft_respaldo).turn_on();
+            id(bomba_nft).turn_off();
+            id(bomba_arranque_ms) = ahora;
+            id(sin_flujo_s) = 0;
+          } else if (id(alarma_flujo) && id(bomba_nft_respaldo).state && !id(bomba_nft).state && id(sin_flujo_s) >= umbral) {
+            ESP_LOGE("flujo", "El respaldo tampoco da flujo: enciendo las dos bombas (¿linea rota o sensor?)");
+            id(bomba_nft).turn_on();
+            id(sin_flujo_s) = 0;
+          }
+
+  # --- Modo ahorro 15/15 (cada minuto): cicla la bomba principal --------------------
+  - id: ciclo_ahorro
+    mode: single
+    then:
+      - lambda: |-
+          if (!id(modo_ahorro_15_15).state || id(alarma_flujo)) return;
+          const uint32_t on_ms = (uint32_t) (id(ahorro_on_min).state * 60000.0f);
+          const uint32_t off_ms = (uint32_t) (id(ahorro_off_min).state * 60000.0f);
+          if (on_ms + off_ms == 0) return;
+          const uint32_t fase = (millis() - id(ahorro_inicio_ms)) % (on_ms + off_ms);
+          const bool deseado = fase < on_ms;
+          if (deseado != id(bomba_nft).state) {
+            if (deseado) id(bomba_nft).turn_on(); else id(bomba_nft).turn_off();
+          }
+
+  # --- Sonda no confiable: salto > 1.5 pH en 5 min (las baratas fallan mintiendo) ---
+  - id: watchdog_sonda
+    mode: single
+    then:
+      - lambda: |-
+          if (id(modo_calibracion).state) { id(ph_prev) = NAN; return; }
+          const float ph = id(ph_nft).state;
+          if (std::isnan(ph)) return;
+          if (!std::isnan(id(ph_prev)) && fabsf(ph - id(ph_prev)) > id(ph_salto_max).state && id(sonda_confiable).state) {
+            ESP_LOGE("sonda", "pH salto de %.2f a %.2f en 5 min: sonda NO confiable, dosificacion suspendida", id(ph_prev), ph);
+            id(sonda_confiable).turn_off();
+          }
+          id(ph_prev) = ph;
+
+interval:
+  - interval: 60s
+    then:
+      - script.execute: evaluar_dosificacion
+  - interval: 10s
+    then:
+      - script.execute: watchdog_flujo
+  - interval: 1min
+    then:
+      - script.execute: ciclo_ahorro
+  - interval: 5min
+    then:
+      - script.execute: watchdog_sonda

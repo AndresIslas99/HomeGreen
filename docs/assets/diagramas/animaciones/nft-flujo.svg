@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="900" height="500" viewBox="0 0 900 500" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" fill="#1f2937">
+<title>Flujo del NFT recirculante — animación</title>
+<desc>Animación del circuito NFT de Fase 2: tambo TK-2 de 200 L, bomba P-1 de 12 V en el bus de batería, filtro F-1 malla 120, caudalímetro FT-1 YF-S201, manifold con válvula por línea, 8 líneas de PVC sanitario de 4 pulgadas con pendiente 2–3 % (se dibujan 4), retorno de 2 pulgadas por gravedad con sondas AT-1 pH y AT-2 EC, y tres peristálticas A, B y pH− dosificando al tambo. Fuente: docs/diseno/hidraulico.md y docs/referencia/03-instalacion.md §2.</desc>
+<style>
+  .h { font-size: 16px; font-weight: 600; fill: #1f2937; }
+  .sub { font-size: 12px; fill: #6b7280; }
+  .lb { font-size: 12px; fill: #1f2937; }
+  .sm { font-size: 11px; fill: #6b7280; }
+  .b { font-weight: 600; }
+  .ink { fill: none; stroke: #1f2937; stroke-width: 1.5; }
+  .pipe { fill: none; stroke: #1f2937; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .pipein { fill: none; stroke: #ffffff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+  .green { fill: #2e7d32; }
+  .amber { fill: #b45309; }
+  .box { fill: #ffffff; stroke: #1f2937; stroke-width: 1.5; }
+  .boxg { fill: #f0fdf4; stroke: #2e7d32; stroke-width: 1.5; }
+  .boxa { fill: #fff7ed; stroke: #b45309; stroke-width: 1.5; }
+  .boxn { fill: #f9fafb; stroke: #6b7280; stroke-width: 1.2; }
+</style>
+<rect width="900" height="500" fill="#ffffff"/>
+<text x="20" y="30" class="h">Flujo del NFT recirculante (Fase 2)</text>
+<text x="20" y="48" class="sub">TK-2 → P-1 → F-1 → FT-1 → manifold → 8 líneas → retorno con AT-1/AT-2 → TK-2 · recirculación continua, colgada del bus de batería 12 V</text>
+<!-- Tuberías -->
+<path d="M200,420 L240,420" class="pipe"/>
+<path d="M200,420 L240,420" class="pipein"/>
+<path d="M280,420 L316,420" class="pipe"/>
+<path d="M280,420 L316,420" class="pipein"/>
+<path d="M344,420 L387,420" class="pipe"/>
+<path d="M344,420 L387,420" class="pipein"/>
+<path d="M413,420 L820,420 L820,100" class="pipe"/>
+<path d="M413,420 L820,420 L820,100" class="pipein"/>
+<path d="M820,100 L820,260" class="pipe"/>
+<path d="M820,100 L820,260" class="pipein"/>
+<path d="M820,110 L810,110" class="pipe"/>
+<path d="M820,110 L810,110" class="pipein"/>
+<path d="M820,160 L810,160" class="pipe"/>
+<path d="M820,160 L810,160" class="pipein"/>
+<path d="M820,210 L810,210" class="pipe"/>
+<path d="M820,210 L810,210" class="pipein"/>
+<path d="M820,260 L810,260" class="pipe"/>
+<path d="M820,260 L810,260" class="pipein"/>
+<path d="M810,110 L310,122" fill="none" stroke="#1f2937" stroke-width="18" stroke-linecap="round"/>
+<path d="M810,110 L310,122" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+<path d="M810,114 L310,126" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="6 8" opacity="0.8"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1.2s" repeatCount="indefinite"/></path>
+<path d="M310,122 L290,122" class="pipe"/>
+<path d="M310,122 L290,122" class="pipein"/>
+<path d="M810,160 L310,172" fill="none" stroke="#1f2937" stroke-width="18" stroke-linecap="round"/>
+<path d="M810,160 L310,172" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+<path d="M810,164 L310,176" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="6 8" opacity="0.8"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1.2s" repeatCount="indefinite"/></path>
+<path d="M310,172 L290,172" class="pipe"/>
+<path d="M310,172 L290,172" class="pipein"/>
+<path d="M810,210 L310,222" fill="none" stroke="#1f2937" stroke-width="18" stroke-linecap="round"/>
+<path d="M810,210 L310,222" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+<path d="M810,214 L310,226" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="6 8" opacity="0.8"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1.2s" repeatCount="indefinite"/></path>
+<path d="M310,222 L290,222" class="pipe"/>
+<path d="M310,222 L290,222" class="pipein"/>
+<path d="M810,260 L310,272" fill="none" stroke="#1f2937" stroke-width="18" stroke-linecap="round"/>
+<path d="M810,260 L310,272" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+<path d="M810,264 L310,276" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="6 8" opacity="0.8"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1.2s" repeatCount="indefinite"/></path>
+<path d="M310,272 L290,272" class="pipe"/>
+<path d="M310,272 L290,272" class="pipein"/>
+<path d="M290,122 L290,340 L160,340" class="pipe"/>
+<path d="M290,122 L290,340 L160,340" class="pipein"/>
+<path d="M809,104 L821,116 L821,104 L809,116 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M809,154 L821,166 L821,154 L809,166 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M809,204 L821,216 L821,204 L809,216 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M809,254 L821,266 L821,254 L809,266 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="393" y="104.84" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="400" y1="104.84" x2="400" y2="92.84" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="395" cy="93.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 395 93.84)"/>
+<ellipse cx="405" cy="93.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 405 93.84)"/>
+<path d="M398,112.84 q-2,6 0,10 M402,112.84 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="473" y="102.92" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="480" y1="102.92" x2="480" y2="90.92" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="475" cy="91.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 475 91.92)"/>
+<ellipse cx="485" cy="91.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 485 91.92)"/>
+<path d="M478,110.92 q-2,6 0,10 M482,110.92 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="553" y="101.0" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="560" y1="101.0" x2="560" y2="89.0" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="555" cy="90.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 555 90.0)"/>
+<ellipse cx="565" cy="90.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 565 90.0)"/>
+<path d="M558,109.0 q-2,6 0,10 M562,109.0 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="633" y="99.08" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="640" y1="99.08" x2="640" y2="87.08" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="635" cy="88.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 635 88.08)"/>
+<ellipse cx="645" cy="88.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 645 88.08)"/>
+<path d="M638,107.08 q-2,6 0,10 M642,107.08 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="713" y="97.16" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="720" y1="97.16" x2="720" y2="85.16" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="715" cy="86.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 715 86.16)"/>
+<ellipse cx="725" cy="86.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 725 86.16)"/>
+<path d="M718,105.16 q-2,6 0,10 M722,105.16 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="393" y="154.84" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="400" y1="154.84" x2="400" y2="142.84" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="395" cy="143.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 395 143.84)"/>
+<ellipse cx="405" cy="143.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 405 143.84)"/>
+<path d="M398,162.84 q-2,6 0,10 M402,162.84 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="473" y="152.92" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="480" y1="152.92" x2="480" y2="140.92" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="475" cy="141.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 475 141.92)"/>
+<ellipse cx="485" cy="141.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 485 141.92)"/>
+<path d="M478,160.92 q-2,6 0,10 M482,160.92 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="553" y="151.0" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="560" y1="151.0" x2="560" y2="139.0" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="555" cy="140.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 555 140.0)"/>
+<ellipse cx="565" cy="140.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 565 140.0)"/>
+<path d="M558,159.0 q-2,6 0,10 M562,159.0 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="633" y="149.08" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="640" y1="149.08" x2="640" y2="137.08" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="635" cy="138.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 635 138.08)"/>
+<ellipse cx="645" cy="138.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 645 138.08)"/>
+<path d="M638,157.08 q-2,6 0,10 M642,157.08 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="713" y="147.16" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="720" y1="147.16" x2="720" y2="135.16" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="715" cy="136.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 715 136.16)"/>
+<ellipse cx="725" cy="136.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 725 136.16)"/>
+<path d="M718,155.16 q-2,6 0,10 M722,155.16 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="393" y="204.84" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="400" y1="204.84" x2="400" y2="192.84" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="395" cy="193.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 395 193.84)"/>
+<ellipse cx="405" cy="193.84" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 405 193.84)"/>
+<path d="M398,212.84 q-2,6 0,10 M402,212.84 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="473" y="202.92" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="480" y1="202.92" x2="480" y2="190.92" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="475" cy="191.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 475 191.92)"/>
+<ellipse cx="485" cy="191.92" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 485 191.92)"/>
+<path d="M478,210.92 q-2,6 0,10 M482,210.92 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="553" y="201.0" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="560" y1="201.0" x2="560" y2="189.0" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="555" cy="190.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 555 190.0)"/>
+<ellipse cx="565" cy="190.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 565 190.0)"/>
+<path d="M558,209.0 q-2,6 0,10 M562,209.0 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="633" y="199.08" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="640" y1="199.08" x2="640" y2="187.08" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="635" cy="188.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 635 188.08)"/>
+<ellipse cx="645" cy="188.08" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 645 188.08)"/>
+<path d="M638,207.08 q-2,6 0,10 M642,207.08 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="713" y="197.16" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="720" y1="197.16" x2="720" y2="185.16" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="715" cy="186.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 715 186.16)"/>
+<ellipse cx="725" cy="186.16" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 725 186.16)"/>
+<path d="M718,205.16 q-2,6 0,10 M722,205.16 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="393" y="254.83999999999997" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="400" y1="254.83999999999997" x2="400" y2="242.83999999999997" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="395" cy="243.83999999999997" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 395 243.83999999999997)"/>
+<ellipse cx="405" cy="243.83999999999997" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 405 243.83999999999997)"/>
+<path d="M398,262.84 q-2,6 0,10 M402,262.84 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="473" y="252.92000000000002" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="480" y1="252.92000000000002" x2="480" y2="240.92000000000002" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="475" cy="241.92000000000002" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 475 241.92000000000002)"/>
+<ellipse cx="485" cy="241.92000000000002" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 485 241.92000000000002)"/>
+<path d="M478,260.92 q-2,6 0,10 M482,260.92 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="553" y="251.0" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="560" y1="251.0" x2="560" y2="239.0" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="555" cy="240.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 555 240.0)"/>
+<ellipse cx="565" cy="240.0" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 565 240.0)"/>
+<path d="M558,259.0 q-2,6 0,10 M562,259.0 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="633" y="249.07999999999998" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="640" y1="249.07999999999998" x2="640" y2="237.07999999999998" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="635" cy="238.07999999999998" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 635 238.07999999999998)"/>
+<ellipse cx="645" cy="238.07999999999998" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 645 238.07999999999998)"/>
+<path d="M638,257.08 q-2,6 0,10 M642,257.08 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="713" y="247.16000000000003" width="14" height="6" class="box" stroke-width="1"/>
+<line x1="720" y1="247.16000000000003" x2="720" y2="235.16000000000003" stroke="#2e7d32" stroke-width="1.5"/>
+<ellipse cx="715" cy="236.16000000000003" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(-30 715 236.16000000000003)"/>
+<ellipse cx="725" cy="236.16000000000003" rx="5.5" ry="3" fill="#2e7d32" transform="rotate(30 725 236.16000000000003)"/>
+<path d="M718,255.16000000000003 q-2,6 0,10 M722,255.16000000000003 q2,6 0,10" fill="none" stroke="#6b7280" stroke-width="0.8"/>
+<rect x="90" y="385" width="110" height="65" fill="#f0fdf4"><animate attributeName="y" values="385;387;385" dur="3s" repeatCount="indefinite"/></rect>
+<path d="M90,350 L90,450 L200,450 L200,350" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="84" y1="350" x2="206" y2="350" stroke="#1f2937" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="145" y="370" class="lb b" text-anchor="middle">TK-2</text>
+<text x="145" y="384" class="sm" text-anchor="middle">200 L · 18–22 °C</text>
+<text x="20" y="486" class="sm">TK-2: tambo HDPE 200 L grado alimenticio, tapado, bajo sombra · P-2 de respaldo en paralelo (no se dibuja)</text>
+<g transform="translate(260,420)">
+<circle r="20" class="box" stroke-width="2"/>
+<g>
+<path d="M0,-14 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(0)"/>
+<path d="M0,-14 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(120)"/>
+<path d="M0,-14 L4,0 L-4,0 Z" fill="#2e7d32" transform="rotate(240)"/>
+<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1.5s" repeatCount="indefinite"/>
+</g>
+<circle r="3" fill="#ffffff" stroke="#1f2937"/>
+</g>
+<text x="260" y="452" class="lb b" text-anchor="middle">P-1 diafragma 12 V</text>
+<text x="260" y="466" class="sm" text-anchor="middle">bus batería LiFePO4 · 24/7</text>
+<rect x="316" y="406" width="28" height="28" class="box" stroke-width="2"/>
+<line x1="309" y1="406" x2="295" y2="434" stroke="#1f2937" stroke-width="1" clip-path="url(#fclip)"/>
+<line x1="316" y1="406" x2="302" y2="434" stroke="#1f2937" stroke-width="1" clip-path="url(#fclip)"/>
+<line x1="323" y1="406" x2="309" y2="434" stroke="#1f2937" stroke-width="1" clip-path="url(#fclip)"/>
+<line x1="330" y1="406" x2="316" y2="434" stroke="#1f2937" stroke-width="1" clip-path="url(#fclip)"/>
+<line x1="337" y1="406" x2="323" y2="434" stroke="#1f2937" stroke-width="1" clip-path="url(#fclip)"/>
+<clipPath id="fclip"><rect x="316" y="406" width="28" height="28"/></clipPath>
+<text x="330" y="392" class="lb b" text-anchor="middle">F-1 malla 120</text>
+<g transform="translate(400,420)">
+<circle r="13" class="box" stroke-width="2"/>
+<g>
+<line x1="-9" y1="0" x2="9" y2="0" stroke="#2e7d32" stroke-width="2.5" transform="rotate(0)"/>
+<line x1="-9" y1="0" x2="9" y2="0" stroke="#2e7d32" stroke-width="2.5" transform="rotate(90)"/>
+<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="1s" repeatCount="indefinite"/>
+</g>
+</g>
+<text x="430" y="452" class="lb b">FT-1 YF-S201 · 8–16 L/min</text>
+<text x="430" y="466" class="sm">bomba ON y &lt; 2 L/min → arranca P-2 + alerta crítica (raíces mueren en 2–4 h)</text>
+<text x="835" y="372" class="sm">subida</text>
+<text x="835" y="386" class="sm">¾ pulg</text>
+<text x="836" y="144" class="sm">manifold</text>
+<text x="836" y="158" class="sm">1 válvula</text>
+<text x="836" y="172" class="sm">por línea</text>
+<text x="560" y="70" class="lb" text-anchor="middle">8 líneas PVC sanitario 4 pulg × 3 m · pendiente 2–3 % · 1–2 L/min por línea (se dibujan 4)</text>
+<text x="276" y="150" class="lb" text-anchor="end">retorno 2 pulg</text>
+<text x="276" y="164" class="sm" text-anchor="end">por gravedad</text>
+<circle cx="290" cy="295" r="7" fill="#b45309" stroke="#ffffff" stroke-width="1.5"><animate attributeName="opacity" values="0.3;1;1;0.3;0.3" keyTimes="0;0.05;0.25;0.35;1" dur="5s" begin="-0s" repeatCount="indefinite"/></circle>
+<text x="302" y="299" class="sm amber b" opacity="0">pH 6.0<animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.05;0.25;0.35;1" dur="5s" begin="-0s" repeatCount="indefinite"/></text>
+<text x="272" y="299" class="sm" text-anchor="end">AT-1 pH 5.8–6.2</text>
+<circle cx="290" cy="322" r="7" fill="#b45309" stroke="#ffffff" stroke-width="1.5"><animate attributeName="opacity" values="0.3;1;1;0.3;0.3" keyTimes="0;0.05;0.25;0.35;1" dur="5s" begin="-2.5s" repeatCount="indefinite"/></circle>
+<text x="302" y="326" class="sm amber b" opacity="0">EC 1.5<animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.05;0.25;0.35;1" dur="5s" begin="-2.5s" repeatCount="indefinite"/></text>
+<text x="272" y="326" class="sm" text-anchor="end">AT-2 EC 1.2–1.8 mS/cm</text>
+<text x="30" y="188" class="sm">Peristálticas A · B · pH− al tambo,</text>
+<text x="30" y="202" class="sm">cerca de la succión: dosis fija →</text>
+<text x="30" y="216" class="sm">mezcla 10–15 min → re-medir</text>
+<rect x="30" y="225" width="50" height="22" rx="3" class="box"><animate attributeName="fill" values="#ffffff;#b45309;#b45309;#ffffff;#ffffff" keyTimes="0;0.02;0.07;0.1;1" dur="12s" begin="-0s" repeatCount="indefinite"/></rect>
+<text x="55" y="240" class="sm b" text-anchor="middle">A</text>
+<path d="M80,236 L95,236 L95,352" fill="none" stroke="#1f2937" stroke-width="1.2"/>
+<circle cx="95" cy="354" r="3" fill="#b45309" opacity="0"><animate attributeName="cy" values="354;385;385" keyTimes="0;0.06;1" dur="12s" begin="-0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.01;0.055;0.065;1" dur="12s" begin="-0s" repeatCount="indefinite"/></circle>
+<rect x="30" y="262" width="50" height="22" rx="3" class="box"><animate attributeName="fill" values="#ffffff;#b45309;#b45309;#ffffff;#ffffff" keyTimes="0;0.02;0.07;0.1;1" dur="12s" begin="-4s" repeatCount="indefinite"/></rect>
+<text x="55" y="277" class="sm b" text-anchor="middle">B</text>
+<path d="M80,273 L100,273 L100,352" fill="none" stroke="#1f2937" stroke-width="1.2"/>
+<circle cx="100" cy="354" r="3" fill="#b45309" opacity="0"><animate attributeName="cy" values="354;385;385" keyTimes="0;0.06;1" dur="12s" begin="-4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.01;0.055;0.065;1" dur="12s" begin="-4s" repeatCount="indefinite"/></circle>
+<rect x="30" y="299" width="50" height="22" rx="3" class="box"><animate attributeName="fill" values="#ffffff;#b45309;#b45309;#ffffff;#ffffff" keyTimes="0;0.02;0.07;0.1;1" dur="12s" begin="-8s" repeatCount="indefinite"/></rect>
+<text x="55" y="314" class="sm b" text-anchor="middle">pH−</text>
+<path d="M80,310 L105,310 L105,352" fill="none" stroke="#1f2937" stroke-width="1.2"/>
+<circle cx="105" cy="354" r="3" fill="#b45309" opacity="0"><animate attributeName="cy" values="354;385;385" keyTimes="0;0.06;1" dur="12s" begin="-8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.01;0.055;0.065;1" dur="12s" begin="-8s" repeatCount="indefinite"/></circle>
+<defs>
+<path id="ruta0" d="M200,420 L820,420 L820,110 L810,110 L310,122 L290,122 L290,340 L160,340 L160,389"/>
+<path id="ruta1" d="M200,420 L820,420 L820,160 L810,160 L310,172 L290,172 L290,340 L160,340 L160,389"/>
+<path id="ruta2" d="M200,420 L820,420 L820,210 L810,210 L310,222 L290,222 L290,340 L160,340 L160,389"/>
+<path id="ruta3" d="M200,420 L820,420 L820,260 L810,260 L310,272 L290,272 L290,340 L160,340 L160,389"/>
+</defs>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-0.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-2.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-4.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-6.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-8.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-10.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-12.0s" repeatCount="indefinite"><mpath xlink:href="#ruta0"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-0.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-2.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-4.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-6.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-8.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-10.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-12.5s" repeatCount="indefinite"><mpath xlink:href="#ruta1"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-1.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-3.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-5.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-7.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-9.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-11.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-13.0s" repeatCount="indefinite"><mpath xlink:href="#ruta2"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-1.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-3.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-5.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-7.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-9.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-11.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle r="3.5" fill="#2e7d32"><animateMotion dur="14s" begin="-13.5s" repeatCount="indefinite"><mpath xlink:href="#ruta3"/></animateMotion></circle>
+<circle cx="570" cy="440" r="4" fill="#2e7d32"/><text x="580" y="444" class="sm">solución en movimiento</text>
+<circle cx="735" cy="440" r="4" fill="#b45309"/><text x="745" y="444" class="sm">sonda midiendo / dosis</text>
+<text x="880" y="488" class="sm" text-anchor="end">v1 · 2026-09 · SVG animado (SMIL), sin JS</text>
+</svg>

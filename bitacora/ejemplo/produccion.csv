@@ -1,0 +1,31 @@
+siembra_id,fecha_siembra,variedad,lote_semilla,densidad_g,dias_oscuridad,fecha_cosecha,rendimiento_g,merma_pct,destino,precio_mxn,observaciones
+GIR-260921-S001-R1N1,2026-09-21,girasol,S001,135,3,2026-10-02,420,5,muestra,0,A/B brazo CEDA; V1 88%; H2O2 3% 60C 5min; remojo 8h; muestra RestA
+GIR-260921-S001-R1N2,2026-09-21,girasol,S001,135,3,2026-10-02,0,100,basura,0,A/B brazo CEDA; moho verde dia 6 (cascara sucia); tirada
+GIR-260921-S002-R1N3,2026-09-21,girasol,S002,135,3,2026-10-02,455,3,muestra,0,A/B brazo Al Natural; V1 94%; muestra RestC (entregada 10-06)
+GIR-260921-S002-R1N4,2026-09-21,girasol,S002,135,3,2026-10-02,470,2,casa,0,A/B brazo Al Natural; multiplicador 3.5x; se come en casa
+AMA-260921-S005-R1N5,2026-09-21,amaranto,S005,10,3,2026-10-06,150,10,casa,0,prueba de color: sale VERDE; no vender como fino
+RAB-260924-S003-R1N4,2026-09-24,rabano,S003,28,2,2026-10-02,260,0,muestra,0,V2 charola 1 de 3; sin remojo; muestra RestB
+RAB-260924-S003-R1N5,2026-09-24,rabano,S003,28,2,2026-10-02,275,0,casa,0,V2 charola 2 de 3
+RAB-260924-S003-R1N2,2026-09-24,rabano,S003,28,2,2026-10-02,250,2,casa,0,V2 charola 3 de 3; CV 4.8% OK
+ARU-260924-S004-R1N1,2026-09-24,arugula,S004,11,4,2026-10-06,230,3,muestra,0,sin remojo; riego solo por fondo; muestra RestD
+GIR-260928-S001-R1N1,2026-09-28,girasol,S001,135,3,2026-10-09,435,4,RestA,105,primer pedido cobrado; SPEI mismo dia; remision 001
+GIR-260928-S001-R1N2,2026-09-28,girasol,S001,135,3,2026-10-09,410,6,RestA,105,remision 001
+RAB-261001-S003-R1N4,2026-10-01,rabano,S003,28,2,2026-10-09,270,0,RestA,155,remision 001
+ARU-261001-S004-R1N3,2026-10-01,arugula,S004,11,4,2026-10-13,240,2,RestB,150,primer pedido RestB; remision 002
+GIR-261005-S001-R1N1,2026-10-05,girasol,S001,135,3,2026-10-16,440,3,RestA,105,remision 003
+GIR-261005-S001-R1N2,2026-10-05,girasol,S001,135,3,2026-10-16,425,5,RestB,105,remision 004
+GIR-261005-S001-R1N3,2026-10-05,girasol,S001,135,3,2026-10-16,430,4,RestC,105,pedido unico para brunch; remision 005
+GIR-261005-S001-R1N5,2026-10-05,girasol,S001,135,3,,0,100,basura,0,apilada 4 dias por descuido: moho; tirada dia 7
+RAB-261008-S003-R1N4,2026-10-08,rabano,S003,28,2,2026-10-16,265,0,RestA,155,remision 003
+RAB-261008-S003-R1N5,2026-10-08,rabano,S003,28,2,2026-10-16,280,0,RestB,155,remision 004; chef: perfecto
+ARU-261008-S004-R1N3,2026-10-08,arugula,S004,11,4,2026-10-20,235,3,RestB,150,remision 006
+GIR-261012-S001-R1N1,2026-10-12,girasol,S001,135,3,2026-10-23,445,2,RestA,105,remision 007
+GIR-261012-S001-R1N2,2026-10-12,girasol,S001,135,3,2026-10-23,415,5,RestA,105,remision 007
+RAB-261015-S003-R1N4,2026-10-15,rabano,S003,28,2,2026-10-23,255,0,RestA,155,remision 007; tallo largo: probar 1 dia menos de oscuridad
+RAB-261015-S003-R1N5,2026-10-15,rabano,S003,28,2,2026-10-23,270,0,RestB,155,remision 008
+ARU-261015-S004-R1N3,2026-10-15,arugula,S004,11,4,2026-10-27,245,2,RestB,150,remision 009
+GIR-261019-S001-R1N1,2026-10-19,girasol,S001,135,3,2026-10-30,450,2,RestA,105,remision 010
+GIR-261019-S001-R1N2,2026-10-19,girasol,S001,135,3,2026-10-30,435,3,RestB,105,remision 011
+RAB-261022-S003-R1N4,2026-10-22,rabano,S003,28,1,2026-10-30,265,0,RestA,155,V6 brazo B: 1 dia de oscuridad; remision 010
+RAB-261022-S003-R1N5,2026-10-22,rabano,S003,28,2,2026-10-30,275,0,casa,0,V6 control: 2 dias; sin comprador esta semana
+GIR-261026-S001-R1N1,2026-10-26,girasol,S001,135,3,,,,,,en rack; para pedido RestA de 3 charolas

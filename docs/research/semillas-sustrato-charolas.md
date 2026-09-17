@@ -140,7 +140,7 @@ Vende girasol con cáscara a granel mayoreo/menudeo. La ficha directa dio 404 al
 | Proveedor | Qué ofrece | Notas |
 |---|---|---|
 | **Pop México** | Etiquetas adhesivas digitales urgentes, recolección en CDMX en 24 h, entrega a domicilio | https://popmexico.com.mx/collections/etiquetas-adhesivas |
-| **Magnefix** (CDMX) | Impresión de etiquetas en rollo, altos tirajes, sector alimentos | https://magnefix.com.mx/impresion-de-etiquetas-adhesivas-cdmx/ |
+| **Magnefix** (CDMX) | Impresión de etiquetas en rollo, altos tirajes, sector alimentos. **[enlace muerto al 2026-09-16 — `tools/check_links.py`]** Usar Dushi / Pop México (ver arriba) mientras no haya URL nueva. | https://magnefix.com.mx/impresion-de-etiquetas-adhesivas-cdmx/ |
 | **iColor** (CDMX) | Etiquetas adhesivas con diseño incluido | https://www.icolor.com.mx/impresion-de-etiquetas-adhesivas-cdmx/ |
 | **Dushi Imprenta** (CDMX) | Tirajes chicos personalizados — ideal para arrancar con 200–500 etiquetas | https://www.imprentacdmx.com/servicios-de-impresion/impresion-de-etiquetas-adhesivas/ |
 | **Papel Grado Alimenticio** | Etiquetas en rollo 6 cm, papel grado alimenticio | https://papelgradoalimenticio.com.mx/producto/etiquetas-personalizadas-en-rollo-adhesivo-sticker-6-cms/ |

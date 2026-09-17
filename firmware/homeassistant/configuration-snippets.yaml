@@ -1,0 +1,894 @@
+# =============================================================================
+#  HomeGreen · firmware/homeassistant/configuration-snippets.yaml
+#  Helpers, sensores derivados, medidor de energía, grupos de notificación y
+#  alertas repetitivas (alert:) del huerto. Complemento de automations.yaml.
+#
+#  CÓMO SE INSTALA (guía: docs/guias/configurar-home-assistant.md):
+#    Este archivo es un PAQUETE de Home Assistant: cópialo a
+#        /config/packages/huerto.yaml
+#    y agrega en /config/configuration.yaml (una sola vez):
+#        homeassistant:
+#          packages: !include_dir_named packages
+#    Los bloques comentados del final (recorder, influxdb, telegram) NO van en
+#    el paquete: se pegan directo en configuration.yaml si los quieres.
+#    Reinicia HA (o "Recargar toda la configuración YAML") después de copiarlo.
+#
+#  ENTIDADES DEL FIRMWARE que usa este archivo (docs/diseno/datos.md §2; se
+#  derivan del "name:" de cada YAML de ESPHome: minúsculas, espacios y guiones → "_"):
+#    nodo-riego-v1: sensor.humedad_sustrato_n1…n4, sensor.temperatura_ambiente,
+#      sensor.humedad_ambiente, sensor.nivel_tinaco, sensor.ciclos_de_riego_hoy,
+#      binary_sensor.nodo_riego_estado, binary_sensor.tinaco_critico, switch.bomba_riego,
+#      switch.ventilador, switch.luces_t8, switch.reserva_k4, select.etapa_nivel_1…4
+#    nodo-nft-v2: sensor.ph_nft, sensor.ec_nft, sensor.flujo_nft, sensor.volumen_nft_acumulado,
+#      sensor.voltaje_bateria_nft, sensor.tiempo_en_bateria_actual, sensor.dosis_hoy,
+#      sensor.ml_dosificados_hoy_a/_b/_ph, binary_sensor.nodo_nft_estado,
+#      binary_sensor.red_cfe_presente, binary_sensor.nft_sin_flujo, binary_sensor.nft_emergencia,
+#      binary_sensor.bateria_baja, binary_sensor.dosificacion_suspendida, switch.bomba_nft,
+#      switch.bomba_nft_respaldo, switch.modo_ahorro_15_15, text_sensor.estado_dosificacion,
+#      text_sensor.estado_continuidad_nft
+#  Cambia un nombre en el firmware → cámbialo aquí, en automations.yaml y en el dashboard
+#  en el mismo commit.
+#
+#  QUÉ DEBES PERSONALIZAR (busca "TU_"):
+#    · notify.mobile_app_TU_CELULAR → el nombre real de la app en tu teléfono
+#      (Herramientas para desarrolladores → Acciones → escribe "notify.mobile_app").
+#    · input_number.consumo_base_hogar_kwh_mes → lo que midas 7 días con el
+#      medidor de enchufe (docs/referencia/07 §1) extrapolado a un mes.
+#
+#  Fuentes: docs/referencia/06-validacion-y-lazos-agenticos.md (L0, watchdogs,
+#  escalamiento), docs/research/electrico-respaldo-seguridad.md §5.2 (alert,
+#  modo ahorro), docs/referencia/07-puntos-ciegos-y-riesgos.md §1 (220 kWh/mes),
+#  docs/diseno/datos.md §2–3 (entidades, retención 30 días), docs/diseno/control.md.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. Interruptores de modo (los que las guías llaman "modo mantenimiento")
+# -----------------------------------------------------------------------------
+input_boolean:
+  modo_mantenimiento_nft:
+    name: "Mantenimiento NFT"
+    icon: mdi:wrench-clock
+    # ON: apaga dosificación automática y el respaldo automático por flujo en el
+    # nodo, y silencia las alarmas de flujo (cambio de solución, calibración,
+    # lavado del tambo). La bomba NO se apaga sola: la apagas tú si hace falta.
+    # automations.yaml lo revierte al apagarlo y te recuerda a las 2 h.
+  modo_mantenimiento_riego:
+    name: "Mantenimiento riego"
+    icon: mdi:wrench
+    # ON: apaga el riego automático del nodo (lavado del rack, cambio de boquillas).
+  simulacro_apagon_en_curso:
+    name: "Simulacro de apagón en curso (V11)"
+    icon: mdi:transmission-tower-off
+    # Enciéndelo ANTES de botar el breaker: al volver la luz, HA evalúa el V11
+    # (bomba siguió, 2 alertas, sin falso "sin flujo") y lo apaga.
+  tapete_termico_en_k4:
+    name: "Tapete térmico conectado en K4"
+    icon: mdi:heating-coil
+    # ON solo dic–feb con el tapete en la reserva K4 del nodo de riego: la alarma
+    # de helada lo enciende y lo apaga.
+  temporada_de_lluvia:
+    name: "Temporada de lluvia (jun–sep)"
+    icon: mdi:weather-pouring
+    # Lo pone automations.yaml el 1 de junio y lo quita el 1 de octubre (06 §L0:
+    # ventilación forzada 10 min/h). Puedes moverlo a mano.
+  notificaciones_info:
+    name: "Notificaciones informativas"
+    icon: mdi:bell-outline
+    initial: true
+    # OFF = solo advertencias y críticas al teléfono (el resumen diario sigue).
+
+# -----------------------------------------------------------------------------
+# 2. Setpoints del lado de HA (los del lazo viven en el nodo como number.*)
+# -----------------------------------------------------------------------------
+input_number:
+  # --- Energía (07 §1: DAC a 250 kWh/mes de promedio móvil; alarma en 220) ---
+  energia_alarma_kwh_mes:
+    name: "Energía · alarma mensual"
+    min: 100
+    max: 250
+    step: 5
+    initial: 220
+    unit_of_measurement: kWh
+    icon: mdi:flash-alert
+    mode: box
+  consumo_base_hogar_kwh_mes:
+    name: "Energía · consumo base del hogar"
+    min: 0
+    max: 400
+    step: 1
+    initial: 0          # [POR VERIFICAR: medir 7 días con el Steren HER-432 y extrapolar]
+    unit_of_measurement: kWh
+    icon: mdi:home-lightning-bolt
+    mode: box
+  refrigerador_kwh_mes:
+    name: "Energía · refrigerador de cosecha"
+    min: 0
+    max: 100
+    step: 1
+    initial: 30         # 25–40 kWh/mes (bom/fase2.csv); 0 mientras no lo tengas
+    unit_of_measurement: kWh
+    icon: mdi:fridge-outline
+    mode: box
+  # Potencias nominales para la estimación de energía (sin medidor real).
+  # Sustituye cada una por lo que marque el medidor de enchufe.
+  potencia_bomba_nft_w:
+    name: "Potencia · bomba NFT 12 V"
+    min: 0
+    max: 200
+    step: 1
+    initial: 40         # research/electrico-respaldo-seguridad §2.3
+    unit_of_measurement: W
+    icon: mdi:water-pump
+    mode: box
+  potencia_luces_t8_w:
+    name: "Potencia · luces T8"
+    min: 0
+    max: 500
+    step: 1
+    initial: 144        # 8 × 18 W (bom/fase1.csv)
+    unit_of_measurement: W
+    icon: mdi:lightbulb-fluorescent-tube
+    mode: box
+  potencia_bomba_riego_w:
+    name: "Potencia · bomba de riego"
+    min: 0
+    max: 200
+    step: 1
+    initial: 20         # research/puntos-ciegos §(a) [POR VERIFICAR: medir la tuya]
+    unit_of_measurement: W
+    icon: mdi:sprinkler
+    mode: box
+  potencia_ventilador_w:
+    name: "Potencia · ventilador"
+    min: 0
+    max: 200
+    step: 1
+    initial: 25         # research/puntos-ciegos §(a)
+    unit_of_measurement: W
+    icon: mdi:fan
+    mode: box
+  potencia_reserva_k4_w:
+    name: "Potencia · reserva K4 (tapete)"
+    min: 0
+    max: 600
+    step: 1
+    initial: 0          # [POR VERIFICAR: ficha del tapete térmico que compres]
+    unit_of_measurement: W
+    icon: mdi:heating-coil
+    mode: box
+  potencia_base_huerto_w:
+    name: "Potencia · cerebro + router + nodos"
+    min: 0
+    max: 100
+    step: 1
+    initial: 20         # 10–30 W [POR VERIFICAR: medir con el medidor de enchufe]
+    unit_of_measurement: W
+    icon: mdi:server
+    mode: box
+  # --- Watchdogs que corren en HA (06 §Watchdogs) ---
+  deriva_dosificacion_factor:
+    name: "Deriva · factor sobre el promedio de 7 días"
+    min: 1.2
+    max: 4
+    step: 0.1
+    initial: 2.0        # "> 2× el promedio móvil de 7 días" (06)
+    icon: mdi:chart-line-variant
+    mode: box
+  riego_subida_minima_pct:
+    name: "Riego · subida mínima de humedad por ciclo"
+    min: 1
+    max: 20
+    step: 1
+    initial: 3          # [POR VERIFICAR: en el dry-run V3 con tus boquillas]
+    unit_of_measurement: "%"
+    icon: mdi:water-plus
+    mode: box
+  autonomia_bateria_nominal_h:
+    name: "Batería · autonomía nominal con bomba continua"
+    min: 4
+    max: 72
+    step: 1
+    initial: 28         # 28–30 h con LiFePO4 100 Ah y bomba 40 W [POR VERIFICAR: prueba E de armar-respaldo-dc]
+    unit_of_measurement: h
+    icon: mdi:battery-clock
+    mode: box
+  # --- Calendario de mantenimiento (06 §Resumen operativo, 03 §2.2) ---
+  calibracion_intervalo_dias:
+    name: "Calibración de sondas cada"
+    min: 7
+    max: 30
+    step: 1
+    initial: 15
+    unit_of_measurement: d
+    icon: mdi:test-tube
+    mode: box
+  cambio_solucion_intervalo_dias:
+    name: "Cambio de solución NFT cada"
+    min: 7
+    max: 28
+    step: 1
+    initial: 21         # 2–3 semanas
+    unit_of_measurement: d
+    icon: mdi:water-sync
+    mode: box
+  simulacro_intervalo_dias:
+    name: "Simulacro de apagón (V11) cada"
+    min: 14
+    max: 60
+    step: 1
+    initial: 30
+    unit_of_measurement: d
+    icon: mdi:transmission-tower-off
+    mode: box
+  # --- Memoria interna de automations.yaml (no los edites a mano) ---
+  riego_humedad_al_arrancar:
+    name: "(interno) humedad mínima al arrancar el riego"
+    min: 0
+    max: 100
+    step: 0.1
+    icon: mdi:memory
+    mode: box
+  ml_dosificados_ultimo_dia:
+    name: "(interno) mL dosificados el último día cerrado"
+    min: 0
+    max: 5000
+    step: 0.1
+    unit_of_measurement: mL
+    icon: mdi:memory
+    mode: box
+  # --- Formulario de bitácora (vista "Bitácora" del dashboard) ---
+  bitacora_cantidad:
+    name: "Bitácora · cantidad (g o piezas)"
+    min: 0
+    max: 5000
+    step: 1
+    initial: 0
+    icon: mdi:scale
+    mode: box
+
+input_datetime:
+  ultima_calibracion_sondas:
+    name: "Última calibración de sondas"
+    has_date: true
+    has_time: false
+    icon: mdi:test-tube
+  ultimo_cambio_solucion:
+    name: "Último cambio de solución NFT"
+    has_date: true
+    has_time: false
+    icon: mdi:water-sync
+  ultimo_simulacro_apagon:
+    name: "Último simulacro de apagón (V11)"
+    has_date: true
+    has_time: false
+    icon: mdi:transmission-tower-off
+
+input_select:
+  bitacora_evento:
+    name: "Bitácora · evento"
+    icon: mdi:notebook-edit
+    options:
+      - siembra
+      - destape
+      - cosecha
+      - merma
+      - entrega
+      - muestra
+      - calibracion
+      - cambio_solucion
+      - simulacro_V11
+      - test_gfci
+      - plaga
+      - riego_manual
+      - otro
+  bitacora_variedad:
+    name: "Bitácora · variedad"
+    icon: mdi:sprout
+    options:          # códigos de docs/diseno/datos.md §1 (minúsculas, sin acentos)
+      - "-"
+      - girasol
+      - chicharo
+      - rabano
+      - betabel
+      - brocoli
+      - arugula
+      - amaranto
+      - cilantro
+      - albahaca
+      - hierbabuena
+      - otra
+
+input_text:
+  bitacora_siembra_id:
+    name: "Bitácora · siembra_id (VAR-AAMMDD-Slote-R1N2)"
+    max: 40
+    icon: mdi:barcode
+  bitacora_observaciones:
+    name: "Bitácora · observaciones"
+    max: 255
+    icon: mdi:text
+
+input_button:
+  bitacora_guardar:
+    name: "Guardar en bitácora"
+    icon: mdi:content-save
+  calibracion_hecha_hoy:
+    name: "Hoy calibré las sondas"
+    icon: mdi:test-tube
+  cambio_solucion_hecho_hoy:
+    name: "Hoy cambié la solución"
+    icon: mdi:water-sync
+  simulacro_hecho_hoy:
+    name: "Hoy hice el simulacro V11"
+    icon: mdi:transmission-tower-off
+
+counter:
+  riegos_sin_efecto:
+    name: "Riegos seguidos sin subida de humedad"
+    icon: mdi:water-off
+    step: 1
+
+# -----------------------------------------------------------------------------
+# 3. Sensores derivados (template)
+# -----------------------------------------------------------------------------
+template:
+  - sensor:
+      # Humedad del nivel más seco entre los que están en germinación o desarrollo
+      # (control.md Lazo 1: "el nivel más seco manda"; 'vacio' no vota).
+      - name: "Humedad sustrato min"
+        unique_id: huerto_humedad_sustrato_min
+        unit_of_measurement: "%"
+        device_class: moisture
+        state_class: measurement
+        icon: mdi:water-percent
+        state: >-
+          {% set ns = namespace(v=[]) %}
+          {% for i in [1, 2, 3, 4] %}
+            {% set h = states('sensor.humedad_sustrato_n' ~ i) %}
+            {% if h not in ['unknown', 'unavailable'] and not is_state('select.etapa_nivel_' ~ i, 'vacio') %}
+              {% set ns.v = ns.v + [h | float] %}
+            {% endif %}
+          {% endfor %}
+          {{ (ns.v | min) | round(0) if ns.v else none }}
+
+      # Suma de mL de las tres peristálticas (el nodo lleva ventana móvil de 24 h)
+      - name: "mL dosificados hoy total"
+        unique_id: huerto_ml_dosificados_hoy_total
+        unit_of_measurement: mL
+        state_class: total_increasing
+        icon: mdi:beaker-outline
+        availability: >-
+          {{ states('sensor.ml_dosificados_hoy_a') not in ['unknown', 'unavailable'] }}
+        state: >-
+          {{ (states('sensor.ml_dosificados_hoy_a') | float(0)
+            + states('sensor.ml_dosificados_hoy_b') | float(0)
+            + states('sensor.ml_dosificados_hoy_ph') | float(0)) | round(1) }}
+
+      # Espejo del último día cerrado: 1 muestra por día para el promedio de 7 días
+      - name: "mL dosificados dia cerrado"
+        unique_id: huerto_ml_dosificados_dia_cerrado
+        unit_of_measurement: mL
+        state_class: measurement
+        icon: mdi:beaker-check-outline
+        state: "{{ states('input_number.ml_dosificados_ultimo_dia') | float(0) }}"
+
+      # Potencia estimada del huerto por estado de los actuadores (sin medidor).
+      # Con un contacto medidor (Steren SHOME-135, research/puntos-ciegos) usa su
+      # sensor de potencia como fuente del "integration" de abajo y olvida este.
+      - name: "Potencia huerto estimada"
+        unique_id: huerto_potencia_estimada
+        unit_of_measurement: W
+        device_class: power
+        state_class: measurement
+        icon: mdi:flash
+        state: >-
+          {% set p = states('input_number.potencia_base_huerto_w') | float(20) %}
+          {% if is_state('switch.bomba_nft', 'on') or is_state('switch.bomba_nft_respaldo', 'on') %}
+            {% set p = p + states('input_number.potencia_bomba_nft_w') | float(40) %}{% endif %}
+          {% if is_state('switch.luces_t8', 'on') %}
+            {% set p = p + states('input_number.potencia_luces_t8_w') | float(144) %}{% endif %}
+          {% if is_state('switch.bomba_riego', 'on') %}
+            {% set p = p + states('input_number.potencia_bomba_riego_w') | float(20) %}{% endif %}
+          {% if is_state('switch.ventilador', 'on') %}
+            {% set p = p + states('input_number.potencia_ventilador_w') | float(25) %}{% endif %}
+          {% if is_state('switch.reserva_k4', 'on') %}
+            {% set p = p + states('input_number.potencia_reserva_k4_w') | float(0) %}{% endif %}
+          {{ p | round(0) }}
+
+      # Proyección del mes: huerto acumulado extrapolado + refrigerador + hogar base.
+      # El umbral DAC (250 kWh/mes) es del recibo COMPLETO de la casa (07 §1).
+      - name: "Energia proyeccion mes"
+        unique_id: huerto_energia_proyeccion_mes
+        unit_of_measurement: kWh
+        device_class: energy
+        icon: mdi:chart-timeline-variant
+        state: >-
+          {% set hoy = now().day %}
+          {% set ultimo = (now().replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1) %}
+          {% set huerto = states('sensor.energia_huerto_mes') | float(0) %}
+          {{ ((huerto / hoy) * ultimo.day
+              + states('input_number.refrigerador_kwh_mes') | float(0)
+              + states('input_number.consumo_base_hogar_kwh_mes') | float(0)) | round(0) }}
+
+      # Autonomía restante estimada en corte: nominal − tiempo ya en batería.
+      # Es un reloj, no un medidor de carga: la LiFePO4 tiene curva de voltaje plana.
+      - name: "Autonomia bateria restante"
+        unique_id: huerto_autonomia_bateria_restante
+        unit_of_measurement: h
+        device_class: duration
+        icon: mdi:battery-clock
+        state: >-
+          {% if is_state('binary_sensor.red_cfe_presente', 'on') %}
+            {{ states('input_number.autonomia_bateria_nominal_h') | float(28) }}
+          {% else %}
+            {% set usado = states('sensor.tiempo_en_bateria_actual') | float(0) / 60 %}
+            {% set restante = states('input_number.autonomia_bateria_nominal_h') | float(28) - usado %}
+            {% if is_state('switch.modo_ahorro_15_15', 'on') %}{% set restante = restante * 2 %}{% endif %}
+            {{ [restante, 0] | max | round(1) }}
+          {% endif %}
+
+      - name: "Dias desde calibracion"
+        unique_id: huerto_dias_desde_calibracion
+        unit_of_measurement: d
+        icon: mdi:test-tube
+        state: >-
+          {% set d = states('input_datetime.ultima_calibracion_sondas') %}
+          {{ ((now().date() - strptime(d, '%Y-%m-%d').date()).days) if d not in ['unknown', 'unavailable', ''] else none }}
+      - name: "Dias desde cambio de solucion"
+        unique_id: huerto_dias_desde_cambio_solucion
+        unit_of_measurement: d
+        icon: mdi:water-sync
+        state: >-
+          {% set d = states('input_datetime.ultimo_cambio_solucion') %}
+          {{ ((now().date() - strptime(d, '%Y-%m-%d').date()).days) if d not in ['unknown', 'unavailable', ''] else none }}
+      - name: "Dias desde simulacro"
+        unique_id: huerto_dias_desde_simulacro
+        unit_of_measurement: d
+        icon: mdi:transmission-tower-off
+        state: >-
+          {% set d = states('input_datetime.ultimo_simulacro_apagon') %}
+          {{ ((now().date() - strptime(d, '%Y-%m-%d').date()).days) if d not in ['unknown', 'unavailable', ''] else none }}
+
+      # Cuántas cosas están fuera de banda ahora (el panel de excepciones de L1)
+      - name: "Excepciones activas"
+        unique_id: huerto_excepciones_activas
+        icon: mdi:alert-circle-outline
+        # El estado NO usa this.attributes (sería el valor del render anterior):
+        # cuenta con la misma lista que arma el atributo.
+        state: >-
+          {% set ns = namespace(n=0) %}
+          {% for e in ['binary_sensor.nft_emergencia', 'binary_sensor.nft_sin_flujo', 'binary_sensor.nodo_nft_caido',
+                       'binary_sensor.nodo_riego_caido', 'binary_sensor.tinaco_critico', 'binary_sensor.dosificacion_suspendida',
+                       'binary_sensor.sonda_sin_cambio_24h', 'binary_sensor.bateria_baja', 'binary_sensor.tinaco_bajo',
+                       'binary_sensor.hr_alta', 'binary_sensor.riesgo_de_helada', 'binary_sensor.riego_saturado',
+                       'binary_sensor.ph_fuera_de_banda', 'binary_sensor.ec_fuera_de_banda', 'binary_sensor.solucion_caliente',
+                       'binary_sensor.deriva_dosificacion', 'binary_sensor.energia_sobre_alarma', 'binary_sensor.calibracion_vencida',
+                       'binary_sensor.nivel_tambo_bajo', 'input_boolean.modo_mantenimiento_nft'] %}
+            {% if is_state(e, 'on') %}{% set ns.n = ns.n + 1 %}{% endif %}
+          {% endfor %}
+          {% if is_state('binary_sensor.red_cfe_presente', 'off') %}{% set ns.n = ns.n + 1 %}{% endif %}
+          {{ ns.n }}
+        attributes:
+          lista: >-
+            {% set ns = namespace(l=[]) %}
+            {% set problemas = {
+              'binary_sensor.nft_emergencia': 'CRÍTICA · NFT sin flujo durante apagón',
+              'binary_sensor.nft_sin_flujo': 'CRÍTICA · NFT sin flujo (respaldo activo)',
+              'binary_sensor.nodo_nft_caido': 'CRÍTICA · nodo NFT sin señal',
+              'binary_sensor.nodo_riego_caido': 'CRÍTICA · nodo de riego sin señal',
+              'binary_sensor.tinaco_critico': 'CRÍTICA · tinaco < 20 %, riego bloqueado',
+              'binary_sensor.dosificacion_suspendida': 'CRÍTICA · dosificación suspendida (sonda o tope)',
+              'binary_sensor.sonda_sin_cambio_24h': 'CRÍTICA · sonda sin cambio en 24 h',
+              'binary_sensor.bateria_baja': 'ADVERTENCIA · batería < 12.9 V',
+              'binary_sensor.tinaco_bajo': 'ADVERTENCIA · tinaco < 40 %',
+              'binary_sensor.hr_alta': 'ADVERTENCIA · HR sobre el umbral',
+              'binary_sensor.riesgo_de_helada': 'ADVERTENCIA · riesgo de helada',
+              'binary_sensor.riego_saturado': 'ADVERTENCIA · riego saturado (máx. ciclos/h)',
+              'binary_sensor.ph_fuera_de_banda': 'ADVERTENCIA · pH fuera de 5.8–6.2',
+              'binary_sensor.ec_fuera_de_banda': 'ADVERTENCIA · EC fuera de 1.2–1.8',
+              'binary_sensor.solucion_caliente': 'ADVERTENCIA · solución > 25 °C',
+              'binary_sensor.deriva_dosificacion': 'ADVERTENCIA · dosificación > 2× promedio 7 d',
+              'binary_sensor.energia_sobre_alarma': 'ADVERTENCIA · energía sobre 220 kWh/mes',
+              'binary_sensor.calibracion_vencida': 'ADVERTENCIA · calibración quincenal vencida',
+              'binary_sensor.nivel_tambo_bajo': 'ADVERTENCIA · tambo NFT bajo'
+            } %}
+            {% for e, t in problemas.items() %}
+              {% if is_state(e, 'on') %}{% set ns.l = ns.l + [t] %}{% endif %}
+            {% endfor %}
+            {% if is_state('binary_sensor.red_cfe_presente', 'off') %}
+              {% set ns.l = ns.l + ['ADVERTENCIA · corte de CFE: NFT en batería'] %}{% endif %}
+            {% if is_state('input_boolean.modo_mantenimiento_nft', 'on') %}
+              {% set ns.l = ns.l + ['INFO · NFT en mantenimiento (dosificación y respaldo OFF)'] %}{% endif %}
+            {{ ns.l }}
+
+  - binary_sensor:
+      # Nodo caído: heartbeat OFF o entidad "unavailable" 10 min (06 §Watchdogs).
+      # alert.nodo_riego_caido / alert.nodo_nft_caido repiten el aviso cada 10 min.
+      - name: "Nodo riego caido"
+        unique_id: huerto_nodo_riego_caido
+        device_class: problem
+        delay_on: "00:10:00"
+        delay_off: "00:01:00"
+        state: >-
+          {{ is_state('binary_sensor.nodo_riego_estado', 'off')
+             or states('sensor.humedad_sustrato_n1') in ['unavailable', 'unknown'] }}
+      - name: "Nodo NFT caido"
+        unique_id: huerto_nodo_nft_caido
+        device_class: problem
+        delay_on: "00:10:00"
+        delay_off: "00:01:00"
+        state: >-
+          {{ is_state('binary_sensor.nodo_nft_estado', 'off')
+             or states('sensor.flujo_nft') in ['unavailable', 'unknown'] }}
+
+      # Sonda que "no cambia nada en 24 h con dosificaciones hechas" (06): las
+      # baratas fallan mintiendo. El salto > 1.5 en 5 min lo vigila el nodo.
+      - name: "Sonda sin cambio 24h"
+        unique_id: huerto_sonda_sin_cambio_24h
+        device_class: problem
+        delay_on: "00:05:00"
+        state: >-
+          {% set ok = state_attr('sensor.ph_nft_rango_24h', 'age_coverage_ratio') | float(0) > 0.9 %}
+          {% set ph_plano = states('sensor.ph_nft_rango_24h') | float(1) < 0.05 and states('sensor.ml_dosificados_hoy_ph') | float(0) > 0 %}
+          {% set ec_plana = states('sensor.ec_nft_rango_24h') | float(1) < 0.02 and states('sensor.ml_dosificados_hoy_a') | float(0) > 0 %}
+          {{ ok and (ph_plano or ec_plana) and is_state('switch.modo_calibracion', 'off') }}
+
+      # Deriva: mL de hoy > factor × promedio de los últimos 7 días cerrados
+      # (con al menos 3 días de referencia).
+      - name: "Deriva dosificacion"
+        unique_id: huerto_deriva_dosificacion
+        device_class: problem
+        delay_on: "00:10:00"
+        state: >-
+          {% set prom = states('sensor.ml_dosificados_promedio_7d') | float(0) %}
+          {% set ref_ok = state_attr('sensor.ml_dosificados_promedio_7d', 'buffer_usage_ratio') | float(0) >= 0.4 %}
+          {{ ref_ok and prom > 0 and states('sensor.ml_dosificados_dia_total') | float(0)
+             > prom * states('input_number.deriva_dosificacion_factor') | float(2) }}
+
+      - name: "Energia sobre alarma"
+        unique_id: huerto_energia_sobre_alarma
+        device_class: problem
+        state: >-
+          {{ states('sensor.energia_huerto_mes') | float(0) + states('input_number.consumo_base_hogar_kwh_mes') | float(0)
+             + states('input_number.refrigerador_kwh_mes') | float(0)
+             > states('input_number.energia_alarma_kwh_mes') | float(220) }}
+
+      - name: "Calibracion vencida"
+        unique_id: huerto_calibracion_vencida
+        device_class: problem
+        state: >-
+          {{ states('sensor.dias_desde_calibracion') | float(0) >= states('input_number.calibracion_intervalo_dias') | float(15) }}
+
+# -----------------------------------------------------------------------------
+# 4. Sensores de plataforma clásica: integración de energía y estadísticas
+# -----------------------------------------------------------------------------
+sensor:
+  # W estimados → kWh (suma de Riemann). Si compras un contacto medidor,
+  # cambia "source" por su sensor de potencia (o usa directo su kWh en el
+  # utility_meter de abajo y borra este bloque).
+  - platform: integration
+    name: "Energia huerto estimada"
+    unique_id: huerto_energia_estimada
+    source: sensor.potencia_huerto_estimada
+    unit_prefix: k
+    unit_time: h
+    method: left
+    round: 3
+
+  # Rango (máx − mín) de pH y EC en 24 h: insumo de "sonda sin cambio".
+  # El pH publica cada ~15 s con 2 decimales; 6000 muestras cubren el día.
+  - platform: statistics
+    name: "pH NFT rango 24h"
+    unique_id: huerto_ph_nft_rango_24h
+    entity_id: sensor.ph_nft
+    state_characteristic: distance_absolute
+    sampling_size: 6000
+    max_age:
+      hours: 24
+  - platform: statistics
+    name: "EC NFT rango 24h"
+    unique_id: huerto_ec_nft_rango_24h
+    entity_id: sensor.ec_nft
+    state_characteristic: distance_absolute
+    sampling_size: 6000
+    max_age:
+      hours: 24
+
+  # Promedio de los últimos 7 días cerrados de mL dosificados (1 muestra/día)
+  - platform: statistics
+    name: "mL dosificados promedio 7d"
+    unique_id: huerto_ml_dosificados_promedio_7d
+    entity_id: sensor.ml_dosificados_dia_cerrado
+    state_characteristic: mean
+    sampling_size: 7
+    max_age:
+      days: 7
+
+  # Extremos de T y HR de las últimas 24 h para el resumen de las 07:00
+  - platform: statistics
+    name: "Temperatura ambiente min 24h"
+    unique_id: huerto_t_amb_min_24h
+    entity_id: sensor.temperatura_ambiente
+    state_characteristic: value_min
+    sampling_size: 3000
+    max_age:
+      hours: 24
+  - platform: statistics
+    name: "Temperatura ambiente max 24h"
+    unique_id: huerto_t_amb_max_24h
+    entity_id: sensor.temperatura_ambiente
+    state_characteristic: value_max
+    sampling_size: 3000
+    max_age:
+      hours: 24
+  - platform: statistics
+    name: "Humedad ambiente max 24h"
+    unique_id: huerto_hr_amb_max_24h
+    entity_id: sensor.humedad_ambiente
+    state_characteristic: value_max
+    sampling_size: 3000
+    max_age:
+      hours: 24
+
+# -----------------------------------------------------------------------------
+# 5. Medidores por periodo (utility_meter). "last_period" = el periodo anterior.
+# -----------------------------------------------------------------------------
+utility_meter:
+  energia_huerto_mes:
+    name: "Energia huerto mes"
+    source: sensor.energia_huerto_estimada
+    cycle: monthly
+  energia_huerto_dia:
+    name: "Energia huerto dia"
+    source: sensor.energia_huerto_estimada
+    cycle: daily
+  ml_dosificados_dia_total:
+    name: "mL dosificados dia total"
+    source: sensor.ml_dosificados_hoy_total
+    cycle: daily
+  riego_ciclos_dia:
+    name: "Riego ciclos dia"
+    source: sensor.ciclos_de_riego_hoy
+    cycle: daily
+  agua_nft_semana:
+    name: "Agua recirculada NFT semana"
+    source: sensor.volumen_nft_acumulado
+    cycle: weekly
+
+# -----------------------------------------------------------------------------
+# 6. Grupos de notificación (06 §Escalamiento)
+#    · huerto_aviso    → advertencias e info: push normal (app HA)
+#    · huerto_critica  → críticas: push que suena aunque el teléfono esté en
+#      silencio (automations.yaml manda los "data" de iOS/Android) + Telegram
+#      o llamada si lo configuras.
+#    En HA < 2024.8 la clave de cada miembro es "service:" en vez de "action:".
+# -----------------------------------------------------------------------------
+notify:
+  - platform: group
+    name: huerto_aviso
+    services:
+      - action: mobile_app_TU_CELULAR
+  - platform: group
+    name: huerto_critica
+    services:
+      - action: mobile_app_TU_CELULAR
+      # - action: telegram_huerto          # descomenta si configuraste Telegram (abajo)
+      # - action: mobile_app_CELULAR_DE_TU_PAREJA
+
+# -----------------------------------------------------------------------------
+# 7. Alertas que REPITEN hasta que alguien atiende (alert:)
+#    Crítica = push repetido cada 10 min (06). "can_acknowledge" permite
+#    silenciarla desde el dashboard sin resolver la causa (queda registrado).
+# -----------------------------------------------------------------------------
+alert:
+  nft_emergencia:
+    name: "NFT parado durante apagón"
+    entity_id: binary_sensor.nft_emergencia
+    state: "on"
+    repeat: 10
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - huerto_critica
+    title: "EMERGENCIA NFT: sin flujo y sin luz"
+    message: >-
+      Corte de CFE y bomba sin flujo ({{ states('sensor.flujo_nft') }} L/min).
+      Estado: {{ states('text_sensor.estado_continuidad_nft') }}. Batería {{ states('sensor.voltaje_bateria_nft') }} V.
+      Raíces mueren en 2–4 h: ve al patio. Si el bus baja de 12.0 V, riego manual por gravedad cada 30 min.
+    done_message: "NFT: la emergencia terminó (hay flujo o volvió la luz)."
+    data:
+      push:
+        interruption-level: critical
+        sound:
+          name: default
+          critical: 1
+          volume: 1.0
+      channel: "Huerto critica"
+      importance: high
+      priority: high
+      ttl: 0
+      tag: nft_emergencia
+
+  nft_sin_flujo:
+    name: "NFT sin flujo (respaldo activo)"
+    entity_id: binary_sensor.nft_sin_flujo
+    state: "on"
+    repeat:
+      - 10
+      - 30
+      - 60
+    can_acknowledge: true
+    skip_first: true             # el primer aviso lo manda automations.yaml con detalle
+    notifiers:
+      - huerto_critica
+    title: "NFT sigue sin flujo confirmado"
+    message: >-
+      {{ states('text_sensor.estado_continuidad_nft') }}. Flujo {{ states('sensor.flujo_nft') }} L/min.
+      Revisa bomba, línea y sensor YF-S201; luego pulsa "Rearmar alarma de flujo".
+    done_message: "NFT: flujo restablecido y alarma rearmada."
+    data:
+      push:
+        interruption-level: critical
+      channel: "Huerto critica"
+      importance: high
+      priority: high
+      ttl: 0
+      tag: nft_sin_flujo
+
+  tinaco_critico:
+    name: "Tinaco < 20 %: riego bloqueado"
+    entity_id: binary_sensor.tinaco_critico
+    state: "on"
+    repeat: 10
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - huerto_critica
+    title: "Tinaco crítico: riego bloqueado"
+    message: >-
+      Nivel {{ states('sensor.nivel_tinaco') }} % ({{ states('sensor.nivel_tinaco_litros') }} L). El nodo bloqueó la bomba
+      de riego y el llenado del tambo. Rellena el tinaco (red o lluvia); rearma solo al pasar de 25 %.
+    done_message: "Tinaco por encima del rearme: riego liberado."
+    data:
+      push:
+        interruption-level: critical
+      channel: "Huerto critica"
+      importance: high
+      priority: high
+      ttl: 0
+      tag: tinaco_critico
+
+  nodo_riego_caido:
+    name: "Nodo de riego sin señal"
+    entity_id: binary_sensor.nodo_riego_caido
+    state: "on"
+    repeat: 10
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - huerto_critica
+    title: "Nodo de riego sin señal 10 min"
+    message: >-
+      Sin datos del nodo de riego. El nodo riega solo si está vivo; si está muerto no riega nada.
+      Revisa fuente 12 V, buck y Wi-Fi ("nodo-riego-v1 rescate" si levantó su AP).
+    done_message: "Nodo de riego de vuelta."
+    data:
+      push:
+        interruption-level: critical
+      channel: "Huerto critica"
+      importance: high
+      priority: high
+      ttl: 0
+      tag: nodo_riego_caido
+
+  nodo_nft_caido:
+    name: "Nodo NFT sin señal"
+    entity_id: binary_sensor.nodo_nft_caido
+    state: "on"
+    repeat: 10
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - huerto_critica
+    title: "Nodo NFT sin señal 10 min"
+    message: >-
+      Sin datos del nodo NFT. La bomba principal sigue por K1 NC aunque el nodo esté muerto,
+      pero no hay respaldo automático ni dosificación. Verifica en sitio (F3, buck, Wi-Fi).
+    done_message: "Nodo NFT de vuelta."
+    data:
+      push:
+        interruption-level: critical
+      channel: "Huerto critica"
+      importance: high
+      priority: high
+      ttl: 0
+      tag: nodo_nft_caido
+
+  dosificacion_suspendida:
+    name: "Dosificación suspendida"
+    entity_id: binary_sensor.dosificacion_suspendida
+    state: "on"
+    repeat:
+      - 10
+      - 60
+      - 240
+    can_acknowledge: true
+    skip_first: false
+    notifiers:
+      - huerto_critica
+    title: "Dosificación NFT suspendida"
+    message: >-
+      {{ states('text_sensor.estado_dosificacion') }}. pH {{ states('sensor.ph_nft') }} · EC {{ states('sensor.ec_nft') }} mS/cm.
+      Calibra con buffers y patrón, contrasta con el medidor de mano y pulsa "Rearmar dosificación". No rearmes sin calibrar.
+    done_message: "Dosificación NFT rearmada."
+    data:
+      push:
+        interruption-level: time-sensitive
+      channel: "Huerto critica"
+      importance: high
+      tag: dosificacion_suspendida
+
+# =============================================================================
+# 8. BLOQUES OPCIONALES — van en /config/configuration.yaml, NO en el paquete
+# =============================================================================
+
+# --- Historial: 30 días de detalle (propuesta de docs/diseno/datos.md §3) y
+#     fuera las entidades de diagnóstico que solo hacen ruido. ------------------
+# recorder:
+#   purge_keep_days: 30
+#   commit_interval: 30
+#   exclude:
+#     entity_globs:
+#       - sensor.*_voltaje            # MT-n voltaje, pH/EC voltaje (solo para calibrar)
+#       - sensor.*_senal_wifi
+#       - sensor.*_uptime
+#       - sensor.bateria_voltaje_adc
+#       - sensor.distancia_tinaco
+
+# --- InfluxDB + Grafana (opcional, mini PC): histórico largo y el dashboard
+#     que se enseña a los chefs. El CSV semanal sigue siendo el insumo del
+#     informe L3 (datos.md §3). Instala el add-on InfluxDB, crea la base
+#     "huerto" y un usuario, y pega: ----------------------------------------------
+# influxdb:
+#   host: a0d7b954-influxdb          # nombre del add-on en HA OS; o la IP del mini PC
+#   port: 8086
+#   database: huerto
+#   username: !secret influx_user
+#   password: !secret influx_pass
+#   max_retries: 3
+#   default_measurement: state
+#   include:
+#     entity_globs:
+#       - sensor.humedad_sustrato_*
+#       - sensor.temperatura_*
+#       - sensor.humedad_ambiente
+#       - sensor.nivel_tinaco*
+#       - sensor.ph_nft
+#       - sensor.ec_nft
+#       - sensor.flujo_nft
+#       - sensor.voltaje_bateria_nft
+#       - sensor.ml_dosificados_*
+#       - sensor.energia_huerto_*
+#       - binary_sensor.*
+#       - switch.*
+
+# --- Telegram para las críticas (opcional). Crea el bot con @BotFather, guarda
+#     el token en secrets.yaml y averigua tu chat_id.
+#     [POR VERIFICAR: en versiones recientes de HA el bot de Telegram se configura
+#     desde Ajustes → Integraciones y se envía con la acción telegram_bot.send_message;
+#     si tu versión aún acepta YAML, este bloque funciona tal cual.] --------------
+# telegram_bot:
+#   - platform: polling
+#     api_key: !secret telegram_token
+#     allowed_chat_ids:
+#       - 123456789                  # tu chat_id
+# notify:
+#   - platform: telegram
+#     name: telegram_huerto
+#     chat_id: 123456789
+
+# --- Bitácora rápida a archivo (vista "Bitácora"): la integración "File" se
+#     configura desde la interfaz (Ajustes → Integraciones → Agregar → File →
+#     Notificación): ruta /config/bitacora/ha-eventos.csv, sin marca de tiempo,
+#     y renombra la entidad resultante a notify.bitacora_ha. Cada domingo copias
+#     ese archivo a bitacora/ del repositorio. -------------------------------------

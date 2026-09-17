@@ -1,0 +1,26 @@
+# Enlaces muertos conocidos y ya anotados en la página que los cita.
+#
+# Qué es esto: los informes de docs/research/ son documentos históricos —registran qué se
+# consultó el 12-sep-2026 y qué se encontró—, así que un enlace de proveedor que murió
+# después NO se borra: se anota como muerto en la tabla que lo cita y se apunta aquí.
+# check_links.py los sigue marcando `dead` en el reporte, pero no rompen el workflow
+# semanal: así un `dead` nuevo (una partida del BOM que ya no se puede comprar) se ve de
+# inmediato en vez de perderse entre ruido viejo.
+#
+# Formato: una URL por línea. `#` = comentario. Antes de agregar una URL aquí hay que
+# anotarla como muerta en la página que la cita y, si era un enlace de compra, poner la
+# alternativa. Si un enlace revive, se quita de esta lista.
+#
+# Revisado por última vez: 2026-09-16
+
+# --- Proveedores cuyo producto o catálogo desapareció (alternativa anotada en la página)
+http://www.cultivarte.com.mx/producto/cubo-lana-de-roca-3x3x25
+https://hydrocultura.com/collections/plasticos-para-invernadero-y-acolchados/rollos-de-plastico-invernadero-mexico
+https://hydroenv.com.mx/catalogo/index.php?main_page=product_info&products_id=140
+https://magnefix.com.mx/impresion-de-etiquetas-adhesivas-cdmx/
+https://www.homedepot.com.mx/bombas/bomba-periferica-de-05-hp-137488
+
+# --- Ya venían muertos en la verificación del 12-sep-2026 (no usar en páginas nuevas)
+https://www.hanlob.com.mx/producto/malla-antigranizo-cristal-3-7-mt-ancho-x-100-mt-largo/
+https://yema.mx/p/microgreens-de-girasol
+https://www.gob.mx/cms/uploads/attachment/file/996969/COFEPRIS-05-018.pdf

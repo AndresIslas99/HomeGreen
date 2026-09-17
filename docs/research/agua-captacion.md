@@ -124,7 +124,7 @@ Estado a septiembre 2026 (los portales cdmx.gob.mx bloquearon nuestro proxy — 
 | Rotoplas presurizadora ½ HP | $2,123 | [rotoplas.com.mx bombas](https://rotoplas.com.mx/products/presurizacion/bombas/) | |
 | Evans Mini Pack 2 (2 servicios, imanes permanentes, 70 W) | desde ~$923 aprox. | [Home Depot Evans](https://www.homedepot.com.mx/p/evans-bomba-presurizadora-con-motor-de-imanes-permanentes-mini-pack-2-244663) · [ML presurizadoras Rotoplas](https://listado.mercadolibre.com.mx/bombas-presurizadoras-rotoplas) | Alternativa barata y silenciosa; suficiente para microaspersores |
 | Truper/Pretul bomba periférica ½ HP (BOAP-1/2) | desde ~$779 aprox. | [Amazon MX](https://www.amazon.com.mx/Pretul-BOAP-1-Bomba-Perif%C3%A9rica-para/dp/B00UY26BZM) · [ficha Truper](https://www.truper.com/ficha_tecnica/controllers/index.php?codigo=27019) | La "bomba periférica 0.5 HP con retorno" de la Fase 2 (NFT): 42 L/min, 45 m columna — sobrada; instalar con bypass |
-| Bombas de agua (catálogo general) | — | [Home Depot bombas](https://www.homedepot.com.mx/bombas/bomba-periferica-de-05-hp-137488) | |
+| Bombas de agua (catálogo general) | — | [Home Depot bombas](https://www.homedepot.com.mx/bombas/bomba-periferica-de-05-hp-137488) | **[enlace muerto al 2026-09-16 — `tools/check_links.py`]** Da igual: esta bomba periférica de 0.5 HP es justo la que el proyecto descartó por la tarifa DAC. |
 
 *Ojo: para NFT no hace falta presurizadora con presostato (ciclan mal con caudal continuo); la periférica Truper de ~$800 con retorno/bypass es la elección correcta. La presurizadora es para la línea de riego por aspersión de microgreens si la altura del tinaco no da presión.*
 

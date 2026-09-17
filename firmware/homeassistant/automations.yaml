@@ -1,0 +1,1014 @@
+# =============================================================================
+#  HomeGreen · firmware/homeassistant/automations.yaml
+#  Alarmas y escalamiento del lazo L0 (docs/referencia/06 §L0 y §Watchdogs,
+#  docs/research/electrico-respaldo-seguridad.md §5.2), recordatorios del
+#  calendario de mantenimiento, resumen diario y formulario de bitácora.
+#
+#  REGLA DEL PROYECTO: los nodos ESPHome riegan, ventilan, dosifican y arrancan
+#  el respaldo por sí solos. Home Assistant AVISA, ESCALA y OPTIMIZA (modo ahorro,
+#  calendario, energía). Nada de este archivo es requisito para que el agua circule.
+#
+#  CÓMO SE INSTALA (docs/guias/configurar-home-assistant.md):
+#    · Pega el contenido en /config/automations.yaml (el archivo que HA crea al
+#      instalar) o inclúyelo con `automation huerto: !include automations-huerto.yaml`
+#      en configuration.yaml. Requiere el paquete configuration-snippets.yaml
+#      (input_*, template, notify.huerto_*, alert.*) instalado antes.
+#    · Sustituye notify.mobile_app_TU_CELULAR en el paquete; aquí solo se usan
+#      los grupos notify.huerto_aviso y notify.huerto_critica.
+#    · Ajustes → Automatizaciones → "Recargar automatizaciones".
+#
+#  SEVERIDAD Y CANAL (06 §Escalamiento):
+#    Info        → dashboard / push normal si input_boolean.notificaciones_info
+#    Advertencia → push (app HA), respuesta el mismo día
+#    Crítica     → push que suena en silencio + repetición cada 10 min (alert.* del
+#                  paquete) + Telegram si lo configuraste; respuesta < 1 h
+#
+#  Sintaxis: formato de HA 2024.10+ (triggers/conditions/actions, "action:").
+#  Entidades: docs/diseno/datos.md §2 (derivadas del "name:" de los YAML de ESPHome).
+# =============================================================================
+
+# =============================================================================
+# A. CONTINUIDAD DEL NFT (Fase 2) — research §5.2 #1–#5
+# =============================================================================
+
+- id: huerto_nft_bomba_sin_flujo
+  alias: "NFT · CRÍTICA · bomba sin flujo → respaldo"
+  description: >-
+    Bomba comandada ON y flujo < mínimo (2 L/min) durante 60 s: el nodo ya arrancó P-2 y
+    apagó P-1 (binary_sensor.nft_sin_flujo). HA confirma el respaldo (por si el switch
+    "Respaldo automatico por flujo" estaba apagado) y manda la crítica con detalle.
+    Segundo disparo de seguridad: flujo bajo 2 min visto desde HA con la bomba ON.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.nft_sin_flujo
+      to: "on"
+      id: watchdog_nodo
+    - trigger: numeric_state
+      entity_id: sensor.flujo_nft
+      below: number.flujo_minimo
+      for: "00:02:00"
+      id: flujo_bajo_ha
+  conditions:
+    - condition: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      state: "off"
+    - condition: template
+      value_template: >-
+        {{ trigger.id == 'watchdog_nodo' or is_state('switch.bomba_nft', 'on') or is_state('switch.bomba_nft_respaldo', 'on') }}
+  actions:
+    - action: switch.turn_on
+      target:
+        entity_id: switch.bomba_nft_respaldo
+    - action: notify.huerto_critica
+      data:
+        title: "NFT SIN FLUJO: respaldo activado"
+        message: >-
+          Bomba ON pero flujo {{ states('sensor.flujo_nft') }} L/min (mínimo {{ states('number.flujo_minimo') }}).
+          Estado: {{ states('text_sensor.estado_continuidad_nft') }}. Red CFE: {{ 'presente' if is_state('binary_sensor.red_cfe_presente', 'on') else 'AUSENTE' }}.
+          Raíces en riesgo en 2–4 h. Revisa bomba, línea y sensor; rearma con el botón "Rearmar alarma de flujo".
+        data:
+          push:
+            interruption-level: critical
+            sound:
+              name: default
+              critical: 1
+              volume: 1.0
+          channel: "Huerto critica"
+          importance: high
+          priority: high
+          ttl: 0
+          tag: nft_sin_flujo
+    - action: persistent_notification.create
+      data:
+        notification_id: nft_sin_flujo
+        title: "NFT sin flujo"
+        message: "Respaldo P-2 activado a las {{ now().strftime('%H:%M') }}. Revisa en sitio y rearma."
+
+- id: huerto_nft_corte_cfe
+  alias: "NFT · ADVERTENCIA · corte de CFE en el patio"
+  description: >-
+    Red ausente 30 s (el nodo ya filtra 5 s). La bomba sigue desde la batería sin conmutar;
+    esto solo avisa con el voltaje y la autonomía estimada (research §5.2 #2).
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.red_cfe_presente
+      to: "off"
+      for: "00:00:30"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Corte de luz en el patio"
+        message: >-
+          NFT corriendo en batería: {{ states('sensor.voltaje_bateria_nft') }} V.
+          Autonomía estimada {{ states('sensor.autonomia_bateria_restante') }} h con bomba continua
+          (modo ahorro 15/15 automático por debajo de {{ states('number.bateria_voltaje_bajo') }} V).
+          {% if is_state('input_boolean.simulacro_apagon_en_curso', 'on') %}[Simulacro V11 en curso]{% endif %}
+        data:
+          push:
+            interruption-level: time-sensitive
+          channel: "Huerto aviso"
+          tag: corte_cfe
+
+- id: huerto_nft_regreso_cfe
+  alias: "NFT · INFO · regresó la luz (duración del corte y evaluación V11)"
+  description: >-
+    Al volver la red: apaga el modo ahorro (el nodo vuelve a bomba continua), avisa con la
+    duración del corte y, si estabas en simulacro V11, verifica que no hubo falso "sin flujo"
+    (07 §2) y registra el resultado.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.red_cfe_presente
+      from: "off"
+      to: "on"
+      for: "00:00:30"
+  actions:
+    - action: switch.turn_off
+      target:
+        entity_id: switch.modo_ahorro_15_15
+    - action: notify.huerto_aviso
+      data:
+        title: "Regresó la luz al patio"
+        message: >-
+          Corte de {{ states('sensor.duracion_ultimo_corte') }} min. Batería {{ states('sensor.voltaje_bateria_nft') }} V,
+          flujo {{ states('sensor.flujo_nft') }} L/min. Estado: {{ states('text_sensor.estado_continuidad_nft') }}.
+          {% if states('sensor.duracion_ultimo_corte') | float(0) > 120 %}Corte largo: revisa hojas y raíces del NFT hoy.{% endif %}
+        data:
+          channel: "Huerto aviso"
+          tag: corte_cfe
+    - if:
+        - condition: state
+          entity_id: input_boolean.simulacro_apagon_en_curso
+          state: "on"
+      then:
+        - delay: "00:03:00"          # gracia 20 s + 60 s de watchdog + margen
+        - variables:
+            ok: >-
+              {{ is_state('binary_sensor.nft_sin_flujo', 'off') and states('sensor.flujo_nft') | float(0) >= states('number.flujo_minimo') | float(2) }}
+        - action: notify.huerto_aviso
+          data:
+            title: "Simulacro V11: {{ 'APROBADO' if ok else 'FALLÓ' }}"
+            message: >-
+              Corte de {{ states('sensor.duracion_ultimo_corte') }} min. Flujo al restaurar {{ states('sensor.flujo_nft') }} L/min;
+              falso "sin flujo": {{ 'no' if ok else 'SÍ' }}. Anota en bitacora/nft.csv evento=simulacro_V11 (V_bat, alertas recibidas, duración).
+        - action: logbook.log
+          data:
+            name: "Simulacro V11"
+            message: "{{ 'aprobado' if ok else 'fallo' }} · corte {{ states('sensor.duracion_ultimo_corte') }} min · V_bat {{ states('sensor.voltaje_bateria_nft') }} V"
+            entity_id: binary_sensor.red_cfe_presente
+        - action: input_datetime.set_datetime
+          target:
+            entity_id: input_datetime.ultimo_simulacro_apagon
+          data:
+            date: "{{ now().strftime('%Y-%m-%d') }}"
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.simulacro_apagon_en_curso
+
+- id: huerto_nft_modo_ahorro
+  alias: "NFT · ADVERTENCIA · batería baja en corte → modo ahorro 15/15"
+  description: >-
+    Batería < 12.9 V sostenida 5 min (binary_sensor.bateria_baja, ≈ 30–40 % restante en LiFePO4)
+    y red ausente: enciende el modo ahorro del nodo (15 min ON / 15 min OFF, ≈ 2.5 días).
+    El nodo cicla la bomba por sí mismo; HA solo decide entrar (research §5.2 #4).
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.bateria_baja
+      to: "on"
+    - trigger: state
+      entity_id: binary_sensor.red_cfe_presente
+      to: "off"
+      for: "00:05:00"
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.bateria_baja
+      state: "on"
+    - condition: state
+      entity_id: binary_sensor.red_cfe_presente
+      state: "off"
+    - condition: state
+      entity_id: switch.modo_ahorro_15_15
+      state: "off"
+  actions:
+    - action: switch.turn_on
+      target:
+        entity_id: switch.modo_ahorro_15_15
+    - action: notify.huerto_aviso
+      data:
+        title: "Modo ahorro 15/15 activado"
+        message: >-
+          Batería {{ states('sensor.voltaje_bateria_nft') }} V tras {{ states('sensor.tiempo_en_bateria_actual') }} min sin luz.
+          La bomba cicla {{ states('number.modo_ahorro_minutos_on') }} min ON / {{ states('number.modo_ahorro_minutos_off') }} min OFF.
+          Si el bus baja de 12.0 V: riego manual por gravedad desde el tinaco cada 30 min.
+        data:
+          push:
+            interruption-level: time-sensitive
+          channel: "Huerto aviso"
+          tag: modo_ahorro
+
+- id: huerto_nft_bateria_baja_con_red
+  alias: "NFT · ADVERTENCIA · batería baja con red presente (cargador o batería fallando)"
+  description: >-
+    Voltaje bajo aunque hay luz: cargador apagado, perfil equivocado, fusible F0/S1 abierto o
+    batería al final de su vida. Sin esto, el siguiente corte te agarra sin respaldo.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.bateria_baja
+      to: "on"
+      for: "00:30:00"
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.red_cfe_presente
+      state: "on"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Batería del NFT baja con luz presente"
+        message: >-
+          {{ states('sensor.voltaje_bateria_nft') }} V con CFE presente 30 min: el cargador no está flotando la batería.
+          Revisa que esté enchufado, el perfil LiFePO4 (flotación ≤ 13.6 V), F0 y S1. Hoy, no mañana.
+        data:
+          channel: "Huerto aviso"
+          tag: bateria_cargador
+
+# =============================================================================
+# B. SONDAS Y DOSIFICACIÓN (Fase 2) — 06 §Watchdogs
+# =============================================================================
+
+- id: huerto_sonda_sin_cambio_24h
+  alias: "NFT · CRÍTICA · sonda sin cambio en 24 h → suspender dosificación"
+  description: >-
+    pH (o EC) no cambió nada en 24 h aunque hubo dosis: la sonda miente. HA apaga
+    "Sonda confiable" en el nodo (eso suspende la dosificación y activa
+    alert.dosificacion_suspendida). El salto > 1.5 pH en 5 min lo detecta el nodo solo.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.sonda_sin_cambio_24h
+      to: "on"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      state: "off"
+  actions:
+    - action: switch.turn_off
+      target:
+        entity_id: switch.sonda_confiable
+    - action: notify.huerto_critica
+      data:
+        title: "Sonda NFT no confiable: sin cambio en 24 h"
+        message: >-
+          pH {{ states('sensor.ph_nft') }} (rango 24 h {{ states('sensor.ph_nft_rango_24h') }}),
+          EC {{ states('sensor.ec_nft') }} mS/cm (rango {{ states('sensor.ec_nft_rango_24h') }}) con
+          {{ states('sensor.ml_dosificados_hoy_total') }} mL dosificados. Dosificación suspendida.
+          Calibra con buffers 4.01/6.86 y patrón 1.413, contrasta con el medidor de mano y rearma.
+        data:
+          push:
+            interruption-level: time-sensitive
+          channel: "Huerto critica"
+          importance: high
+          tag: sonda_no_confiable
+
+- id: huerto_deriva_dosificacion
+  alias: "NFT · ADVERTENCIA · deriva de dosificación (> 2× promedio 7 días)"
+  description: >-
+    mL dosificados hoy superan 2× el promedio móvil de 7 días: fuga en la manguera, sonda que
+    lee bajo/baja y el lazo persigue un fantasma, o depósito contaminado (06 §Watchdogs).
+    El tope diario de dosis lo aplica el nodo; aquí solo se avisa.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.deriva_dosificacion
+      to: "on"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Dosificación NFT al doble de lo normal"
+        message: >-
+          Hoy {{ states('sensor.ml_dosificados_dia_total') }} mL vs promedio 7 d {{ states('sensor.ml_dosificados_promedio_7d') | round(0) }} mL
+          (A {{ states('sensor.ml_dosificados_hoy_a') }} · B {{ states('sensor.ml_dosificados_hoy_b') }} · pH− {{ states('sensor.ml_dosificados_hoy_ph') }}).
+          Contrasta pH/EC con el medidor de mano HOY; revisa mangueras y el tambo.
+        data:
+          channel: "Huerto aviso"
+          tag: deriva_dosificacion
+
+- id: huerto_ph_ec_fuera_de_banda
+  alias: "NFT · ADVERTENCIA · pH o EC fuera de banda 2 h"
+  description: >-
+    El nodo espera 30 min tras una dosis antes de marcar "fuera de banda"; si dos horas
+    después sigue fuera, el lazo no alcanza: pH bajo el mínimo o EC sobre el máximo no
+    tienen actuador (no hay pH+ ni dilución automática) y se corrigen a mano.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.ph_fuera_de_banda
+      to: "on"
+      for: "02:00:00"
+      id: ph
+    - trigger: state
+      entity_id: binary_sensor.ec_fuera_de_banda
+      to: "on"
+      for: "02:00:00"
+      id: ec
+  conditions:
+    - condition: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      state: "off"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "{{ 'pH' if trigger.id == 'ph' else 'EC' }} del NFT fuera de banda 2 h"
+        message: >-
+          pH {{ states('sensor.ph_nft') }} (banda {{ states('number.ph_minimo') }}–{{ states('number.ph_maximo') }}) ·
+          EC {{ states('sensor.ec_nft') }} mS/cm (banda {{ states('number.ec_minima') }}–{{ states('number.ec_maxima') }}).
+          Estado: {{ states('text_sensor.estado_dosificacion') }}.
+          {% if states('sensor.ph_nft') | float(6) < states('number.ph_minimo') | float(5.8) %}pH bajo: no hay pH+ automático; corrige a mano y revisa el bote de pH−.{% endif %}
+          {% if states('sensor.ec_nft') | float(1.5) > states('number.ec_maxima') | float(1.8) %}EC alta: diluye con agua de lluvia/filtrada.{% endif %}
+        data:
+          channel: "Huerto aviso"
+          tag: fuera_de_banda
+
+- id: huerto_solucion_caliente
+  alias: "NFT · ADVERTENCIA · solución > 25 °C 30 min"
+  description: >-
+    Arriba de 25 °C cae el oxígeno disuelto (hidraulico §6). Sombra al tambo, y si es
+    sostenido, el cambio de solución es hoy.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.solucion_caliente
+      to: "on"
+      for: "00:30:00"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Solución NFT caliente"
+        message: >-
+          {{ states('sensor.temperatura_solucion') }} °C en el tambo (máx. {{ states('number.solucion_temperatura_maxima') }}).
+          Ambiente {{ states('sensor.temperatura_ambiente') }} °C. Sombra al tambo; si sigue así, cambio de solución hoy.
+        data:
+          channel: "Huerto aviso"
+          tag: solucion_caliente
+
+- id: huerto_mantenimiento_nft
+  alias: "NFT · modo mantenimiento (apaga/enciende dosificación y respaldo automático)"
+  description: >-
+    Es el "interruptor de mantenimiento" de las guías de calibración y cambio de solución:
+    ON apaga en el nodo la dosificación automática y el respaldo automático por flujo (para
+    que apagar P-1 a propósito no arranque P-2 ni dispare la crítica); OFF los regresa.
+    A las 2 h encendido te recuerda rearmar.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      to: "on"
+      id: entrar
+    - trigger: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      to: "off"
+      id: salir
+    - trigger: state
+      entity_id: input_boolean.modo_mantenimiento_nft
+      to: "on"
+      for: "02:00:00"
+      id: recordatorio
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: entrar
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id:
+                  - switch.dosificacion_automatica
+                  - switch.respaldo_automatico_por_flujo
+            - action: notify.huerto_aviso
+              data:
+                title: "NFT en mantenimiento"
+                message: "Dosificación y respaldo automático apagados. La bomba principal sigue ON hasta que la apagues tú. Recuerda salir del modo al terminar."
+                data:
+                  channel: "Huerto aviso"
+                  tag: mantenimiento_nft
+        - conditions:
+            - condition: trigger
+              id: salir
+          sequence:
+            - action: switch.turn_on
+              target:
+                entity_id:
+                  - switch.bomba_nft
+                  - switch.respaldo_automatico_por_flujo
+                  - switch.dosificacion_automatica
+            - action: notify.huerto_aviso
+              data:
+                title: "NFT fuera de mantenimiento"
+                message: "Bomba ON, respaldo automático ON, dosificación ON. Estado: {{ states('text_sensor.estado_dosificacion') }}."
+                data:
+                  channel: "Huerto aviso"
+                  tag: mantenimiento_nft
+        - conditions:
+            - condition: trigger
+              id: recordatorio
+          sequence:
+            - action: notify.huerto_aviso
+              data:
+                title: "NFT lleva 2 h en mantenimiento"
+                message: "¿Olvidaste rearmar? Sin respaldo automático ni dosificación hasta que apagues 'Mantenimiento NFT'."
+                data:
+                  push:
+                    interruption-level: time-sensitive
+                  channel: "Huerto aviso"
+                  tag: mantenimiento_nft
+
+# =============================================================================
+# C. RIEGO, AMBIENTE Y TINACO (Fase 1) — 06 §L0
+# =============================================================================
+
+- id: huerto_tinaco_bajo
+  alias: "RIEGO · ADVERTENCIA · tinaco < 40 %"
+  description: "Advertencia (push, mismo día). El < 20 % es crítica repetida: alert.tinaco_critico del paquete."
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.tinaco_bajo
+      to: "on"
+      for: "00:10:00"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Tinaco bajo"
+        message: >-
+          {{ states('sensor.nivel_tinaco') }} % ({{ states('sensor.nivel_tinaco_litros') }} L). Rellena hoy: bajo
+          {{ states('number.tinaco_nivel_minimo_interlock') }} % el nodo bloquea el riego y el llenado del tambo NFT.
+        data:
+          channel: "Huerto aviso"
+          tag: tinaco_bajo
+
+- id: huerto_hr_alta_6h
+  alias: "AMBIENTE · ADVERTENCIA · HR alta 6 h seguidas"
+  description: >-
+    HR sobre el umbral de ventilación (75 %) durante 6 h aunque el ventilador trabaje: revisar
+    cortinas, densidad de siembra y forzado 10 min/h (06 §L0; control.md Lazo 3).
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.hr_alta
+      to: "on"
+      for: "06:00:00"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "HR alta 6 h en el túnel"
+        message: >-
+          {{ states('sensor.humedad_ambiente') }} % HR, {{ states('sensor.temperatura_ambiente') }} °C, punto de rocío
+          {{ states('sensor.punto_de_rocio_ambiente') }} °C. Ventilador: {{ states('switch.ventilador') }};
+          forzado horario: {{ states('switch.ventilacion_forzada_cada_hora') }}. Abre cortinas, revisa densidad y moho (V8).
+        data:
+          channel: "Huerto aviso"
+          tag: hr_alta
+
+- id: huerto_riego_saturado
+  alias: "RIEGO · ADVERTENCIA · máximo de ciclos por hora alcanzado"
+  description: >-
+    El nodo dejó de regar por alcanzar N ciclos/h: un sensor "seco para siempre" (conector
+    corroído), boquilla tapada o línea rota. Rearme con el botón del nodo tras revisar.
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.riego_saturado
+      to: "on"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Riego saturado: revisa sensores y boquillas"
+        message: >-
+          {{ states('number.riego_ciclos_max_por_hora') }} ciclos en una hora sin que la humedad suba.
+          N1 {{ states('sensor.humedad_sustrato_n1') }} % · N2 {{ states('sensor.humedad_sustrato_n2') }} % ·
+          N3 {{ states('sensor.humedad_sustrato_n3') }} % · N4 {{ states('sensor.humedad_sustrato_n4') }} %.
+          Estado: {{ states('text_sensor.estado_riego') }}.
+        data:
+          channel: "Huerto aviso"
+          tag: riego_saturado
+
+- id: huerto_riego_memoria_arranque
+  alias: "RIEGO · (interno) guardar humedad mínima al arrancar la bomba"
+  description: "Memoria para detectar riegos sin efecto (fase-1/automatizacion-v1 §5: la humedad no subió en 2 ciclos)."
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: switch.bomba_riego
+      to: "on"
+  actions:
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.riego_humedad_al_arrancar
+      data:
+        value: "{{ states('sensor.humedad_sustrato_min') | float(0) }}"
+
+- id: huerto_riego_sin_efecto
+  alias: "RIEGO · ADVERTENCIA · dos riegos seguidos sin subida de humedad"
+  description: >-
+    Tres minutos después de cada ciclo compara la humedad mínima con la de arranque; si no
+    subió al menos el % configurado dos ciclos seguidos: línea rota, boquilla tapada o sensor
+    muerto. [POR VERIFICAR: el umbral de subida se fija en el dry-run V3.]
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: switch.bomba_riego
+      from: "on"
+      to: "off"
+  actions:
+    - delay: "00:03:00"
+    - if:
+        - condition: template
+          value_template: >-
+            {{ states('sensor.humedad_sustrato_min') | float(0) - states('input_number.riego_humedad_al_arrancar') | float(0)
+               < states('input_number.riego_subida_minima_pct') | float(3) }}
+      then:
+        - action: counter.increment
+          target:
+            entity_id: counter.riegos_sin_efecto
+      else:
+        - action: counter.reset
+          target:
+            entity_id: counter.riegos_sin_efecto
+    - if:
+        - condition: numeric_state
+          entity_id: counter.riegos_sin_efecto
+          above: 1
+      then:
+        - action: notify.huerto_aviso
+          data:
+            title: "Riego sin efecto (2 ciclos)"
+            message: >-
+              La humedad mínima no subió ≥ {{ states('input_number.riego_subida_minima_pct') }} % tras dos riegos
+              (ahora {{ states('sensor.humedad_sustrato_min') }} %). Revisa manguera, boquillas y el conector del sensor del nivel más seco.
+            data:
+              channel: "Huerto aviso"
+              tag: riego_sin_efecto
+        - action: counter.reset
+          target:
+            entity_id: counter.riegos_sin_efecto
+
+- id: huerto_helada
+  alias: "AMBIENTE · ADVERTENCIA · riesgo de helada (< 6 °C) y tapete en K4"
+  description: >-
+    Dic–feb en alcaldías del sur: T < 6 °C 10 min → aviso; si el tapete térmico está en la
+    reserva K4 (input_boolean), lo enciende y lo apaga 30 min después de pasar el riesgo.
+  mode: restart
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.riesgo_de_helada
+      to: "on"
+      for: "00:10:00"
+      id: helada
+    - trigger: state
+      entity_id: binary_sensor.riesgo_de_helada
+      to: "off"
+      for: "00:30:00"
+      id: paso
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: helada
+          sequence:
+            - if:
+                - condition: state
+                  entity_id: input_boolean.tapete_termico_en_k4
+                  state: "on"
+              then:
+                - action: switch.turn_on
+                  target:
+                    entity_id: switch.reserva_k4
+            - action: notify.huerto_aviso
+              data:
+                title: "Riesgo de helada en el túnel"
+                message: >-
+                  {{ states('sensor.temperatura_ambiente') }} °C (alarma < {{ states('number.alarma_helada_temperatura') }} °C).
+                  Cierra cortinas y pon masa térmica. Tapete en K4: {{ 'encendido' if is_state('input_boolean.tapete_termico_en_k4', 'on') else 'no instalado' }}.
+                data:
+                  push:
+                    interruption-level: time-sensitive
+                  channel: "Huerto aviso"
+                  tag: helada
+        - conditions:
+            - condition: trigger
+              id: paso
+            - condition: state
+              entity_id: input_boolean.tapete_termico_en_k4
+              state: "on"
+          sequence:
+            - action: switch.turn_off
+              target:
+                entity_id: switch.reserva_k4
+
+- id: huerto_temporada_de_lluvia
+  alias: "AMBIENTE · INFO · temporada de lluvia: forzado de ventilación 10 min/h (jun–sep)"
+  description: >-
+    06 §L0: ventilación forzada 10 min/h en temporada de lluvia. El 1 de junio enciende el
+    switch del nodo y el 1 de octubre lo apaga. Corre cada día a las 00:10 por si HA estaba apagado.
+  mode: single
+  triggers:
+    - trigger: time
+      at: "00:10:00"
+  actions:
+    - variables:
+        lluvia: "{{ now().month in [6, 7, 8, 9] }}"
+    - if:
+        - condition: template
+          value_template: "{{ lluvia and is_state('switch.ventilacion_forzada_cada_hora', 'off') }}"
+      then:
+        - action: switch.turn_on
+          target:
+            entity_id: switch.ventilacion_forzada_cada_hora
+        - action: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.temporada_de_lluvia
+        - action: notify.huerto_aviso
+          data:
+            title: "Temporada de lluvia: ventilación forzada ON"
+            message: "Desde hoy el ventilador corre 10 min cada hora además de la histéresis (jun–sep). Considera bajar 'Ventilacion HR encender' a 70 %."
+            data:
+              channel: "Huerto aviso"
+    - if:
+        - condition: template
+          value_template: "{{ not lluvia and is_state('switch.ventilacion_forzada_cada_hora', 'on') }}"
+      then:
+        - action: switch.turn_off
+          target:
+            entity_id: switch.ventilacion_forzada_cada_hora
+        - action: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.temporada_de_lluvia
+        - action: notify.huerto_aviso
+          data:
+            title: "Fin de la temporada de lluvia: ventilación forzada OFF"
+            message: "Vuelve la ventilación solo por histéresis. En dic–feb no fuerces de noche (helada)."
+            data:
+              channel: "Huerto aviso"
+
+- id: huerto_mantenimiento_riego
+  alias: "RIEGO · modo mantenimiento (apaga/enciende el riego automático del nodo)"
+  description: "Lavado del rack o cambio de boquillas: ON apaga el riego automático en el nodo; OFF lo regresa."
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.modo_mantenimiento_riego
+  actions:
+    - if:
+        - condition: state
+          entity_id: input_boolean.modo_mantenimiento_riego
+          state: "on"
+      then:
+        - action: switch.turn_off
+          target:
+            entity_id: switch.riego_automatico
+      else:
+        - action: switch.turn_on
+          target:
+            entity_id: switch.riego_automatico
+
+# =============================================================================
+# D. ENERGÍA (07 §1: alarma en 220 kWh/mes; DAC a 250 de promedio móvil)
+# =============================================================================
+
+- id: huerto_energia_220
+  alias: "ENERGÍA · ADVERTENCIA · acumulado o proyección del mes sobre la alarma"
+  description: >-
+    Huerto (medido o estimado) + refrigerador + consumo base del hogar sobre el umbral
+    (220 kWh/mes por defecto), o proyección del mes sobre el umbral a partir del día 7.
+    Si caes en DAC un año, el recibo se multiplica hasta 5× (07 §1).
+  mode: single
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.energia_sobre_alarma
+      to: "on"
+      id: acumulado
+    - trigger: numeric_state
+      entity_id: sensor.energia_proyeccion_mes
+      above: input_number.energia_alarma_kwh_mes
+      for: "02:00:00"
+      id: proyeccion
+  conditions:
+    - condition: template
+      value_template: "{{ trigger.id == 'acumulado' or now().day >= 7 }}"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Energía: {{ 'acumulado' if trigger.id == 'acumulado' else 'proyección' }} sobre {{ states('input_number.energia_alarma_kwh_mes') }} kWh"
+        message: >-
+          Huerto este mes {{ states('sensor.energia_huerto_mes') }} kWh (hoy {{ states('sensor.energia_huerto_dia') }}) ·
+          proyección {{ states('sensor.energia_proyeccion_mes') }} kWh con hogar {{ states('input_number.consumo_base_hogar_kwh_mes') }} y
+          refrigerador {{ states('input_number.refrigerador_kwh_mes') }}. Límite DAC: 250 kWh/mes de promedio anual.
+          Recorta luces T8 o ventilación; si crece con LED, contrato PDBT aparte.
+        data:
+          channel: "Huerto aviso"
+          tag: energia
+
+# =============================================================================
+# E. CALENDARIO DE MANTENIMIENTO (06 §Resumen operativo, 03 §2.2)
+# =============================================================================
+
+- id: huerto_recordatorios_0800
+  alias: "MANTENIMIENTO · ADVERTENCIA · calibración quincenal, cambio de solución, simulacro V11"
+  description: >-
+    Cada día a las 08:00 revisa los contadores de días: sondas cada 15 d (buffers 4.01/6.86 y
+    patrón 1.413 mS/cm; ~$1,050/año), solución cada 2–3 semanas, simulacro de apagón y botón
+    TEST del GFCI cada mes. Los botones "Hoy ..." del dashboard reinician cada contador.
+  mode: single
+  triggers:
+    - trigger: time
+      at: "08:00:00"
+  actions:
+    - if:
+        - condition: numeric_state
+          entity_id: sensor.dias_desde_calibracion
+          above: input_number.calibracion_intervalo_dias
+      then:
+        - action: notify.huerto_aviso
+          data:
+            title: "Toca calibrar las sondas pH/EC"
+            message: >-
+              Última calibración hace {{ states('sensor.dias_desde_calibracion') }} días (cada {{ states('input_number.calibracion_intervalo_dias') }}).
+              Enciende 'Modo calibracion' en el nodo, buffers 4.01 y 6.86, patrón 1.413 mS/cm, contrasta con el medidor de mano,
+              luego 'Rearmar dosificacion' y el botón 'Hoy calibré las sondas'. Guía: calibrar-sondas-ph-ec.
+            data:
+              channel: "Huerto aviso"
+              tag: calibracion
+    - if:
+        - condition: numeric_state
+          entity_id: sensor.dias_desde_cambio_de_solucion
+          above: input_number.cambio_solucion_intervalo_dias
+      then:
+        - action: notify.huerto_aviso
+          data:
+            title: "Toca cambiar la solución del NFT"
+            message: >-
+              Último cambio hace {{ states('sensor.dias_desde_cambio_de_solucion') }} días (cada 2–3 semanas aunque la EC "se vea bien").
+              Calibra primero, luego 'Mantenimiento NFT' → 'Purgar tambo' → lavar → 'Llenar tambo' → bomba ON → dosificación ON. Guía: cambiar-solucion-nft.
+            data:
+              channel: "Huerto aviso"
+              tag: cambio_solucion
+    - if:
+        - condition: numeric_state
+          entity_id: sensor.dias_desde_simulacro
+          above: input_number.simulacro_intervalo_dias
+      then:
+        - action: notify.huerto_aviso
+          data:
+            title: "Toca el simulacro mensual de apagón (V11) y el TEST del GFCI"
+            message: >-
+              Último simulacro hace {{ states('sensor.dias_desde_simulacro') }} días. Enciende 'Simulacro de apagón en curso', bota el breaker del
+              patio 10 min y HA evalúa el resultado al restaurar. Un respaldo que no se prueba falla el día del corte real.
+            data:
+              channel: "Huerto aviso"
+              tag: simulacro
+
+- id: huerto_marcar_hecho_hoy
+  alias: "MANTENIMIENTO · (interno) botones 'Hoy ...' → fecha de hoy"
+  description: "Los tres botones del dashboard ponen la fecha de hoy en su input_datetime."
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: input_button.calibracion_hecha_hoy
+      id: calibracion
+    - trigger: state
+      entity_id: input_button.cambio_solucion_hecho_hoy
+      id: solucion
+    - trigger: state
+      entity_id: input_button.simulacro_hecho_hoy
+      id: simulacro
+  actions:
+    - variables:
+        destino: >-
+          {{ {'calibracion': 'input_datetime.ultima_calibracion_sondas',
+              'solucion': 'input_datetime.ultimo_cambio_solucion',
+              'simulacro': 'input_datetime.ultimo_simulacro_apagon'}[trigger.id] }}
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: "{{ destino }}"
+      data:
+        date: "{{ now().strftime('%Y-%m-%d') }}"
+    - action: logbook.log
+      data:
+        name: "Mantenimiento"
+        message: "{{ trigger.id }} marcado como hecho hoy"
+        entity_id: "{{ destino }}"
+
+- id: huerto_calendario_evento
+  alias: "MANTENIMIENTO · INFO · aviso 1 h antes de cada evento de calendar.huerto"
+  description: >-
+    Si además llevas el calendario local 'huerto' en HA (calibración, cambios de solución,
+    V11, visitas de chefs), cada evento avisa una hora antes. [POR VERIFICAR: crea el
+    calendario local con nombre 'huerto' o cambia la entidad.]
+  mode: queued
+  triggers:
+    - trigger: calendar
+      event: start
+      entity_id: calendar.huerto
+      offset: "-01:00:00"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "En 1 h: {{ trigger.calendar_event.summary }}"
+        message: "{{ trigger.calendar_event.description | default('', true) }}"
+        data:
+          channel: "Huerto aviso"
+
+# =============================================================================
+# F. RESUMEN DIARIO Y CIERRES (L1: 10 min al día, dirigido por excepciones)
+# =============================================================================
+
+- id: huerto_resumen_0700
+  alias: "RESUMEN · INFO · estado del huerto a las 07:00"
+  description: >-
+    Un solo mensaje con lo que revisarías en el dashboard: excepciones activas, ambiente
+    (mín/máx 24 h), humedades por nivel, tinaco, riegos de ayer, NFT (pH/EC/flujo/batería),
+    energía del mes y días para la siguiente calibración.
+  mode: single
+  triggers:
+    - trigger: time
+      at: "07:00:00"
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Huerto {{ now().strftime('%d-%b') }}: {{ states('sensor.excepciones_activas') }} excepciones"
+        message: >-
+          {% set l = state_attr('sensor.excepciones_activas', 'lista') or [] %}
+          {% if l %}FUERA DE BANDA: {{ l | join(' | ') }}.{% else %}Todo en banda.{% endif %}
+          Túnel {{ states('sensor.temperatura_ambiente') }} °C ({{ states('sensor.temperatura_ambiente_min_24h') }}–{{ states('sensor.temperatura_ambiente_max_24h') }}),
+          HR {{ states('sensor.humedad_ambiente') }} % (máx {{ states('sensor.humedad_ambiente_max_24h') }}).
+          Sustrato N1–N4: {{ states('sensor.humedad_sustrato_n1') }}/{{ states('sensor.humedad_sustrato_n2') }}/{{ states('sensor.humedad_sustrato_n3') }}/{{ states('sensor.humedad_sustrato_n4') }} %.
+          Tinaco {{ states('sensor.nivel_tinaco') }} %. Riegos ayer: {{ state_attr('sensor.riego_ciclos_dia', 'last_period') | default('-', true) }}.
+          NFT: pH {{ states('sensor.ph_nft') }} · EC {{ states('sensor.ec_nft') }} · {{ states('sensor.temperatura_solucion') }} °C ·
+          flujo {{ states('sensor.flujo_nft') }} L/min · batería {{ states('sensor.voltaje_bateria_nft') }} V ·
+          red {{ 'OK' if is_state('binary_sensor.red_cfe_presente', 'on') else 'AUSENTE' }} ·
+          dosificado ayer {{ state_attr('sensor.ml_dosificados_dia_total', 'last_period') | default('-', true) }} mL.
+          Energía mes {{ states('sensor.energia_huerto_mes') }} kWh (proyección {{ states('sensor.energia_proyeccion_mes') }}).
+          Calibración en {{ (states('input_number.calibracion_intervalo_dias') | float(15) - states('sensor.dias_desde_calibracion') | float(0)) | round(0) }} d.
+        data:
+          channel: "Huerto aviso"
+          tag: resumen_diario
+
+- id: huerto_cierre_diario_dosis
+  alias: "NFT · (interno) cierre diario de mL dosificados (promedio 7 d)"
+  description: "A las 00:05 guarda el total de mL del día anterior (last_period del utility_meter) como 1 muestra para el promedio de 7 días."
+  mode: single
+  triggers:
+    - trigger: time
+      at: "00:05:00"
+  conditions:
+    - condition: template
+      value_template: "{{ state_attr('sensor.ml_dosificados_dia_total', 'last_period') is not none }}"
+  actions:
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.ml_dosificados_ultimo_dia
+      data:
+        value: "{{ state_attr('sensor.ml_dosificados_dia_total', 'last_period') | float(0) | round(1) }}"
+
+- id: huerto_export_semanal
+  alias: "DATOS · INFO · domingo 18:00: exportar CSV y correr el informe L3"
+  description: >-
+    Recordatorio del lazo agéntico semanal (06 §L3, datos.md §5): exportar el histórico de HA de
+    la semana a bitacora/ha/AAAA-Www.csv, copiar ha-eventos.csv, correr tools/kpis.py e
+    informe_semanal.py, aprobar el plan y commitear.
+  mode: single
+  triggers:
+    - trigger: time
+      at: "18:00:00"
+  conditions:
+    - condition: time
+      weekday:
+        - sun
+  actions:
+    - action: notify.huerto_aviso
+      data:
+        title: "Domingo: export semanal e informe del agente"
+        message: >-
+          1) Historial → descarga CSV de la semana (T, HR, pH, EC, riegos, dosis, alarmas) → bitacora/ha/{{ now().strftime('%G-W%V') }}.csv.
+          2) Copia /config/bitacora/ha-eventos.csv al repo. 3) tools/kpis.py y tools/informe_semanal.py. 4) Aprueba el plan y commitea.
+          Agua NFT esta semana: {{ states('sensor.agua_nft_semana') }} L.
+        data:
+          channel: "Huerto aviso"
+          tag: export_semanal
+
+- id: huerto_bitacora_guardar
+  alias: "BITÁCORA · guardar evento del formulario en /config/bitacora/ha-eventos.csv"
+  description: >-
+    Vista 'Bitácora' del dashboard: arma una fila CSV con fecha, evento, siembra_id, variedad,
+    cantidad, observaciones y una foto del estado (pH, EC, T, HR, tinaco) y la agrega al archivo
+    con la entidad notify.bitacora_ha (integración File, ver configuration-snippets.yaml).
+    Cada domingo la copias/fusionas con bitacora/produccion.csv y ventas.csv del repo.
+  mode: queued
+  triggers:
+    - trigger: state
+      entity_id: input_button.bitacora_guardar
+  actions:
+    - variables:
+        fila: >-
+          {{ now().strftime('%Y-%m-%d %H:%M') }},{{ states('input_select.bitacora_evento') }},{{ states('input_text.bitacora_siembra_id') | trim }},{{ states('input_select.bitacora_variedad') }},{{ states('input_number.bitacora_cantidad') | int(0) }},{{ states('sensor.ph_nft') }},{{ states('sensor.ec_nft') }},{{ states('sensor.temperatura_ambiente') }},{{ states('sensor.humedad_ambiente') }},{{ states('sensor.nivel_tinaco') }},"{{ states('input_text.bitacora_observaciones') | replace('"', "'") | replace('\n', ' ') }}"
+    - action: notify.send_message
+      target:
+        entity_id: notify.bitacora_ha
+      data:
+        message: "{{ fila }}"
+    - action: logbook.log
+      data:
+        name: "Bitácora"
+        message: "{{ states('input_select.bitacora_evento') }} {{ states('input_text.bitacora_siembra_id') }} {{ states('input_number.bitacora_cantidad') | int(0) }}"
+        entity_id: input_button.bitacora_guardar
+    - action: persistent_notification.create
+      data:
+        notification_id: bitacora_guardado
+        title: "Bitácora guardada"
+        message: "{{ fila }}"
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.bitacora_observaciones
+      data:
+        value: ""
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.bitacora_cantidad
+      data:
+        value: 0
+
+# =============================================================================
+# G. EL CEREBRO: arranque de HA y UPS de la casa
+# =============================================================================
+
+- id: huerto_ha_arranque
+  alias: "CEREBRO · INFO · Home Assistant arrancó (¿hubo corte en casa?)"
+  description: >-
+    Dos minutos después de arrancar (tiempo para que los nodos reconecten) manda el estado.
+    Con el UPS de la casa (DS-600) HA solo se apaga si el corte dura más que su autonomía
+    (45–90 min): un arranque inesperado casi siempre significa un corte largo.
+  mode: single
+  triggers:
+    - trigger: homeassistant
+      event: start
+  actions:
+    - delay: "00:02:00"
+    - action: notify.huerto_aviso
+      data:
+        title: "Home Assistant arrancó"
+        message: >-
+          {{ now().strftime('%d-%b %H:%M') }}. Nodo riego: {{ states('binary_sensor.nodo_riego_estado') }} · nodo NFT: {{ states('binary_sensor.nodo_nft_estado') }} ·
+          red CFE en el patio: {{ 'presente' if is_state('binary_sensor.red_cfe_presente', 'on') else 'AUSENTE' }} ·
+          último corte {{ states('sensor.duracion_ultimo_corte') }} min. Estado NFT: {{ states('text_sensor.estado_continuidad_nft') }}.
+        data:
+          channel: "Huerto aviso"
+          tag: ha_arranque
+
+- id: huerto_ups_casa
+  alias: "CEREBRO · ADVERTENCIA · UPS de la casa en batería (NUT)"
+  description: >-
+    Solo si tu UPS tiene puerto de datos (DataShield KS800PRO) y configuraste el add-on NUT
+    + la integración NUT: el estado 'OB' (on battery) avisa que la casa no tiene luz y que HA
+    tiene 45–90 min. [POR VERIFICAR: nombre exacto de la entidad de estado que crea tu
+    integración NUT; suele terminar en _status_data.]
+  mode: single
+  triggers:
+    - trigger: template
+      value_template: "{{ 'OB' in states('sensor.ups_status_data') }}"
+      for: "00:01:00"
+      id: en_bateria
+    - trigger: template
+      value_template: "{{ states('sensor.ups_status_data').startswith('OL') }}"
+      for: "00:01:00"
+      id: con_red
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: en_bateria
+          sequence:
+            - action: notify.huerto_aviso
+              data:
+                title: "Casa sin luz: HA en UPS"
+                message: >-
+                  El UPS del cerebro está en batería ({{ states('sensor.ups_status_data') }}). Tienes ~45–90 min de alertas.
+                  Patio: red {{ 'presente' if is_state('binary_sensor.red_cfe_presente', 'on') else 'AUSENTE' }}, NFT {{ states('text_sensor.estado_continuidad_nft') }}.
+                data:
+                  push:
+                    interruption-level: time-sensitive
+                  channel: "Huerto aviso"
+                  tag: ups_casa
+        - conditions:
+            - condition: trigger
+              id: con_red
+          sequence:
+            - action: notify.huerto_aviso
+              data:
+                title: "UPS de la casa de vuelta en red"
+                message: "Estado {{ states('sensor.ups_status_data') }}."
+                data:
+                  channel: "Huerto aviso"
+                  tag: ups_casa
