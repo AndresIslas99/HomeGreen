@@ -1,5 +1,20 @@
 # Proveedores CDMX — dónde comprar todo, con enlaces
 
+!!! tip "¿Vas a comprar EN PERSONA? Esta no es la página"
+    Esta página está organizada para **comprar en línea**: precio verificado, enlace a la ficha,
+    la mejor opción por partida sin importar dónde esté el almacén.
+
+    Si lo que quieres es **subirte al auto e ir al mostrador**, ve a
+    **[Proveedores presenciales](proveedores-presenciales.md)**: 46 tiendas físicas verificadas
+    una por una y ordenadas por distancia desde Coyoacán, con horarios reales, teléfonos, qué se
+    compra en cada una, **rutas de compra en auto por fase** y la lista honesta de lo que **no**
+    existe en mostrador con sus sustitutos.
+
+    Dos cosas que cambian decisiones de esta página: **UNIT Electronics tiene sucursal física en
+    Av. Copilco 357, Coyoacán** (aquí aparece solo como proveedor en línea), y varias partidas
+    salen **más baratas en su mostrador** que el precio en línea que trae el BOM — el SHT31 de
+    $600 se sustituye por un **SHT41 de $91**, que además es de generación más nueva.
+
 Guía de compra curada por categoría: **la opción recomendada primero**, alternativas después.
 Precios en MXN al 12-sep-2026; "aprox." = visto en resultados de búsqueda sin confirmar en la
 ficha. El detalle completo (tablas de precios escalonados, teléfonos, análisis $/charola) está

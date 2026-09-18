@@ -19,12 +19,12 @@ Las cifras de inversión muestran el rango del [plan maestro](referencia/00-plan
 
 | Fase | Qué construyes | Cuándo | Inversión MXN (plan → BOM verificado) | Meta | Gate de salida |
 |---|---|---|---|---|---|
-| [0 · Validación comercial](fases/fase-0/index.md) | Rack bajo techo, 20 charolas 10×20, muestras a 15 restaurantes | Semanas 1–6 | $4–6k → **$6,700–9,500** | 2 clientes recurrentes | **G0→1:** ≥2 clientes con 3 compras semanales seguidas **y** margen variable ≥55 % |
-| [1 · Túnel + automatización v1](fases/fase-1/index.md) | Túnel PTR 3×6 m con malla antigranizo, tinaco + captación pluvial, nodo ESP32 de riego y ambiente | Semanas 7–18 (meses 2–4) | $18–28k → **$31–42k** | $6–10k/mes netos con 25–35 charolas/semana | **G1→2:** 4–5 clientes fijos, pedidos rechazados 2 semanas seguidas, v1 estable 30 días |
-| [2 · NFT + automatización v2](fases/fase-2/index.md) | Túnel 5×6 m, 8 líneas NFT de PVC sanitario, pH/EC automáticos, respaldo DC-first, refrigerador dedicado | Semanas 19–36 (meses 5–9) | $35–55k → **$34–39k** | $12–18k/mes netos del plan; realista $6,500–11,000 | **G2→3:** neto ≥$12k/mes × 3 meses con ≤9 h/semana medidas |
+| [0 · Validación comercial](fases/fase-0/index.md) | Rack bajo techo, 20 charolas 10×20, muestras a 15 restaurantes | Semanas 1–6 | **$8,814** | 2 clientes recurrentes | **G0→1:** ≥2 clientes con 3 compras semanales seguidas **y** margen variable ≥55 % |
+| [1 · Túnel + automatización v1](fases/fase-1/index.md) | Túnel PTR 3×6 m con malla antigranizo, tinaco + captación pluvial, nodo ESP32 de riego y ambiente | Semanas 7–18 (meses 2–4) | **$41,634** | $6–10k/mes netos con 25–35 charolas/semana | **G1→2:** 4–5 clientes fijos, pedidos rechazados 2 semanas seguidas, v1 estable 30 días |
+| [2 · NFT + automatización v2](fases/fase-2/index.md) | Túnel 5×6 m, 8 líneas NFT de PVC sanitario, pH/EC automáticos, respaldo DC-first, refrigerador dedicado | Semanas 19–36 (meses 5–9) | **$27,251** | $12–18k/mes netos del plan; realista $6,500–11,000 | **G2→3:** neto ≥$12k/mes × 3 meses con ≤9 h/semana medidas |
 | [3 · Consolidación](fases/fase-3/index.md) | Camas elevadas, gantry o visión: testbed agtech | Semana 37+ (mes 10+) | discrecional | cero presión comercial | — |
 
-Total acumulado: **~$72–90k MXN en ~9 meses, condicionado a ventas.** Si G0→1 falla, la pérdida total es el BOM de Fase 0 ($6,700–9,500) y termina el experimento. Los gates completos, con fuente de dato y regla de decisión, están en [Validación → Gates](validacion/gates.md).
+Total acumulado: **$77,699 MXN en ~9 meses, condicionado a ventas.** Si G0→1 falla, la pérdida total es el BOM de Fase 0 ($8,814, de los cuales el rack, las básculas y los libros son revendibles) y termina el experimento. Los gates completos, con fuente de dato y regla de decisión, están en [Validación → Gates](validacion/gates.md).
 
 ## El camino y sus gates
 
@@ -32,16 +32,16 @@ Un gate no alcanzado no se renegocia a la baja: se itera o se detiene ([06 §L4]
 
 ```mermaid
 flowchart TD
-    S0[Semana 0<br/>Antes de gastar un peso<br/>$0–340] --> F0[Fase 0 · S1–6<br/>Rack + 20 charolas + 15 visitas<br/>$6,700–9,500]
+    S0[Semana 0<br/>Antes de gastar un peso<br/>$0–340] --> F0[Fase 0 · S1–6<br/>Rack + 20 charolas + 15 visitas<br/>$8,814]
     F0 --> G0{G0→1<br/>≥2 clientes con 3 compras<br/>semanales seguidas<br/>y margen ≥55 %}
     G0 -- No --> IT0[Iterar 2 semanas más:<br/>precio, zona o producto]
     IT0 --> G0
-    G0 -- No, otra vez --> STOP[Parar: pérdida acotada<br/>$6,700–9,500]
-    G0 -- Sí --> F1[Fase 1 · S7–18<br/>Túnel 3×6 m + tinaco + v1<br/>$31–42k]
+    G0 -- No, otra vez --> STOP[Parar: pérdida acotada<br/>$8,814]
+    G0 -- Sí --> F1[Fase 1 · S7–18<br/>Túnel 3×6 m + tinaco + v1<br/>$41,634]
     F1 --> G1{G1→2<br/>4–5 clientes fijos<br/>pedidos rechazados 2 semanas<br/>v1 estable 30 días}
     G1 -- No --> IT1[Vender más o estabilizar v1<br/>NO poner NFT sobre base inestable]
     IT1 --> G1
-    G1 -- Sí --> F2[Fase 2 · S19–36<br/>Túnel 5×6 m + 8 líneas NFT<br/>+ v2 + DC-first · $34–39k]
+    G1 -- Sí --> F2[Fase 2 · S19–36<br/>Túnel 5×6 m + 8 líneas NFT<br/>+ v2 + DC-first · $27,251]
     F2 --> G2{G2→3<br/>neto ≥$12k/mes × 3 meses<br/>≤9 h/semana medidas V9}
     G2 -- No --> IT2[Subir precios, ayudante<br/>o recortar clientes<br/>antes de escalar m²]
     IT2 --> G2
@@ -79,7 +79,7 @@ Correcciones con datos duros al plan original. Cada una cambia una compra o una 
 | 2 | **PVC sanitario.** Tubo sanitario 4" Amanco a $415/tramo, no hidráulico cédula 40 a $1,401 (3.4×). | El NFT corre sin presión; 8 líneas salen en ~$7,200–8,700, 3× la capacidad del paquete comercial de $5,779. Ver [Armar una línea NFT](guias/armar-linea-nft.md). |
 | 3 | **Precios de venta.** Charola viva $90–120 lista (no $60–90); clamshell 100 g $50–90 ($500–900/kg, no $250–450/kg); hierbas por manojo $20–35. | Con la lista corregida el costo variable queda en 15–30 %; con la original, rábano dejaba 18 % y chícharo perdía. Ver [Hoja de precios](guias/hoja-de-precios.md). |
 | 4 | **Chícharo.** Con semilla a $340/kg y 275 g por charola, la semilla cuesta $93.50/charola: margen de −$8 a +$22 y $4.50 por charola-semana de rack. | No arrancar con chícharo hasta validar arvejón grado alimento de CEDA (~$40–60/kg). El mejor uso del rack es **rábano ($82/charola-semana)**, luego arúgula y girasol con semilla CEDA. |
-| 5 | **Racks y Fase 1 reales.** Un rack que aguanta charolas mojadas cuesta $2,000–2,600 (Husky $2,019), no $1,200–1,800; la Fase 1 completa con iluminación T8 y UPS sale en $31–42k, no $18–28k. El proveedor "Hunab" no existe: es Hanlob y no vende antigranizo. | Malla antigranizo con Capi Agrícola ($40/m) o Hydro Environment; presupuesto de Fase 1 con el BOM, no con el plan. Ver [Fase 1 → Compras](fases/fase-1/compras.md). |
+| 5 | **Racks y Fase 1 reales.** Un rack que aguanta charolas mojadas cuesta $2,000–2,600 (Husky $2,019), no $1,200–1,800; la Fase 1 completa con iluminación T8, UPS y la partida de seguridad eléctrica sale en $41,634, no $18–28k. El proveedor "Hunab" no existe: es Hanlob y no vende antigranizo. | Malla antigranizo con Capi Agrícola ($40/m) o Hydro Environment; presupuesto de Fase 1 con el BOM, no con el plan. Ver [Fase 1 → Compras](fases/fase-1/compras.md). |
 | 6 | **Neto realista.** Con merma 15–20 %, enero −35 %, CAC recurrente (~$650 + 8–10 h por cliente) y 15 h/semana reales (no 6–9), el neto de régimen baja de $8,000–13,500 a **$6,500–11,000/mes**. | Las fases se financian con este número. El timesheet V9 y los gates se evalúan contra esta base, no contra la optimista. |
 
 ## Esta semana

@@ -28,10 +28,20 @@ V1–V11 y gates), y el firmware listo para flashear.
 
 | Fase | Qué | Cuándo | Inversión (MXN) | Gate para pasar |
 |---|---|---|---|---|
-| [0 · Validación comercial](docs/fases/fase-0/index.md) | Rack bajo techo, microgreens, vender a chefs | Semanas 1–6 | $6,700–9,500 | ≥2 clientes con 3 compras semanales seguidas, margen ≥55 % |
-| [1 · Túnel + automatización v1](docs/fases/fase-1/index.md) | Túnel PTR 3×6 m, tinaco + captación pluvial, nodo ESP32 de riego/ambiente | Meses 2–4 | $31–42k | 4–5 clientes fijos, demanda insatisfecha, v1 estable 30 días |
-| [2 · NFT + automatización v2](docs/fases/fase-2/index.md) | Túnel 5×6 m, 8 líneas NFT, pH/EC, respaldo DC-first, cadena de frío | Meses 5–9 | $34–39k | Neto ≥$12k/mes × 3 meses con ≤9 h/semana medidas |
+| [0 · Validación comercial](docs/fases/fase-0/index.md) | Rack bajo techo, microgreens, vender a chefs | Semanas 1–6 | $8,814 | ≥2 clientes con 3 compras semanales seguidas, margen ≥55 % |
+| [1 · Túnel + automatización v1](docs/fases/fase-1/index.md) | Túnel PTR 3×6 m, tinaco + captación pluvial, nodo ESP32 de riego/ambiente | Meses 2–4 | $41,634 | 4–5 clientes fijos, demanda insatisfecha, v1 estable 30 días |
+| [2 · NFT + automatización v2](docs/fases/fase-2/index.md) | Túnel 5×6 m, 8 líneas NFT, pH/EC, respaldo DC-first, cadena de frío | Meses 5–9 | $27,251 | Neto ≥$12k/mes × 3 meses con ≤9 h/semana medidas |
 | [3 · Consolidación](docs/fases/fase-3/index.md) | Camas elevadas, gantry/visión, testbed agtech | Mes 10+ | discrecional | — |
+
+> **Los montos salen de [`bom/partidas.csv`](bom/partidas.csv)** y los calcula
+> [`tools/gen_bom.py`](tools/gen_bom.py), que falla si alguna fila no multiplica. El acumulado de
+> las tres fases es **$77,699**, no los ~$86,500 que se publicaban antes: la diferencia es que el
+> total viejo cobraba dos veces la partida de seguridad eléctrica y el no-break, y sumaba
+> alternativas entre las que hay que elegir una. No se recortó nada del alcance; ver
+> [BOM por fase](docs/referencia/bom.md).
+>
+> La Fase 1 sube y la Fase 2 baja porque el GFCI, la tierra física y el electricista ($4,559)
+> estaban presupuestados en las dos, y el proyecto los exige en la S13 de la Fase 1.
 
 ## Qué contiene la wiki
 
@@ -69,6 +79,10 @@ docs/assets/diagramas/   SVG eléctricos, hidráulicos, plantas, animaciones; PN
 4. **El chícharo con semilla a $340/kg pierde dinero** (275 g/charola): requiere arvejón de CEDA.
 5. Racks reales cuestan **$2,000–2,600**; "Hunab" no existe (es Hanlob y no vende antigranizo).
 6. **Neto realista $6,500–11,000/mes** con merma, enero −35 %, CAC recurrente y 15 h/semana reales.
+7. **UNIT Electronics tiene mostrador en Av. Copilco 357, Coyoacán** — el resto de la wiki lo
+   trataba como proveedor solo en línea. Cubre casi todo el BOM de automatización, y ahí el
+   sensor SHT41 cuesta **$91** contra los $300 del SHT31 que traía el BOM. La ruta de compra
+   presencial completa está en [Proveedores presenciales](docs/referencia/proveedores-presenciales.md).
 
 ## Filosofía
 

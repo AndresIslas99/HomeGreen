@@ -41,9 +41,17 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
+extra_css:
+  - assets/css/extra.css
+
 # Con --strict, cualquiera de estos avisos rompe el build: un enlace interno roto,
 # un ancla que no existe, una página fuera del nav o un enlace absoluto que debería ser
 # relativo. Es lo que revisa .github/workflows/docs.yml en cada pull request.
+# Los *.notas.md son fragmentos, no páginas: se incrustan con pymdownx.snippets. Sin esta
+# exclusión, `omitted_files: warn` + --strict rompería el build por estar fuera del nav.
+exclude_docs: |
+  *.notas.md
+
 validation:
   omitted_files: warn
   absolute_links: warn
@@ -57,7 +65,23 @@ validation:
 plugins:
   - search:
       lang: es
-  - glightbox
+  # Zoom a pantalla completa de los diagramas: zoomable + draggable permiten
+  # acercarse y arrastrar dentro del plano, que es como de verdad se leen las
+  # cotas de un patio de 1220 px de ancho.
+  - glightbox:
+      zoomable: true
+      draggable: true
+      touchNavigation: true
+      loop: false
+      effect: fade
+      slide_effect: none
+      width: 96%
+      height: auto
+      # Los alt de este repo son descripciones largas y utiles, no relleno:
+      # como pie del visor se aprovechan gratis.
+      auto_caption: true
+      caption_position: bottom
+      background: "#ffffff"
 
 markdown_extensions:
   - admonition
@@ -69,6 +93,13 @@ markdown_extensions:
       permalink: true
       toc_depth: 3
   - pymdownx.details
+  # La leyenda y las notas clave de cada plano las escribe hardware/cad/layout.py en
+  # docs/assets/diagramas/layout/<plano>.notas.md; las páginas las incrustan con `--8<--`
+  # para que ese texto se lea a 16 px (dentro del SVG quedaba en 6) y siga teniendo un
+  # único origen regenerable.
+  - pymdownx.snippets:
+      base_path: [docs]
+      check_paths: true
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
@@ -89,6 +120,7 @@ nav:
       - Antes de gastar un peso: empieza-aqui/antes-de-gastar-un-peso.md
       - Cómo usar esta guía: empieza-aqui/como-usar-esta-guia.md
       - Línea de tiempo: empieza-aqui/linea-de-tiempo.md
+      - Arranque real y decisiones pendientes: empieza-aqui/arranque-real.md
   - Fases:
       - Fase 0 · Validación comercial:
           - fases/fase-0/index.md
@@ -183,6 +215,7 @@ nav:
       - Cursos: aprendizaje/cursos.md
   - Referencia:
       - BOM por fase: referencia/bom.md
+      - Proveedores presenciales: referencia/proveedores-presenciales.md
       - Normativa: referencia/normativa.md
       - Clima CDMX: referencia/clima.md
       - Glosario: referencia/glosario.md

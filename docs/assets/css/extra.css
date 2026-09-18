@@ -1,0 +1,111 @@
+/* ===========================================================================
+   HomeGreen · ajustes de legibilidad de la wiki
+   ---------------------------------------------------------------------------
+   El problema que resuelve este archivo, medido en el sitio real:
+   Material limita .md-grid a 61rem (1220 px). Con las dos barras laterales
+   (242 px cada una) la columna de contenido quedaba en 688 px en una pantalla
+   de 1512 px. Los planos de patio median entonces 1600 px de ancho, asi que se
+   dibujaban al 43 %: una cota de 10.5 u llegaba al ojo a 5.97 px.
+   Por eso "los diagramas se ven muy pequenos".
+
+   Con esta hoja la columna sube a 980 px. El resto de la ganancia se hizo
+   dentro de los SVG (hardware/cad/layout.py y los generadores de electrico e
+   hidraulico): menos lienzo, mas tipografia y el panel de notas movido a
+   Markdown. Los planos quedaron en 1220 px y su cuerpo de texto paso de
+   5.1-6.0 px a 10.1-10.6 px reales.
+   =========================================================================== */
+
+/* --- 1. Columna de contenido mucho mas ancha en pantallas grandes ---------
+   Escalonado para que la linea de texto no se vuelva incomoda de leer en
+   monitores enormes: el contenido crece, pero el texto corrido se queda
+   en un ancho comodo (ver regla 2). */
+@media screen and (min-width: 76.25em) {
+  .md-grid { max-width: 88rem; }   /* 1760 px -> columna ~980 px */
+}
+@media screen and (min-width: 110em) {
+  .md-grid { max-width: 104rem; }  /* 2080 px -> columna ~1300 px */
+}
+
+/* --- 2. El texto corrido no debe estirarse con la columna ----------------
+   Solo el cuerpo de parrafos y listas se limita; tablas, diagramas y bloques
+   de codigo aprovechan todo el ancho nuevo. */
+@media screen and (min-width: 76.25em) {
+  .md-typeset > p:not(:has(img[src*="diagramas/"])),
+  .md-typeset > ul,
+  .md-typeset > ol,
+  .md-typeset > blockquote {
+    max-width: 46rem;
+  }
+}
+
+/* --- 3. Los diagramas usan todo el ancho disponible ----------------------- */
+.md-typeset img[src*="diagramas/"] {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background: #fff;                 /* los SVG con fondo transparente en modo oscuro */
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .2rem;
+  padding: .2rem;
+  box-sizing: border-box;
+}
+
+/* --- 4. Hasta donde se puede ensanchar un diagrama, y por que no mas -----
+   MEDIDO, no supuesto: con la rejilla de la regla 1, en una ventana de
+   1512 px la columna va de x=266 a x=1246 y la tabla de contenidos empieza
+   en x=1270. El hueco real entre ambas es de 24 px, no de 266.
+   Se probo ensanchar el diagrama 13.3rem hacia la derecha "para invadir el
+   canal del TOC": no produce scroll horizontal, pero encima el plano bajo
+   la tabla de contenidos y lo que queda tapado es justo el panel de leyenda
+   y NOTAS CLAVE del lado derecho. Descartado.
+   Se probo tambien centrarlo y ensancharlo: sale mas CHICO que la columna.
+   Conclusion: el ancho de columna es el techo. El tamano que falta se gana
+   dentro del SVG (menos lienzo y mas tipografia), no con CSS. */
+.md-typeset > p > a.glightbox:has(img[src*="diagramas/"]) {
+  display: block;
+  width: 100%;
+}
+
+/* --- 5. Avisar que se puede ampliar --------------------------------------
+   El zoom de glightbox ya existia pero nada lo anunciaba. */
+.md-typeset a.glightbox:has(img[src*="diagramas/"]) {
+  position: relative;
+  cursor: zoom-in;
+}
+.md-typeset a.glightbox:has(img[src*="diagramas/"])::after {
+  content: "Clic para ampliar";
+  position: absolute;
+  right: .55rem;
+  bottom: .75rem;
+  padding: .15rem .45rem;
+  font-size: .62rem;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: #fff;
+  background: rgba(17, 24, 39, .72);
+  border-radius: .15rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.md-typeset a.glightbox:has(img[src*="diagramas/"]):hover::after { opacity: 1; }
+
+/* --- 6. El visor a pantalla completa aprovecha la pantalla ---------------- */
+.gslide-media.gslide-image { max-width: 96vw !important; }
+.gslide-image img {
+  max-height: 94vh !important;
+  max-width: 96vw !important;
+  background: #fff;
+}
+.gdesc-inner { padding: .6rem 1rem; }
+.gslide-description .gslide-desc { font-size: .78rem; line-height: 1.5; }
+
+/* --- 7. Tablas anchas (los BOM) se pueden recorrer ------------------------ */
+.md-typeset table:not([class]) { font-size: .68rem; }
+.md-typeset .md-typeset__table { width: 100%; }
+
+/* --- 8. Impresion: los diagramas a pagina completa ------------------------ */
+@media print {
+  .md-typeset a.glightbox:has(img[src*="diagramas/"]) { break-inside: avoid; }
+  .md-typeset a.glightbox::after { display: none; }
+}
