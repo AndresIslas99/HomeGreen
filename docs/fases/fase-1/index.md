@@ -26,6 +26,10 @@ pasar su checklist de puesta en marcha.
 
 ![Planta del patio en Fase 1 a escala 1:50: túnel de 6 × 3 m con 3 racks Husky, tinaco de 750 L con captación pluvial desde el canalón del túnel, gabinete IP65 en el poste sureste, línea eléctrica GFCI desde la casa, mesa de cosecha y tambo de composta](../../assets/diagramas/layout/patio-fase-1.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-1.notas.md"
+
 Lectura del plano (supuesto: patio de 10 × 8 m, casa al sur, acceso al norte; si el tuyo
 difiere, las reglas que se conservan son las de [Layout del patio](../../diseno/layout-patio.md)):
 

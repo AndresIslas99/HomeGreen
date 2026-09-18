@@ -26,6 +26,10 @@ se marchitan en 2–4 h con el túnel caliente ([03 §2.3](../../referencia/03-i
 
 ![Planta del patio en Fase 2: túnel ampliado a 5 × 6 m con 8 líneas NFT en dos bancadas de 4, tambo de 200 L a la sombra, gabinete DC con batería LiFePO4, refrigerador y zona de cosecha junto a la casa, tinaco 750 L con tlaloque, tierra física y GFCI](../../assets/diagramas/layout/patio-fase-2.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-2.notas.md"
+
 El túnel pasa de 3 × 6 m a **5 × 6 m (30 m²)**: los racks de microgreens se quedan en su
 mitad y las dos bancadas de 4 líneas NFT de 3 m ocupan la otra, con pendiente 2–3 % hacia el
 retorno. El tambo de 200 L va tapado y a la sombra; las peristálticas dosifican al tambo junto

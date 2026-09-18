@@ -15,13 +15,17 @@
 ## 1. Cómo leer las plantas
 
 - **Colores por sistema:** azul = agua (línea continua a presión, discontinua drenaje/purga, raya-punto canalón y bajante); ámbar = eléctrico (continua 127 V, discontinua 12 V CC, punteada señal/Wi-Fi); verde = cultivo (racks, bancadas NFT, camas); gris rayado = techos (túnel y cobertizo); gris discontinuo = reserva de una fase posterior.
-- **Notas clave:** los círculos numerados del plano se explican en el panel derecho de cada SVG. Aquí abajo se repiten las decisiones, no el texto completo.
+- **Notas clave:** los círculos numerados del plano se explican en el bloque desplegable *«Leyenda y notas clave del plano»* que va debajo de cada imagen (también en las páginas de cada fase). Ese texto lo genera `hardware/cad/layout.py` en `docs/assets/diagramas/layout/<plano>.notas.md`: está fuera del dibujo a propósito, para leerlo a tamaño de lectura, buscarlo y copiarlo. Aquí abajo se repiten las decisiones, no el texto completo.
 - **Tags de instrumentos** (TK-1, P-1, SV-1, LT-1, AT-1…) son los mismos de [hidraulico.md](hidraulico.md) y [electrico.md](electrico.md); los gabinetes son **GAB-A** (127 V CA), **GAB-1** (nodo de riego, CC), **GAB-2** (nodo NFT, CC), **GAB-DC** (batería y fusiblera) y **GAB-3** (gantry, Fase 3).
 - **Orientación del túnel:** cumbrera este–oeste, puerta de 0.9 m en la cabecera **este** (de frente al zaguán y al tinaco), canalones en los aleros norte y sur con bajante en la esquina noreste. El render 3D `patio-fase-2-3d.png` de [estructura-tunel.md §8](estructura-tunel.md) tiene el túnel girado 90° (cumbrera norte–sur, puerta al norte): es un boceto de volumen; **manda esta planta**. Para que coincidan, en `hardware/cad/patio_fase2.scad` gira el túnel y cambia `tunel_cx`, `tunel_y0` y `tinaco_pos`.
 
 ## 2. Fase 0 — un rack bajo techo
 
 ![Planta del patio en Fase 0: rack Husky bajo el cobertizo junto a la casa, mesa de siembra junto a la toma de agua, reserva del túnel de Fase 1 trazada en el piso](../assets/diagramas/layout/patio-fase-0.svg)
+
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-0.notas.md"
 
 **Qué hay:** 1 rack Husky de 5 niveles (183 × 91 × 46 cm, $2,019 verificado, [BOM Fase 0](../referencia/bom.md)) pegado a la pared sur bajo el cobertizo, una mesa de siembra de 1.2 × 0.6 m junto a la toma de agua (1.6 m; el requisito es < 10 m), cubeta de remojo/tina, cubeta con tapa para sustrato usado en la esquina opuesta y el contacto existente (sin GFCI todavía). Nada más: la Fase 0 valida que los chefs **pagan** ([00-plan-maestro](../referencia/00-plan-maestro.md)).
 
@@ -32,6 +36,10 @@
 ## 3. Fase 1 — túnel 3 × 6, tinaco, gabinetes y GFCI
 
 ![Planta del patio en Fase 1: túnel de 6 × 3 m con 3 racks, tinaco de 750 L en la esquina noreste con tlaloque, gabinetes GAB-A y GAB-1, troncal eléctrica aérea desde el cobertizo, drenaje a la coladera y cuarto de cosecha](../assets/diagramas/layout/patio-fase-1.svg)
+
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-1.notas.md"
 
 **Qué cambia respecto a Fase 0:**
 
@@ -58,6 +66,10 @@
 
 ![Planta del patio en Fase 2: túnel ampliado a 6 × 5 m con 3 racks y dos bancadas de 4 líneas NFT, tambo de 200 L, bombas de 12 V, GAB-2, GAB-DC con batería bajo el cobertizo, refrigerador y ESP32-CAM](../assets/diagramas/layout/patio-fase-2.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-2.notas.md"
+
 **Qué cambia respecto a Fase 1:**
 
 | Elemento | Dónde | Por qué ahí |
@@ -82,6 +94,10 @@
 ## 5. Fase 3 — camas elevadas, goteo, gantry y cámara
 
 ![Planta del patio en Fase 3: Fase 2 más tres camas elevadas con goteo desde el tinaco, gantry XY sobre la cama sur, GAB-3 y cámara fija en poste](../assets/diagramas/layout/patio-fase-3.svg)
+
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-3.notas.md"
 
 **Qué cambia respecto a Fase 2:** tres camas elevadas (alt. 0.7–0.9 m [POR VERIFICAR: material y altura no están en la fuente de verdad]) —dos de 1.0 × 2.8 m en la franja este, sobre la línea de drenaje, y una de 3.1 × 1.0 m al sur del túnel—, goteo colgado de HA desde el tinaco (SV-3 de 12 V NC en la caja F-2; ramal este ≈ 3.8 m y ramal sur por la troncal y el alero sur ≈ 6.5 m), gantry XY tipo FarmBot sobre la cama 3 (rieles V-slot en los bordes largos, carrera ≈ 3.0 × 0.9 m), GAB-3 con el driver en la pared de la casa y una cámara fija en poste de 2 m. La composta del tambo alimenta las camas sin cruzar el cuarto de cosecha.
 
@@ -160,7 +176,7 @@ Son las longitudes que compras (más 10–15 % de desperdicio y subidas/bajadas)
 4. **Pon el tinaco en la esquina más cercana a la coladera y al alero del túnel**, nunca donde tape la coladera ni donde estorbe el paso.
 5. **Traza la troncal eléctrica** desde el contacto GFCI hasta la columna del túnel más cercana, siempre pegada a pared o aérea con mensajero; GAB-A donde hay techo, GAB-1 en la columna más cercana al rack testigo y al tinaco.
 6. **Dibuja los drenajes** desde cada punto húmedo hasta la coladera comprobando que **ninguno cruce un pasillo**; si es inevitable, el cruce va bajo rampa pasacables y lo anotas en el plano.
-7. **Edita `hardware/cad/layout.py`** (sección `GEOMETRIA`: `ACCESO`, `COLADERA`, `TOMA`, `CONTACTO`, `COBERTIZO`, `TUNEL_F1/F2`, `TINACO`, …), regenera y vuelve a leer las longitudes del panel derecho: son tu lista de compra de cable, manguera y canalón.
+7. **Edita `hardware/cad/layout.py`** (sección `GEOMETRIA`: `ACCESO`, `COLADERA`, `TOMA`, `CONTACTO`, `COBERTIZO`, `TUNEL_F1/F2`, `TINACO`, …), regenera y vuelve a leer las longitudes del bloque **Notas → Recorridos** (en el desplegable bajo cada plano, o en `docs/assets/diagramas/layout/<plano>.notas.md`): son tu lista de compra de cable, manguera y canalón.
 8. **Patio en renta o condominio:** sin permiso de perforar, el anclaje son dados de ≥ 80 kg por columna y vientos ([instalacion-tunel-detalle §1](../research/instalacion-tunel-detalle.md)); verifica Art. 21/23 de la Ley de Propiedad en Condominio antes de gastar ([07 §9](../referencia/07-puntos-ciegos-y-riesgos.md)).
 
 !!! example "Ejemplos rápidos"
@@ -178,7 +194,7 @@ Son las longitudes que compras (más 10–15 % de desperdicio y subidas/bajadas)
 - [ ] Punto del contacto WR, trayecto del conduit y punto de la varilla de tierra acordados con el electricista (cotización por escrito).
 - [ ] Trayecto de la troncal aérea marcado a 2.2 m; ningún cruce de pasillo a nivel de piso.
 - [ ] Vecinos y condominio informados/consultados; uso de suelo verificado en SEDUVI ([07 §9](../referencia/07-puntos-ciegos-y-riesgos.md)).
-- [ ] Longitudes del panel derecho de la planta copiadas a la lista de compras de Fase 1 (`docs/fases/fase-1/compras.md`).
+- [ ] Longitudes del bloque **Notas → Recorridos** de la planta (desplegable bajo la imagen) copiadas a la lista de compras de Fase 1 (`docs/fases/fase-1/compras.md`).
 
 Registrar en bitácora: una fila `SITIO-AAMMDD` en `bitacora/produccion.csv` con las medidas en `observaciones` (T mín/máx, µmol, diagonales, foto), igual que en [Montar el rack](../fases/fase-0/montaje.md). Si prefieres un `bitacora/obra.csv` aparte, créalo con `fecha,medida,valor,foto` [POR VERIFICAR: no existe aún en el repo].
 

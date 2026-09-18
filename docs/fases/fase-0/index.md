@@ -22,6 +22,10 @@ Todo lo demás (túnel, tinaco, ESP32, NFT) se compra solo si el gate pasa.
 
 ![Planta del patio en Fase 0: rack Husky bajo el cobertizo pegado a la pared sur, mesa de siembra junto a la toma de agua, reserva del túnel 3×6 trazada](../../assets/diagramas/layout/patio-fase-0.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-0.notas.md"
+
 Un solo rack Husky de 5 niveles bajo techo, pegado a la pared sur (luz indirecta, sin sol de
 mediodía ni goteo), una mesa de siembra de 1.2 × 0.6 m junto a la toma de agua (a < 10 m) y un
 contacto existente cerca. Nada más. El patio del dibujo es un **supuesto de 10 × 8 m con casa
