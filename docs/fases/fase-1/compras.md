@@ -6,7 +6,7 @@ agrupada por la semana en que la ruta crítica la necesita — todo lo de estruc
 pedido por proveedor y la decisión herrero vs DIY tomada antes de comprar una sola herramienta.
 
 !!! info "Antes de empezar"
-    - **Tiempo:** S7: 1 mañana de pedidos en línea + 1 ida a Sodimac/Home Depot + 1 ida en coche a Hydro Environment (Tlalnepantla, ~40 min desde el norte de CDMX) · S8: 2 h de pedidos + 1 ida al Centro (AG Electrónica) · S12: 1 h · **Costo:** **≈ $37,300** sumando renglón por renglón el CSV (el CSV lo redondea a ~$38,000; rango realista $34,000–42,000; versión recortada ~$31,000) · **Personas:** 1 (+ coche o flete para el PTR y el plástico)
+    - **Tiempo:** S7: 1 mañana de pedidos en línea + 1 ida a Sodimac/Home Depot + 1 ida en coche a Hydro Environment (Tlalnepantla, ~40 min desde el norte de CDMX) · S8: 2 h de pedidos + 1 ida al Centro (AG Electrónica) · S12: 1 h · **Costo:** **$41,634** ([BOM](../../referencia/bom.md)), de los cuales $4,559 son la seguridad eléctrica de la S13; $40,244 en versión austera · **Personas:** 1 (+ coche o flete para el PTR y el plástico)
     - **Necesitas:** el gate [G0→1](../fase-0/gate.md) pasado; las 3 cotizaciones de herrero pedidas con foto del croquis; tarjeta o SPEI; dónde recibir 15 tramos de PTR de 6 m y un lienzo de plástico de 8 × 6.2 m.
     - **Prerequisitos:** [Antes de gastar un peso](../../empieza-aqui/antes-de-gastar-un-peso.md) — decisión ① (¿se puede perforar la losa? si no, contrapesos de ≥ 80 kg por poste) y ④ (tinaco 750 L o 1,100 L según tandeo); [Estructura del túnel](../../diseno/estructura-tunel.md) para la lista de cortes que le das al herrero.
 

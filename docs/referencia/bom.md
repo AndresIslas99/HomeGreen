@@ -21,12 +21,19 @@ que **no tiene columna de subtotal** y por lo tanto no puede inflar ningún tota
 
 ## Resumen
 
-| Fase | Inversión que sí se desembolsa |
-|---|---:|
-| Fase 0 · Validación comercial | $8,814 |
-| Fase 1 · Túnel y automatización v1 | $41,634 |
-| Fase 2 · NFT y automatización v2 | $27,251 |
-| **Acumulado Fases 0–2** | **$77,699** |
+| Fase | Inversión que sí se desembolsa | Versión austera |
+|---|---:|---:|
+| Fase 0 · Validación comercial | $8,814 | $8,095 |
+| Fase 1 · Túnel y automatización v1 | $41,634 | $40,244 |
+| Fase 2 · NFT y automatización v2 | $27,251 | $24,082 |
+| **Acumulado Fases 0–2** | **$77,699** | **$72,421** |
+
+La columna austera cambia cada partida a la opción marcada como
+`alternativa_austera` en `opciones.csv` (rack Adir en vez de Husky, contacto GFCI en vez
+de breaker, batería AGM en vez de LiFePO4, plástico de invernaderosMX). **La calcula el
+script**, así que no puede desfasarse como la frase suelta que traía el CSV viejo, que
+afirmaba que comprar 250 g de rábano salía más barato que 500 g cuando el escalón de
+precio lo encarece $200.
 
 ??? warning "Qué cambió respecto del BOM viejo, y por qué el total bajó"
     El BOM anterior publicaba **$86,500** acumulados. Este publica **$77,699**.

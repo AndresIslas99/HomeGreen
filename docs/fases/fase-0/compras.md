@@ -5,7 +5,7 @@ agrupada por urgencia y por proveedor, para que en 2 días tengas lo que bloquea
 siembra y en 1 semana lo demás — sin comprar chícharo a $340/kg.
 
 !!! info "Antes de empezar"
-    - **Tiempo:** 2 h de pedidos en línea + 1 mañana de recorrido (Home Depot, ISLA, farmacia, súper) · **Costo:** ~$9,500 escenario recomendado / ~$6,700 austero (`bom/fase0.csv`) · **Personas:** 1
+    - **Tiempo:** 2 h de pedidos en línea + 1 mañana de recorrido (Home Depot, ISLA, farmacia, súper) · **Costo:** $8,814 escenario recomendado / $8,095 austero ([BOM](../../referencia/bom.md)) · **Personas:** 1
     - **Necesitas:** WhatsApp para cotizar (Al Natural, Hydrocultura, Hydro Environment), tarjeta o SPEI, un lugar seco para recibir el rack (183 × 91 × 46 cm armado).
     - **Prerequisitos:** [Antes de gastar un peso](../../empieza-aqui/antes-de-gastar-un-peso.md) resuelto; sitio elegido y medido 3 días ([montaje §1](montaje.md)) — el rack se compra cuando ya sabes dónde va.
 
@@ -136,8 +136,8 @@ WhatsApp para confirmar "sin tratamiento" y gramajes) y una sola mañana de reco
 
 | Escenario | Qué incluye | Total |
 |---|---|---|
-| **Recomendado** | Todo el BOM menos el chícharo: rack Husky, 20 charolas, girasol A/B, rábano, betabel, brócoli, finas, coco, básculas, sanitización completa, empaque, libros | **≈ $9,100** (el BOM redondea a ~$9,500 con chícharo) |
-| **Austero** | Rack Adir (~$1,300), sin libros, sin betabel (segunda ola) | **≈ $6,700** (cifra del BOM) |
+| **Recomendado** | Todo el BOM: rack Husky, 20 charolas, girasol A/B, rábano, betabel, brócoli, finas, coco, básculas, sanitización, empaque, libros. El chícharo y el hipoclorito ya **no suman** (el BOM los marca como informativo y condicional) | **$8,814** |
+| **Austero** | Rack Adir ($1,300 en vez de $2,019) | **$8,095** · quitando además libros ($885) y betabel ($800): **$6,410** |
 
 La pérdida acotada de ~$6k del plan maestro asume que el rack, las básculas, la tijera y los
 libros conservan su valor si G0 no pasa.

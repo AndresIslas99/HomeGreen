@@ -3,7 +3,7 @@
 **En una línea:** al final de la S18 mides tres cosas que un tercero podría auditar — 4–5
 clientes fijos, pedidos rechazados dos semanas seguidas y 30 días de automatización v1 con
 menos de 2 alarmas críticas por semana y cero pérdidas por riego — y solo con las tres en verde
-liberas los ~$34–39k de la Fase 2. Un gate no alcanzado no se renegocia: se itera o se detiene.
+liberas los $27,251 de la Fase 2. Un gate no alcanzado no se renegocia: se itera o se detiene.
 
 !!! info "Antes de empezar"
     - **Tiempo:** 1 h el domingo de la S18 (los datos se acumulan solos desde la S15) · **Costo:** $0 · **Personas:** 1

@@ -11,7 +11,7 @@ para ejecutarlo. Cifras en MXN al 12-sep-2026.
 ### ¿Puedo empezar sin túnel?
 
 **Sí; así está diseñada la Fase 0.** Un rack de 5 niveles bajo techo con luz indirecta, 20 charolas
-y semilla (~$6,700–9,500 en total) valida en 6 semanas si hay quien compre. El túnel ($31–42k) solo
+y semilla ($8,814 en total) valida en 6 semanas si hay quien compre. El túnel ($41,634) solo
 se compra al pasar el gate G0→1 (2 clientes con 3 compras semanales seguidas y margen ≥ 55 %).
 Ver [Fase 0](../fases/fase-0/index.md) y [Gate G0→1](../fases/fase-0/gate.md).
 
@@ -23,7 +23,7 @@ alcaldía y el curso gratis de Intagri. Ver [Antes de gastar un peso](../empieza
 
 ### ¿Cuánto cuesta cada fase de verdad?
 
-**Fase 0 ~$9,500 · Fase 1 ~$38,000 · Fase 2 ~$39,000 (acumulado ~$86,500; rango $72–90k).** El plan
+**Fase 0 $8,814 · Fase 1 $41,634 · Fase 2 $27,251 (acumulado $77,699; $72,421 en versión austera).** El plan
 original decía $60–90k porque no presupuestaba racks reales ($2,019 c/u), tubos T8, respaldo DC,
 GFCI + tierra ni refrigerador. Tablas completas y CSV descargables en [BOM por fase](bom.md).
 

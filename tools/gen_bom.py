@@ -162,6 +162,28 @@ def totales(partidas: list[dict]) -> dict[str, float]:
     return t
 
 
+def total_austero(partidas: list[dict], opciones: list[dict]) -> dict[str, float]:
+    """Total por fase cambiando cada partida a su opcion austera, donde exista.
+
+    Existia como frase suelta en las notas del CSV viejo ("version austera ~$6,700")
+    y nadie la recalculaba: por eso decia cosas imposibles, como que comprar 250 g
+    de rabano en vez de 500 sale mas barato cuando el escalon de precio lo encarece.
+    Aqui se deriva, asi que no puede desfasarse.
+    """
+    austeras = {
+        o["partida_id"]: num(o["precio_unit_mxn"])
+        for o in opciones
+        if o["recomendacion"] == "alternativa_austera" and num(o["precio_unit_mxn"]) > 0
+    }
+    t: dict[str, float] = {}
+    for p in partidas:
+        if p["cuenta_en_total"] != "si":
+            continue
+        pu = austeras.get(p["partida_id"], num(p["precio_unit_mxn"]))
+        t[p["fase"]] = t.get(p["fase"], 0.0) + num(p["cantidad"]) * pu
+    return t
+
+
 def mxn(v: float) -> str:
     return f"${v:,.0f}"
 
@@ -172,6 +194,7 @@ def generar_markdown(partidas: list[dict], opciones: list[dict]) -> str:
         por_partida.setdefault(o["partida_id"], []).append(o)
 
     t = totales(partidas)
+    ta = total_austero(partidas, opciones)
     acumulado = sum(t.values())
 
     L: list[str] = []
@@ -200,11 +223,18 @@ def generar_markdown(partidas: list[dict], opciones: list[dict]) -> str:
     A("")
     A("## Resumen")
     A("")
-    A("| Fase | Inversión que sí se desembolsa |")
-    A("|---|---:|")
+    A("| Fase | Inversión que sí se desembolsa | Versión austera |")
+    A("|---|---:|---:|")
     for f in sorted(t):
-        A(f"| {NOMBRE_FASE[f]} | {mxn(t[f])} |")
-    A(f"| **Acumulado Fases 0–2** | **{mxn(acumulado)}** |")
+        A(f"| {NOMBRE_FASE[f]} | {mxn(t[f])} | {mxn(ta[f])} |")
+    A(f"| **Acumulado Fases 0–2** | **{mxn(acumulado)}** | **{mxn(sum(ta.values()))}** |")
+    A("")
+    A("La columna austera cambia cada partida a la opción marcada como")
+    A("`alternativa_austera` en `opciones.csv` (rack Adir en vez de Husky, contacto GFCI en vez")
+    A("de breaker, batería AGM en vez de LiFePO4, plástico de invernaderosMX). **La calcula el")
+    A("script**, así que no puede desfasarse como la frase suelta que traía el CSV viejo, que")
+    A("afirmaba que comprar 250 g de rábano salía más barato que 500 g cuando el escalón de")
+    A("precio lo encarece $200.")
     A("")
 
     no_suman = [p for p in partidas if p["cuenta_en_total"] == "no"]
@@ -345,10 +375,11 @@ def main() -> int:
         return 1
 
     t = totales(partidas)
+    ta = total_austero(partidas, opciones)
     print(f"BOM válido: {len(partidas)} partidas, {len(opciones)} opciones de proveedor")
     for f in sorted(t):
-        print(f"  Fase {f}: {mxn(t[f])}")
-    print(f"  Acumulado: {mxn(sum(t.values()))}")
+        print(f"  Fase {f}: {mxn(t[f]):>10}   austero {mxn(ta[f]):>10}")
+    print(f"  Acumulado: {mxn(sum(t.values())):>8}   austero {mxn(sum(ta.values())):>10}")
 
     if solo_check:
         return 0

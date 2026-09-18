@@ -1,6 +1,6 @@
 # V4 · Smoke test comercial (vender antes de construir)
 
-**En una línea:** la Fase 0 completa, formalizada como método: 15 restaurantes mapeados, visitas con muestra física, y cada semana las cuatro cifras del embudo —visitados → probaron → pidieron una vez → recurrentes— para saber, antes de gastar $31–42k en el túnel, si alguien paga por SPEI tres semanas seguidas.
+**En una línea:** la Fase 0 completa, formalizada como método: 15 restaurantes mapeados, visitas con muestra física, y cada semana las cuatro cifras del embudo —visitados → probaron → pidieron una vez → recurrentes— para saber, antes de gastar $41,634 en el túnel, si alguien paga por SPEI tres semanas seguidas.
 
 !!! info "Antes de empezar"
     - **Cuándo:** Fase 0, semanas 3–6 (las visitas empiezan cuando hay producto cortado esa mañana); se registra **cada semana** · **Tiempo:** 2 mañanas por semana de visitas + 2 entregas; cerrar un cliente cuesta ~8–10 h y ~$650 de bolsillo ([07 §7](../referencia/07-puntos-ciegos-y-riesgos.md)) · **Costo:** muestras (1 charola de girasol = 3–5 muestras de 100 g ≈ $9 de insumo; clamshell $3.50) + transporte · **Personas:** 1

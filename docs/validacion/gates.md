@@ -23,7 +23,7 @@ Los gates se evalúan contra el **neto realista** ($6,500–11,000/mes en régim
 ```mermaid
 flowchart LR
     F0["Fase 0<br/>S1–6 · $4–6k"] --> G01{{"G0→1<br/>≥ 2 recurrentes<br/>margen ≥ 55 %"}}
-    G01 -- "Go" --> F1["Fase 1<br/>S7–18 · $31–42k"]
+    G01 -- "Go" --> F1["Fase 1<br/>S7–18 · $41,634"]
     G01 -- "iterar 1×, 2 semanas" --> F0
     G01 -- "abortar" --> X0["Fin: pérdida ~$6k<br/>post-mortem de 1 página"]
     F1 --> G12{{"G1→2<br/>4–5 fijos · rechazados 2 sem ·<br/>v1 estable 30 días"}}

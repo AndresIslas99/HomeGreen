@@ -113,7 +113,7 @@ Un gate es la condición medible para liberar el dinero de la siguiente fase. Se
 
 | Gate | Umbral | De dónde sale el dato | Si no se alcanza |
 |---|---|---|---|
-| **G0→1** | ≥2 clientes con ≥3 compras semanales consecutivas **y** margen variable ≥55 % en ventas reales | `bitacora/ventas.csv` + precios | Iterar 2 semanas más (precio, zona, producto) o abortar con pérdida acotada de $6,700–9,500 |
+| **G0→1** | ≥2 clientes con ≥3 compras semanales consecutivas **y** margen variable ≥55 % en ventas reales | `bitacora/ventas.csv` + precios | Iterar 2 semanas más (precio, zona, producto) o abortar con pérdida acotada de $8,814 |
 | **G1→2** | 4–5 clientes fijos, pedidos rechazados 2 semanas seguidas, **y** 30 días con <2 alarmas críticas/semana y cero pérdidas por fallo de riego | ventas + histórico de Home Assistant | No agregar NFT sobre una base inestable |
 | **G2→3** | Neto ≥$12k/mes durante 3 meses **y** ≤9 h/semana medidas con el timesheet V9 | contabilidad + `V9` | Subir precios, contratar ayudante o recortar clientes antes de escalar m² |
 

@@ -1,6 +1,6 @@
 # Fase 0: validar que los chefs pagan
 
-**En una línea:** en 6 semanas, con un rack bajo techo y ~$6,700–9,500 de equipo, produces
+**En una línea:** en 6 semanas, con un rack bajo techo y $8,814 de equipo, produces
 microgreens reales, se los llevas a 15 restaurantes y mides si al menos 2 te compran 3 semanas
 seguidas pagando por SPEI — antes de gastar un peso en túnel, agua o electrónica.
 
@@ -8,7 +8,7 @@ seguidas pagando por SPEI — antes de gastar un peso en túnel, agua o electró
     | | |
     |---|---|
     | **Objetivo** | Probar con dinero real que hay demanda: ≥ 2 clientes recurrentes **y** margen variable ≥ 55 % |
-    | **Inversión** | $4,000–6,000 según el [plan maestro](../../referencia/00-plan-maestro.md); BOM real ~$9,500 con sanitización y libros, ~$6,700 versión austera ([compras](compras.md)) |
+    | **Inversión** | **$8,814** calculados desde [`bom/partidas.csv`](../../referencia/bom.md); $8,095 en versión austera (rack Adir). El plan maestro decía $4,000–6,000 y se quedaba corto ([compras](compras.md)) |
     | **Meta** | 2 clientes con ≥ 3 compras semanales consecutivas, cobradas |
     | **Duración** | Semanas 1–6: semanas 1–2 producir y pesar, semanas 3–6 vender y medir el embudo |
     | **Pérdida si falla** | ~$6k acotados; el rack, las básculas y los libros se quedan contigo |

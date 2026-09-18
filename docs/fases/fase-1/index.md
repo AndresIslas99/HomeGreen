@@ -9,7 +9,7 @@ lluvia del propio techo, y un ESP32 con Home Assistant riega, ventila y avisa �
     | | |
     |---|---|
     | **Objetivo** | Producción formal y estable: túnel + agua propia + automatización v1 con alarmas que sí llegan |
-    | **Inversión** | $18,000–28,000 según el [plan maestro](../../referencia/00-plan-maestro.md); BOM real **~$38,000** (rango $34,000–42,000; recortable a ~$31,000 con 2 racks y DHT22) en [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv) — ver [compras](compras.md) |
+    | **Inversión** | **$41,634** calculados desde [`bom/partidas.csv`](../../referencia/bom.md); $40,244 en versión austera. Incluye ya la partida de seguridad eléctrica ($4,559) que el BOM viejo presupuestaba en la Fase 2 y esta fase exige en la S13 — ver [compras](compras.md) |
     | **Meta** | $6,000–10,000/mes netos con 25–35 charolas/semana vendidas (siembras lunes y jueves) |
     | **Duración** | Semanas 7–18 (meses 2–4): túnel S7–12, automatización S12–15, 30 días de v1 estable S15–18 |
     | **Ruta crítica** | El herrero (cotizar S7, fabricar S8–9, montar S10–11). Todo lo demás llega antes si se pide el día 1 |

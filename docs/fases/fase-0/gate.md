@@ -121,7 +121,7 @@ hay número y fecha ([03 §1.1](../../referencia/03-instalacion.md),
 | **Canalón PVC** | Home Depot | $269 / 3.07 m | Tramos para los dos aleros + bajante |
 
 Total de referencia: túnel 3 × 6 m **≈ $10,700–15,300** todo incluido; Fase 1 completa con racks,
-T8 y UPS **$31–42k** ([`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)).
+T8 y UPS **$41,634** ([`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)).
 Mientras esperas el gate: apunta en el calendario la convocatoria **Cosecha de Lluvia** de SEDEMA
 (enero–febrero; sistema de ~$20k sin costo si la alcaldía califica) y el Aviso de Funcionamiento
 COFEPRIS gratuito al iniciar Fase 1 ([02 §2 y §4](../../referencia/02-restricciones-y-requisitos.md)).

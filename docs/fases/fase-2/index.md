@@ -9,7 +9,7 @@ cadena de frío y una política de cobro que convierta ventas en caja.
     | | |
     |---|---|
     | **Objetivo** | Segundo producto de ticket recurrente (hierbas por manojo, $20–35 B2B premium) sobre una base automatizada que aguante apagones y no te mande a tarifa DAC |
-    | **Inversión** | $35,000–55,000 según el [plan maestro](../../referencia/00-plan-maestro.md); BOM real ≈ $39,000 con respaldo, seguridad eléctrica y cadena de frío (≈ $18,500 que el plan original no contemplaba); el NFT puro de 8 líneas sigue en $7,200–8,700 ([compras](compras.md)) |
+    | **Inversión** | **$27,251** calculados desde [`bom/partidas.csv`](../../referencia/bom.md); $24,082 en versión austera. Bajó de los ~$39,000 que publicaba antes porque la seguridad eléctrica, el no-break y la captación pluvial se pagan en la Fase 1 y se cobraban otra vez aquí; el NFT puro de 8 líneas sigue en $7,200–8,700 ([compras](compras.md)) |
     | **Meta del plan** | $12,000–18,000/mes netos; **el neto corregido con merma, enero y 15 h/semana es $6,500–11,000/mes** ([07](../../referencia/07-puntos-ciegos-y-riesgos.md)) |
     | **Duración** | Meses 5–9: 2–3 fines de semana de construcción + 2 ciclos completos de albahaca + 3 meses de régimen para el gate |
     | **Prerequisito** | [G1→2](../fase-1/gate.md) aprobado: 4–5 clientes fijos, demanda insatisfecha 2 semanas y automatización v1 estable 30 días. **No se agrega NFT sobre una base inestable** |

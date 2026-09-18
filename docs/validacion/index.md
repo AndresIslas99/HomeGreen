@@ -170,7 +170,7 @@ Las semanas salen de la [línea de tiempo](../empieza-aqui/linea-de-tiempo.md); 
 |---|---|---|
 | Comprar > 1 kg de semilla a un proveedor nuevo (costal de 5 kg, bulto de CEDA) | [V1](v01-germinacion.md) con el kilo de prueba | ≥ 80–85 % |
 | Ofrecer una variedad nueva en la hoja de precios | [V2](v02-rendimiento.md) | CV < 15 % y margen |
-| Gastar en el túnel (Fase 1, $31–42k) | [V4](v04-smoke-test.md) → [G0→1](gates.md) | 2 recurrentes y margen ≥ 55 % |
+| Gastar en el túnel (Fase 1, $41,634) | [V4](v04-smoke-test.md) → [G0→1](gates.md) | 2 recurrentes y margen ≥ 55 % |
 | Energizar el primer relé en el patio | GFCI + tierra ≤ 25 Ω ([Instalar GFCI y tierra](../guias/instalar-gfci-y-tierra.md)) y luego [V3](v03-dry-run.md) | 100 % de fallas detectadas |
 | Comprar NFT, sondas y batería (Fase 2, $35–55k) | [G1→2](gates.md) con [V5](v05-ausencia.md) como evidencia de estabilidad; [V7](v07-agua.md) para decidir la fuente de agua | 3 métricas en verde |
 | Trasplantar la primera línea de albahaca | [V3](v03-dry-run.md) del nodo NFT + [V11](v11-apagon.md) | Respaldo probado |
