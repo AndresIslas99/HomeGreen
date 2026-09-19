@@ -1,0 +1,145 @@
+/* HomeGreen · estilos del tablero de seguimiento.
+   Todo el color sale de las variables de Material, asi que el tablero sigue el
+   tema claro/oscuro del sitio sin duplicar una paleta. */
+
+#hg-seguimiento { margin: 1rem 0 2rem; }
+
+/* --- pestanas ------------------------------------------------------------ */
+.hg-tabs { display: flex; flex-wrap: wrap; gap: .3rem; border-bottom: 2px solid var(--md-default-fg-color--lightest); margin-bottom: .9rem; }
+.hg-tab {
+  border: 0; background: none; cursor: pointer;
+  padding: .5rem .9rem; font-size: .72rem; font-weight: 600;
+  color: var(--md-default-fg-color--light);
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  font-family: inherit;
+}
+.hg-tab:hover { color: var(--md-default-fg-color); }
+.hg-tab-on { color: var(--md-primary-fg-color); border-bottom-color: var(--md-primary-fg-color); }
+
+/* --- barra superior ------------------------------------------------------ */
+.hg-barra-sup { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+#hg-filtros { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; }
+.hg-acciones { display: flex; flex-wrap: wrap; gap: .4rem; }
+.hg-inline { display: inline-flex; align-items: center; gap: .3rem; }
+
+.hg-btn {
+  border: 1px solid var(--md-primary-fg-color); background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color); border-radius: .15rem;
+  padding: .35rem .7rem; font-size: .66rem; font-weight: 600; cursor: pointer;
+  font-family: inherit;
+}
+.hg-btn-sec { background: none; color: var(--md-primary-fg-color); }
+.hg-btn:hover { filter: brightness(1.1); }
+
+.hg-guardado { font-size: .62rem; color: var(--md-default-fg-color--light); margin-bottom: .9rem; }
+.hg-guardado.hg-error { color: #b3261e; font-weight: 600; }
+
+/* --- tarjetas de resumen ------------------------------------------------- */
+.hg-resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .6rem; margin-bottom: .8rem; }
+.hg-tarjeta { border: 1px solid var(--md-default-fg-color--lightest); border-radius: .2rem; padding: .6rem .7rem; }
+.hg-t-lab { font-size: .6rem; text-transform: uppercase; letter-spacing: .04em; color: var(--md-default-fg-color--light); }
+.hg-t-val { font-size: 1.2rem; font-weight: 700; line-height: 1.25; }
+.hg-t-sub { font-size: .6rem; color: var(--md-default-fg-color--light); }
+.hg-tarjeta.hg-bien .hg-t-val { color: #2e7d32; }
+.hg-tarjeta.hg-mal .hg-t-val { color: #b3261e; }
+
+.hg-barra { height: .3rem; background: var(--md-default-fg-color--lightest); border-radius: .3rem; overflow: hidden; margin-bottom: 1.2rem; }
+.hg-barra-int { height: 100%; background: var(--md-primary-fg-color); transition: width .2s ease; }
+
+/* --- listas de partidas y validaciones ----------------------------------- */
+.hg-bloque { font-size: .78rem !important; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--md-default-fg-color--light); margin: 1.4rem 0 .5rem !important; }
+.hg-lista { display: flex; flex-direction: column; gap: .35rem; }
+
+.hg-item {
+  display: flex; gap: .6rem; align-items: flex-start;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 3px solid var(--md-default-fg-color--lighter);
+  border-radius: .2rem; padding: .55rem .7rem;
+}
+.hg-item.hg-ok { border-left-color: #2e7d32; opacity: .72; }
+.hg-item.hg-ok .hg-titulo { text-decoration: line-through; }
+.hg-item.hg-nosuma { border-left-style: dashed; }
+.hg-item.hg-nosuma .hg-titulo { font-style: italic; }
+.hg-v-pasó { border-left-color: #2e7d32; }
+.hg-v-falló { border-left-color: #b3261e; }
+.hg-v-encurso { border-left-color: #b45309; }
+
+.hg-check { padding-top: .1rem; }
+.hg-check input { width: 1rem; height: 1rem; cursor: pointer; }
+.hg-cuerpo { flex: 1; min-width: 0; }
+.hg-titulo { font-size: .74rem; font-weight: 600; line-height: 1.35; }
+.hg-meta { font-size: .62rem; color: var(--md-default-fg-color--light); margin-top: .15rem; }
+.hg-nota { font-size: .62rem; color: var(--md-default-fg-color--light); margin-top: .25rem; line-height: 1.45; }
+.hg-fis { color: #2e7d32; font-weight: 600; }
+.hg-onl { color: #b45309; font-weight: 600; }
+
+.hg-tag {
+  display: inline-block; font-size: .55rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .03em; padding: .05rem .3rem; border-radius: .12rem;
+  background: var(--md-default-fg-color--lightest); color: var(--md-default-fg-color--light);
+  vertical-align: middle;
+}
+.hg-temp { background: #fde68a; color: #7c2d12; }
+
+.hg-campos { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .4rem; }
+.hg-campos label, .hg-larga { display: flex; flex-direction: column; gap: .12rem;
+  font-size: .58rem; text-transform: uppercase; letter-spacing: .03em; color: var(--md-default-fg-color--light); }
+.hg-campos .hg-ancha { flex: 1 1 12rem; }
+.hg-larga { margin-top: .5rem; }
+
+#hg-seguimiento input[type="text"], #hg-seguimiento input[type="number"],
+#hg-seguimiento input[type="date"], #hg-seguimiento input[type="password"],
+#hg-seguimiento select, #hg-seguimiento textarea {
+  border: 1px solid var(--md-default-fg-color--lighter); border-radius: .15rem;
+  padding: .25rem .4rem; font-size: .68rem; font-family: inherit;
+  background: var(--md-default-bg-color); color: var(--md-default-fg-color);
+  text-transform: none; letter-spacing: normal;
+}
+#hg-seguimiento input[type="number"] { width: 7rem; }
+#hg-seguimiento input[type="text"] { width: 10rem; }
+#hg-seguimiento textarea { width: 100%; resize: vertical; }
+#hg-seguimiento input:focus, #hg-seguimiento select:focus, #hg-seguimiento textarea:focus {
+  outline: 2px solid var(--md-primary-fg-color); outline-offset: -1px;
+}
+
+/* --- gates --------------------------------------------------------------- */
+.hg-gate { border: 1px solid var(--md-default-fg-color--lightest); border-radius: .2rem;
+  padding: .8rem .9rem; margin-bottom: 1rem; }
+.hg-gate-cab { display: flex; flex-wrap: wrap; gap: .6rem; align-items: baseline; justify-content: space-between; }
+.hg-gate-cab h3 { margin: 0 !important; font-size: .9rem !important; }
+.hg-gate-sub { font-size: .62rem; color: var(--md-default-fg-color--light); margin-bottom: .5rem; }
+.hg-veredicto { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+  padding: .15rem .5rem; border-radius: .15rem; }
+.hg-veredicto.hg-bien { background: #dcfce7; color: #14532d; }
+.hg-veredicto.hg-mal { background: #fee2e2; color: #7f1d1d; }
+.hg-veredicto.hg-neutro { background: var(--md-default-fg-color--lightest); color: var(--md-default-fg-color--light); }
+
+.hg-bien { color: #2e7d32; font-weight: 600; }
+.hg-mal { color: #b3261e; font-weight: 600; }
+
+.hg-tabla { width: 100%; border-collapse: collapse; font-size: .68rem; margin: .5rem 0; }
+.hg-tabla th, .hg-tabla td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--md-default-fg-color--lightest); vertical-align: top; }
+.hg-tabla th { font-size: .58rem; text-transform: uppercase; letter-spacing: .04em; color: var(--md-default-fg-color--light); }
+.hg-tabla .hg-num { white-space: nowrap; }
+.hg-fuente { font-size: .58rem; color: var(--md-default-fg-color--light); font-family: var(--md-code-font-family, monospace); }
+
+.hg-aviso { font-size: .64rem; line-height: 1.5; border-left: 3px solid #b45309;
+  background: var(--md-default-fg-color--lightest); padding: .5rem .7rem; border-radius: .15rem; margin: .5rem 0; }
+.hg-candado { font-size: .68rem; line-height: 1.6; border-left: 3px solid var(--md-primary-fg-color);
+  background: var(--md-default-fg-color--lightest); padding: .7rem .9rem; border-radius: .15rem; margin-bottom: 1rem; }
+.hg-intro { font-size: .68rem; color: var(--md-default-fg-color--light); line-height: 1.6; }
+.hg-vacio { font-size: .7rem; color: var(--md-default-fg-color--light); font-style: italic; }
+
+.hg-login { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; margin-bottom: 1rem; }
+.hg-login label { display: flex; flex-direction: column; gap: .12rem; font-size: .58rem;
+  text-transform: uppercase; letter-spacing: .03em; color: var(--md-default-fg-color--light); }
+
+/* --- telefono: se usa en la tienda --------------------------------------- */
+@media screen and (max-width: 44.9em) {
+  .hg-resumen { grid-template-columns: repeat(2, 1fr); }
+  .hg-campos { flex-direction: column; align-items: stretch; }
+  #hg-seguimiento input[type="text"], #hg-seguimiento input[type="number"] { width: 100%; }
+  .hg-barra-sup { flex-direction: column; align-items: stretch; }
+  .hg-tab { flex: 1 1 auto; text-align: center; }
+}
