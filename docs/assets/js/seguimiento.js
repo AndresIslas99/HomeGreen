@@ -30,6 +30,10 @@
   var pestana = 'compras';
   var filtroFase = 'todas';
   var soloPendientes = false;
+  // presencial | linea. Cambia que proveedor y que precio se muestra por partida,
+  // y con ello el presupuesto. Lo que no viaja por paqueteria no cambia: sigue
+  // siendo presencial en los dos modos, y se marca como tal.
+  var modo = 'presencial';
 
   // -- persistencia ---------------------------------------------------------
   function vacio() {
@@ -111,6 +115,43 @@
     return null;
   }
 
+  // Devuelve el precio y el proveedor que aplican segun el modo elegido. En modo
+  // en linea, una partida que no viaja se queda con su dato presencial.
+  function enLinea(c) {
+    return !!(c.online && !c.solo_presencial && c.online.bloque && c.online.bloque !== 'presencial');
+  }
+
+  function vigente(c) {
+    if (modo === 'linea' && enLinea(c)) {
+      return { subtotal: c.online.subtotal, precio: c.online.precio,
+               donde: c.online.proveedor, bloque: c.online.bloque_nombre,
+               fisica: false, enlace: c.online.enlace, nota: c.online.notas };
+    }
+    return { subtotal: c.subtotal, precio: c.precio, donde: c.donde, bloque: null,
+             fisica: c.presencial, enlace: '', nota: '' };
+  }
+
+  // Envio del escenario en linea: se paga por BLOQUE, no por partida. Es justo el
+  // punto: varios productos del mismo bloque comparten un solo envio.
+  function envios(filtradas) {
+    var grupos = {};
+    filtradas.forEach(function (c) {
+      if (!c.cuenta || !enLinea(c)) return;
+      var b = c.online.bloque;
+      grupos[b] = (grupos[b] || 0) + c.online.subtotal;
+    });
+    var total = 0, detalle = [];
+    Object.keys(grupos).forEach(function (b) {
+      var r = (datos.envios || []).filter(function (x) { return x.id === b; })[0] || {};
+      var gratis = r.umbral && grupos[b] >= r.umbral;
+      var costo = gratis ? 0 : (r.envio || 0);
+      total += costo;
+      detalle.push({ id: b, nombre: r.nombre || b, productos: grupos[b], envio: costo, gratis: gratis });
+    });
+    detalle.sort(function (a, b) { return b.productos - a.productos; });
+    return { total: total, detalle: detalle };
+  }
+
   // -- render: compras ------------------------------------------------------
   function renderCompras() {
     var items = datos.compras.filter(function (c) {
@@ -119,31 +160,37 @@
       return true;
     });
 
+    var enFase = datos.compras.filter(function (c) {
+      return filtroFase === 'todas' || String(c.fase) === filtroFase;
+    });
+
     var planTotal = 0, realTotal = 0, nComp = 0, nCuenta = 0;
-    datos.compras.forEach(function (c) {
-      if (filtroFase !== 'todas' && String(c.fase) !== filtroFase) return;
+    enFase.forEach(function (c) {
       if (!c.cuenta) return;
+      var v = vigente(c);
       nCuenta++;
-      planTotal += c.subtotal;
+      planTotal += v.subtotal;
       var e = estado.compras[c.id] || {};
       if (e.comprado) {
         nComp++;
-        realTotal += (e.real !== undefined && e.real !== '') ? Number(e.real) : c.subtotal;
+        realTotal += (e.real !== undefined && e.real !== '') ? Number(e.real) : v.subtotal;
       }
     });
+    var env = modo === 'linea' ? envios(enFase) : { total: 0, detalle: [] };
+    planTotal += env.total;
 
     var pct = nCuenta ? Math.round(100 * nComp / nCuenta) : 0;
-    var desv = realTotal - datos.compras.reduce(function (a, c) {
-      if (filtroFase !== 'todas' && String(c.fase) !== filtroFase) return a;
+    var desv = realTotal - enFase.reduce(function (a, c) {
       if (!c.cuenta) return a;
       var e = estado.compras[c.id] || {};
-      return a + (e.comprado ? c.subtotal : 0);
+      return a + (e.comprado ? vigente(c).subtotal : 0);
     }, 0);
 
     var h = '';
     h += '<div class="hg-resumen">';
     h += tarjeta('Comprado', nComp + ' / ' + nCuenta, pct + ' % de las partidas');
-    h += tarjeta('Presupuesto', mxn(planTotal), 'plan de las partidas que sí suman');
+    h += tarjeta('Presupuesto', mxn(planTotal), modo === 'linea'
+      ? 'producto + ' + mxn(env.total) + ' de envíos' : 'comprando en persona');
     h += tarjeta('Gastado', mxn(realTotal), 'precio real de lo ya comprado');
     h += tarjeta('Contra el plan', (desv >= 0 ? '+' : '') + mxn(desv),
       desv > 0 ? 'por encima de lo presupuestado' : (desv < 0 ? 'por debajo: bien' : 'exacto'),
@@ -151,6 +198,27 @@
     h += '</div>';
 
     h += '<div class="hg-barra"><div class="hg-barra-int" style="width:' + pct + '%"></div></div>';
+
+    if (modo === 'linea') {
+      var sinEnviar = enFase.filter(function (c) { return c.cuenta && !enLinea(c); });
+      var montoSin = sinEnviar.reduce(function (a, c) { return a + c.subtotal; }, 0);
+      h += '<div class="hg-envios"><strong>En ' + env.detalle.length + ' pedidos, ' +
+           mxn(env.total) + ' de envío.</strong> El envío se paga por pedido, no por partida: ' +
+           'es lo que hace que agrupar valga la pena.';
+      h += '<table class="hg-tabla"><thead><tr><th>Pedido</th><th>Producto</th><th>Envío</th></tr></thead><tbody>';
+      env.detalle.forEach(function (d) {
+        h += '<tr><td>' + esc(d.nombre) + '</td><td class="hg-num">' + mxn(d.productos) + '</td>' +
+             '<td class="hg-num">' + (d.envio === 0
+               ? '<span class="hg-bien">$0' + (d.gratis ? ' · pasa el umbral' : '') + '</span>'
+               : mxn(d.envio)) + '</td></tr>';
+      });
+      if (sinEnviar.length) {
+        h += '<tr><td><strong>No viaja por paquetería</strong> · ' + sinEnviar.length +
+             ' partidas</td><td class="hg-num">' + mxn(montoSin) +
+             '</td><td class="hg-num">presencial</td></tr>';
+      }
+      h += '</tbody></table></div>';
+    }
 
     var bloques = {};
     items.forEach(function (c) {
@@ -171,11 +239,15 @@
         h += '<div class="hg-titulo">' + esc(c.nombre) +
              (no ? ' <span class="hg-tag">no suma: ' + esc(c.motivo) + '</span>' : '') +
              (c.temporada ? ' <span class="hg-tag hg-temp">' + esc(c.temporada) + '</span>' : '') + '</div>';
-        h += '<div class="hg-meta">' + c.cantidad + ' ' + esc(c.unidad) + ' · plan ' + mxn(c.subtotal) +
-             ' · <span class="' + (c.presencial ? 'hg-fis' : 'hg-onl') + '">' +
-             (c.presencial ? esc(c.donde) : 'solo en línea') + '</span>' +
+        var v = vigente(c);
+        var forzado = modo === 'linea' && !enLinea(c);
+        h += '<div class="hg-meta">' + c.cantidad + ' ' + esc(c.unidad) + ' · plan ' + mxn(v.subtotal) +
+             ' · <span class="' + (v.fisica ? 'hg-fis' : 'hg-onl') + '">' + esc(v.donde) + '</span>' +
+             (v.bloque ? ' <span class="hg-tag">' + esc(v.bloque) + '</span>' : '') +
+             (forzado ? ' <span class="hg-tag hg-temp">no viaja: presencial</span>' : '') +
              (c.opciones.length > 1 ? ' · ' + (c.opciones.length - 1) + ' opción(es) más' : '') + '</div>';
-        if (c.notas) h += '<div class="hg-nota">' + esc(c.notas) + '</div>';
+        if (v.nota) h += '<div class="hg-nota">' + esc(v.nota) + '</div>';
+        else if (c.notas) h += '<div class="hg-nota">' + esc(c.notas) + '</div>';
         h += '<div class="hg-campos">';
         h += '<label>Pagué <input type="number" step="0.01" placeholder="' + c.subtotal +
              '" data-real="' + c.id + '" value="' + esc(e.real === undefined ? '' : e.real) + '"></label>';
@@ -332,12 +404,15 @@
   }
 
   function exportarCSV() {
-    var filas = [['partida_id', 'fase', 'bloque', 'partida', 'cantidad', 'unidad',
-                  'precio_plan_mxn', 'subtotal_plan_mxn', 'comprado', 'pagado_mxn', 'donde', 'fecha']];
+    var filas = [['partida_id', 'fase', 'bloque', 'partida', 'cantidad', 'unidad', 'modo',
+                  'precio_plan_mxn', 'subtotal_plan_mxn', 'proveedor_plan', 'comprado',
+                  'pagado_mxn', 'donde', 'fecha']];
     datos.compras.forEach(function (c) {
       var e = estado.compras[c.id] || {};
-      filas.push([c.id, c.fase, c.bloque, c.nombre, c.cantidad, c.unidad, c.precio, c.subtotal,
-                  e.comprado ? 'si' : 'no', e.real === undefined ? '' : e.real, e.donde || '', e.fecha || '']);
+      var v = vigente(c);
+      filas.push([c.id, c.fase, c.bloque, c.nombre, c.cantidad, c.unidad, modo,
+                  v.precio, v.subtotal, v.donde, e.comprado ? 'si' : 'no',
+                  e.real === undefined ? '' : e.real, e.donde || '', e.fecha || '']);
     });
     var csv = filas.map(function (f) {
       return f.map(function (v) {
@@ -464,6 +539,9 @@
               '<option value="todas">todas</option><option value="0">Fase 0</option>' +
               '<option value="1">Fase 1</option><option value="2">Fase 2</option></select></label>' +
             '<label class="hg-inline"><input type="checkbox" id="hg-pend"> solo lo que falta</label>' +
+            '<label>Cómo compro <select id="hg-modo">' +
+              '<option value="presencial">en persona</option>' +
+              '<option value="linea">en línea</option></select></label>' +
           '</div>' +
           '<div class="hg-acciones">' +
             '<button class="hg-btn hg-btn-sec" id="hg-exp-json">Exportar respaldo</button>' +
@@ -477,6 +555,7 @@
       enlazar(raiz);
       el('hg-fase').addEventListener('change', function () { filtroFase = this.value; render(); });
       el('hg-pend').addEventListener('change', function () { soloPendientes = this.checked; render(); });
+      el('hg-modo').addEventListener('change', function () { modo = this.value; render(); });
       el('hg-exp-json').addEventListener('click', exportarJSON);
       el('hg-exp-csv').addEventListener('click', exportarCSV);
       el('hg-imp').addEventListener('change', function () { if (this.files[0]) importar(this.files[0]); });

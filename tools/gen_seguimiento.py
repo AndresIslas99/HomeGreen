@@ -116,15 +116,23 @@ def main() -> int:
         partidas = list(csv.DictReader(f))
     with open(RAIZ / "bom" / "opciones.csv", encoding="utf-8") as f:
         opciones = list(csv.DictReader(f))
+    with open(RAIZ / "bom" / "envios.csv", encoding="utf-8") as f:
+        envios = list(csv.DictReader(f))
 
     por_partida: dict[str, list[dict]] = {}
     for o in opciones:
         por_partida.setdefault(o["partida_id"], []).append(o)
+    por_id = {o["opcion_id"]: o for o in opciones}
+    reglas = {b["bloque_id"]: b for b in envios}
 
     compras = []
     for p in partidas:
         opts = [o for o in por_partida.get(p["partida_id"], []) if o["recomendacion"] != "descartada"]
         fisicas = [o for o in opts if o["tienda_fisica"] == "si"]
+        # El modo en linea: su opcion, su bloque de envio y su precio. PRESENCIAL
+        # significa que no viaja por paqueteria y no hay eleccion que hacer.
+        d = p["opcion_default_online"]
+        onl = por_id.get(d) if d not in ("", "PRESENCIAL") else None
         compras.append({
             "id": p["partida_id"],
             "fase": int(p["fase"]),
@@ -141,6 +149,17 @@ def main() -> int:
             "notas": p["notas"],
             "presencial": bool(fisicas),
             "donde": fisicas[0]["sucursal_o_zona"] if fisicas else (opts[0]["proveedor"] if opts else ""),
+            "online": None if not onl else {
+                "proveedor": onl["proveedor"],
+                "producto": onl["producto"],
+                "precio": num(onl["precio_unit_mxn"]),
+                "subtotal": num(p["cantidad"]) * num(onl["precio_unit_mxn"]),
+                "bloque": onl["bloque_envio"],
+                "bloque_nombre": reglas.get(onl["bloque_envio"], {}).get("nombre", onl["bloque_envio"]),
+                "enlace": onl["enlace"],
+                "notas": onl["notas"],
+            },
+            "solo_presencial": d == "PRESENCIAL",
             "opciones": [
                 {"proveedor": o["proveedor"], "producto": o["producto"],
                  "precio": num(o["precio_unit_mxn"]), "fisica": o["tienda_fisica"] == "si",
@@ -157,6 +176,12 @@ def main() -> int:
 
     datos = {
         "generado_por": "tools/gen_seguimiento.py",
+        "envios": [
+            {"id": b["bloque_id"], "nombre": b["nombre"],
+             "umbral": num(b["umbral_envio_gratis_mxn"]), "envio": num(b["envio_mxn"]),
+             "estado": b["estado"], "nota": b["nota"]}
+            for b in envios
+        ],
         "compras": compras,
         "totales_plan": totales,
         "gates": GATES,
