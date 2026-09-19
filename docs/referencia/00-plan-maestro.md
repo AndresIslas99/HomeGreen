@@ -64,7 +64,7 @@ La parte que decide todo (semanas 3–6) — smoke test comercial **V4**:
   por 3 clamshells); 10 hogares ≈ $10k/mes extra y desriesga la dependencia de 4–5
   restaurantes.
 - **Realidad presupuestal:** la Fase 1 completa con racks de verdad ($2,000–2,600 c/u, no
-  $1,200–1,800), iluminación T8 y UPS sale en **$31–42k** (BOM detallada:
+  $1,200–1,800), iluminación T8, UPS y seguridad eléctrica sale en **$41,634** (BOM detallada:
   [`bom/fase1.csv`](https://github.com/AndresIslas99/HomeGreen/blob/main/bom/fase1.csv)); el rango $18–28k del plan original era optimista.
 
 ## Fase 2 — Túnel NFT de hierbas + automatización v2 (Meses 5–9)

@@ -35,11 +35,11 @@ Orden sugerido: ③ el lunes (para que los 7 días corran), luego ① y ② entr
     |---|---|---|
     | Casa propia, propiedad plena | Adelante | Adelante: placa base + 4 anclas de cuña 3/8"×5" por columna (~$864 el túnel) |
     | Condominio, patio privativo, sin prohibición | Adelante | Adelante, avisa por escrito a la administración; bomba DC casi inaudible |
-    | Condominio, patio común de uso exclusivo | Adelante | Solo con acuerdo de asamblea; si no lo hay, no inviertas los $31–42k |
+    | Condominio, patio común de uso exclusivo | Adelante | Solo con acuerdo de asamblea; si no lo hay, no inviertas los $41,634 |
     | Renta o sin permiso de perforar | Adelante | Plan B inferior: dados de concreto ≥80 kg por poste + cables a 4 vientos |
 
 !!! warning "Error típico"
-    Construir el túnel y después enterarse de que el patio es área común: un solo vecino con una queja ante PROSOC puede obligarte a desmontarlo. La verificación cuesta 2 h; el túnel, $31–42k.
+    Construir el túnel y después enterarse de que el patio es área común: un solo vecino con una queja ante PROSOC puede obligarte a desmontarlo. La verificación cuesta 2 h; el túnel, $41,634.
 
 ### 2. Pregunta al contador: ¿soy socio o accionista de alguna persona moral?
 
@@ -132,7 +132,7 @@ Orden sugerido: ③ el lunes (para que los 7 días corran), luego ① y ② entr
 - [ ] Acuse sellado del aviso de huerto en la carpeta
 - [ ] Acceso al curso Intagri confirmado; carpeta "manuales" completa
 - Registrar: crea la carpeta del proyecto (física o en la nube) con estos seis resultados; las mediciones de EC/pH van también a `bitacora/produccion.csv` en `observaciones` de la primera siembra, para que el lazo L3 las tenga a la mano.
-- Siguiente paso: [Fase 0 → Compras](../fases/fase-0/compras.md) (rack, 20 charolas, semilla, coco: $6,700–9,500) y la [línea de tiempo](linea-de-tiempo.md) para ubicar la semana 1.
+- Siguiente paso: [Fase 0 → Compras](../fases/fase-0/compras.md) (rack, 20 charolas, semilla, coco: $8,814) y la [línea de tiempo](linea-de-tiempo.md) para ubicar la semana 1.
 
 ## Decisiones que salen de esta semana
 

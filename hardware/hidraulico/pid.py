@@ -46,7 +46,45 @@ GRAY = "#6b7280"
 LIGHT = "#f3f4f6"
 WHITE = "#ffffff"
 FONT = "Helvetica, Arial, 'Liberation Sans', sans-serif"
+# Factor global de tipografía: escala TODO el texto y los interlineados/altos de
+# fila que dependen de él. El ANCHO del lienzo es fijo (es lo que fija el tamaño
+# real en pantalla: px = size * FS * 980 / ancho_viewBox); el ALTO lo calcula
+# cada diagrama al final, así la letra puede crecer sin que nada se salga.
+FS = 1.38
 VERSION = "v1 · 2026-09"
+
+# Anchos de Helvetica (AFM, unidades/1000) para poder MEDIR el texto antes de
+# dibujarlo: sin esto las cajas de notas y de leyenda se desbordan al subir FS.
+_HW = {
+    " ": 278, "!": 278, '"': 355, "#": 556, "$": 556, "%": 889, "&": 667, "'": 191,
+    "(": 333, ")": 333, "*": 389, "+": 584, ",": 278, "-": 333, ".": 278, "/": 278,
+    "0": 556, "1": 556, "2": 556, "3": 556, "4": 556, "5": 556, "6": 556, "7": 556,
+    "8": 556, "9": 556, ":": 278, ";": 278, "<": 584, "=": 584, ">": 584, "?": 556,
+    "@": 1015, "[": 278, "\\": 278, "]": 278, "^": 469, "_": 556, "`": 333,
+    "{": 334, "|": 260, "}": 334, "~": 584,
+    "A": 667, "B": 667, "C": 722, "D": 722, "E": 667, "F": 611, "G": 778, "H": 722,
+    "I": 278, "J": 500, "K": 667, "L": 556, "M": 833, "N": 722, "O": 778, "P": 667,
+    "Q": 778, "R": 722, "S": 667, "T": 611, "U": 722, "V": 667, "W": 944, "X": 667,
+    "Y": 667, "Z": 611,
+    "a": 556, "b": 556, "c": 500, "d": 556, "e": 556, "f": 278, "g": 556, "h": 556,
+    "i": 222, "j": 222, "k": 500, "l": 222, "m": 833, "n": 556, "o": 556, "p": 556,
+    "q": 556, "r": 333, "s": 500, "t": 278, "u": 556, "v": 500, "w": 722, "x": 500,
+    "y": 500, "z": 500,
+    "¡": 333, "¿": 611, "°": 400, "·": 278, "±": 584,
+    "×": 584, "÷": 584, "«": 556, "»": 556, "º": 365,
+    "–": 556, "—": 1000, "‘": 222, "’": 222, "“": 333,
+    "”": 333, "•": 350, "…": 1000, "→": 1000, "←": 1000,
+    "⇒": 1000, "≈": 549, "≠": 549, "≤": 549, "≥": 549,
+    "µ": 556, "Ω": 768, "²": 333, "³": 333, "₂": 400,
+    "₄": 400, "á": 556, "é": 556, "í": 278, "ó": 556,
+    "ú": 556, "ü": 556, "ñ": 556, "Á": 667, "É": 667,
+    "Í": 278, "Ó": 778, "Ú": 722, "Ñ": 722, " ": 278,
+}
+
+
+def text_w(s: str, size: float) -> float:
+    """Ancho en unidades SVG del texto `s` compuesto en Helvetica a `size`."""
+    return sum(_HW.get(c, 556) for c in str(s)) * size / 1000.0
 
 
 def esc(s: str) -> str:
@@ -71,12 +109,37 @@ def fmt(v: float) -> str:
 class Sheet:
     """Acumula fragmentos SVG y ofrece símbolos P&ID simplificados."""
 
-    def __init__(self, width: int, height: int, title: str, subtitle: str):
+    def __init__(self, width: int, height: int, title: str, subtitle: str, fs: float = FS):
         self.w = width
         self.h = height
+        self.fs = fs   # factor tipográfico de ESTA hoja
         self.title = title
         self.subtitle = subtitle
         self.parts: list[str] = []
+
+    # -- medición ------------------------------------------------------------
+    def tw(self, s: str, size: float) -> float:
+        """Ancho real que ocupará `s` dibujado a `size` con el FS de esta hoja."""
+        return text_w(s, size * self.fs)
+
+    def wrap(self, lines, width: float, size: float) -> list[str]:
+        """Parte en varias las líneas que no caben en `width` unidades SVG."""
+        out: list[str] = []
+        for ln in lines:
+            if self.tw(ln, size) <= width:
+                out.append(ln)
+                continue
+            cur = ""
+            for word in str(ln).split(" "):
+                cand = f"{cur} {word}".strip()
+                if cur and self.tw(cand, size) > width:
+                    out.append(cur)
+                    cur = word
+                else:
+                    cur = cand
+            if cur:
+                out.append(cur)
+        return out
 
     # -- primitivas ----------------------------------------------------------
     def add(self, s: str) -> None:
@@ -87,14 +150,14 @@ class Sheet:
         tr = f' transform="rotate({rotate} {fmt(x)} {fmt(y)})"' if rotate is not None else ""
         st = ' font-style="italic"' if italic else ""
         self.add(
-            f'<text x="{fmt(x)}" y="{fmt(y)}" font-family="{FONT}" font-size="{size}" '
+            f'<text x="{fmt(x)}" y="{fmt(y)}" font-family="{FONT}" font-size="{fmt(size * self.fs)}" '
             f'text-anchor="{anchor}" font-weight="{weight}" fill="{fill}"{st}{tr}>{esc(s)}</text>'
         )
 
     def multiline(self, x, y, lines, size=12, lh=None, anchor="start", fill=INK,
                   weight="normal") -> float:
         """Varias líneas de texto; devuelve la y siguiente."""
-        lh = lh or size + 4
+        lh = (lh or size + 4) * self.fs
         for i, ln in enumerate(lines):
             self.text(x, y + i * lh, ln, size=size, anchor=anchor, fill=fill, weight=weight)
         return y + len(lines) * lh
@@ -183,8 +246,8 @@ class Sheet:
 
     # -- símbolos ISA simplificados ---------------------------------------------
     def tank(self, x, y, w, h, tag, lines=(), level=0.65, open_top=False,
-             label_dy=16) -> None:
-        """Tanque: rectángulo con esquinas inferiores redondeadas y nivel de agua."""
+             label_dy=16) -> float:
+        """Tanque: rectángulo con nivel de agua. Devuelve la y bajo su rótulo."""
         r = min(18, w / 4)
         # nivel de agua
         lv = y + h - level * (h - 6)
@@ -203,7 +266,8 @@ class Sheet:
         )
         self.path(d, width=2)
         self.text(x + w / 2, y + h + label_dy, tag, size=13, anchor="middle", weight="bold")
-        self.multiline(x + w / 2, y + h + label_dy + 16, lines, size=11, anchor="middle", fill=GRAY)
+        return self.multiline(x + w / 2, y + h + label_dy + 16, lines, size=11, anchor="middle",
+                              fill=GRAY)
 
     def pump(self, cx, cy, tag, lines=(), r=17, direction="right", label="below") -> None:
         """Bomba: círculo con triángulo apuntando en la dirección del flujo."""
@@ -300,13 +364,13 @@ class Sheet:
         for k in (-1, 0, 1):
             self.line(cx, cy, cx + k * size * 1.1, cy + size * 1.8, stroke=color, width=1, dash="2 2")
 
-    def drain(self, cx, cy, tag="coladera", lines=()) -> None:
-        """Coladera: cuadro con rejilla."""
+    def drain(self, cx, cy, tag="coladera", lines=()) -> float:
+        """Coladera: cuadro con rejilla. Devuelve la y bajo su rótulo."""
         s = 14
         self.rect(cx - s, cy - s, 2 * s, 2 * s, fill=LIGHT, width=1.6)
         for k in (-7, 0, 7):
             self.line(cx - s + 3, cy + k, cx + s - 3, cy + k, width=1.2)
-        self._label(cx, cy, s, tag, lines, "below")
+        return self._label(cx, cy, s, tag, lines, "below")
 
     def gutter(self, x1, y1, x2, y2, depth=9, color=INK) -> None:
         """Canaleta abierta (perfil U) en alzado, de (x1,y1) a (x2,y2)."""
@@ -328,52 +392,92 @@ class Sheet:
         """Charola 10×20 en alzado."""
         self.rect(x, y, w, h, fill=LIGHT, width=1.2)
 
-    def _label(self, cx, cy, r, tag, lines, where) -> None:
+    def _label(self, cx, cy, r, tag, lines, where) -> float:
+        """Dibuja el rótulo del símbolo y devuelve la y por debajo de su última línea."""
         if where == "below":
-            self.text(cx, cy + r + 14, tag, size=12, anchor="middle", weight="bold")
-            self.multiline(cx, cy + r + 28, lines, size=11, anchor="middle", fill=GRAY)
-        elif where == "above":
+            self.text(cx, cy + r + 14 * self.fs, tag, size=12, anchor="middle", weight="bold")
+            return self.multiline(cx, cy + r + 28 * self.fs, lines, size=11, anchor="middle",
+                                  fill=GRAY)
+        if where == "above":
             n = len(lines)
-            y0 = cy - r - 8 - n * 15
+            y0 = cy - r - 8 * self.fs - n * 15 * self.fs
             self.text(cx, y0, tag, size=12, anchor="middle", weight="bold")
-            self.multiline(cx, y0 + 15, lines, size=11, anchor="middle", fill=GRAY)
-        elif where == "right":
-            self.text(cx + r + 8, cy + 4, tag, size=12, anchor="start", weight="bold")
-            self.multiline(cx + r + 8, cy + 18, lines, size=11, anchor="start", fill=GRAY)
-        elif where == "left":
-            self.text(cx - r - 8, cy + 4, tag, size=12, anchor="end", weight="bold")
-            self.multiline(cx - r - 8, cy + 18, lines, size=11, anchor="end", fill=GRAY)
+            return self.multiline(cx, y0 + 15 * self.fs, lines, size=11, anchor="middle", fill=GRAY)
+        if where == "right":
+            self.text(cx + r + 8, cy + 4 * self.fs, tag, size=12, anchor="start", weight="bold")
+            return self.multiline(cx + r + 8, cy + 18 * self.fs, lines, size=11, anchor="start",
+                                  fill=GRAY)
+        if where == "left":
+            self.text(cx - r - 8, cy + 4 * self.fs, tag, size=12, anchor="end", weight="bold")
+            return self.multiline(cx - r - 8, cy + 18 * self.fs, lines, size=11, anchor="end",
+                                  fill=GRAY)
+        return cy + r
 
     # -- cajas de texto -----------------------------------------------------------
+    def note_h(self, w, lines, title=None, size=11) -> float:
+        """Alto que ocupará la caja de notas ya con el texto ajustado al ancho."""
+        lh = (size + 4) * self.fs
+        n = len(self.wrap(lines, w - 28, size)) + (1 if title else 0)
+        return n * lh + 14 * self.fs
+
     def note(self, x, y, w, lines, kind="info", title=None, size=11) -> float:
-        """Caja de notas. kind: info (gris), ok (verde), warn (ámbar). Devuelve y final."""
+        """Caja de notas. kind: info (gris), ok (verde), warn (ámbar). Devuelve y final.
+
+        El texto se ajusta al ancho de la caja y el alto sale de las líneas ya
+        ajustadas: al subir FS la caja crece, no se desborda el texto.
+        """
         col = {"info": GRAY, "ok": GREEN, "warn": AMBER}[kind]
-        lh = size + 4
+        lh = (size + 4) * self.fs
+        lines = self.wrap(lines, w - 28, size)
         n = len(lines) + (1 if title else 0)
-        h = n * lh + 14
+        h = n * lh + 14 * self.fs
         self.rect(x, y, w, h, fill=WHITE, stroke=col, width=1.4, rx=4)
         self.rect(x, y, 5, h, fill=col, stroke=col, width=0, rx=1)
-        yy = y + 16
+        yy = y + 16 * self.fs
         if title:
             self.text(x + 14, yy, title, size=size + 1, weight="bold", fill=col)
             yy += lh
-        self.multiline(x + 14, yy, lines, size=size, lh=lh)
+        # multiline() ya multiplica por self.fs: hay que pasarle el interlineado
+        # SIN escalar o el texto se sale por abajo de la caja (lo hacía).
+        self.multiline(x + 14, yy, lines, size=size, lh=size + 4)
         return y + h
+
+    LEGEND_LABEL = 11          # tamaño base del rótulo de cada símbolo
+    LEGEND_GAP = 52            # del borde de la columna al inicio del rótulo
+
+    def legend_geom(self, w, items, cols=2, row_h=30):
+        """(alto, alto_de_fila, ancho_de_columna, rótulos ajustados).
+
+        El rótulo se parte si no cabe en su columna y la fila crece para
+        alojarlo: así el recuadro nunca corta una línea de texto.
+        """
+        cw = (w - 24) / cols
+        avail = cw - self.LEGEND_GAP - 8
+        labels = [self.wrap([lab], avail, self.LEGEND_LABEL) for _d, lab in items]
+        lh = (self.LEGEND_LABEL + 3) * self.fs
+        rows = math.ceil(len(items) / cols)
+        row_h = max(row_h * self.fs, max(len(l) for l in labels) * lh + 10 * self.fs)
+        return rows * row_h + 34 * self.fs, row_h, cw, labels
 
     def legend(self, x, y, w, items, cols=2, row_h=30) -> float:
         """Leyenda de símbolos: items = [(dibujo(sheet, cx, cy), texto)]."""
-        rows = math.ceil(len(items) / cols)
-        h = rows * row_h + 34
+        h, row_h, cw, labels = self.legend_geom(w, items, cols, row_h)
         self.rect(x, y, w, h, fill=WHITE, stroke=INK, width=1.2, rx=4)
-        self.text(x + 12, y + 20, "Leyenda de símbolos", size=12, weight="bold")
-        cw = (w - 24) / cols
-        for i, (draw, label) in enumerate(items):
+        self.text(x + 12, y + 20 * self.fs, "Leyenda de símbolos", size=12, weight="bold")
+        lh = (self.LEGEND_LABEL + 3) * self.fs
+        for i, (draw, _label) in enumerate(items):
             c, r = i % cols, i // cols
             cx = x + 12 + c * cw + 22
-            cy = y + 34 + r * row_h + row_h / 2
+            cy = y + 34 * self.fs + r * row_h + row_h / 2
             draw(self, cx, cy)
-            self.text(cx + 30, cy + 4, label, size=11)
+            ls = labels[i]
+            y0 = cy + 4 * self.fs - (len(ls) - 1) * lh / 2
+            for k, ln in enumerate(ls):
+                self.text(cx + 30, y0 + k * lh, ln, size=self.LEGEND_LABEL)
         return y + h
+
+    def legend_h(self, w, items, cols=2, row_h=30) -> float:
+        return self.legend_geom(w, items, cols, row_h)[0]
 
     # -- salida -------------------------------------------------------------------
     def render(self) -> str:
@@ -384,14 +488,26 @@ class Sheet:
             f"<title>{esc(self.title)}</title>\n"
             f'<rect x="0" y="0" width="{self.w}" height="{self.h}" fill="{WHITE}"/>\n'
         )
-        # título arriba a la izquierda, versión arriba a la derecha
+        # título arriba a la izquierda, versión arriba a la derecha.
+        # Ambos se ajustan al ancho disponible: el cintillo es lo único que NO
+        # puede crecer hacia abajo sin mover todo el dibujo.
+        ver = "HomeGreen · " + VERSION
+        ver_w = self.tw(ver, 12)
+        t_size = 18.0
+        t_room = self.w - 48 - ver_w - 20
+        if self.tw(self.title, t_size) > t_room:
+            t_size = max(13.0, t_size * t_room / self.tw(self.title, t_size))
+        s_size = 12.0
+        s_room = self.w - 48
+        if self.tw(self.subtitle, s_size) > s_room:
+            s_size = max(9.5, s_size * s_room / self.tw(self.subtitle, s_size))
         title = (
-            f'<text x="24" y="34" font-family="{FONT}" font-size="18" font-weight="bold" '
+            f'<text x="24" y="34" font-family="{FONT}" font-size="{fmt(t_size * self.fs)}" font-weight="bold" '
             f'fill="{INK}">{esc(self.title)}</text>\n'
-            f'<text x="24" y="54" font-family="{FONT}" font-size="12" fill="{GRAY}">'
+            f'<text x="24" y="56" font-family="{FONT}" font-size="{fmt(s_size * self.fs)}" fill="{GRAY}">'
             f"{esc(self.subtitle)}</text>\n"
-            f'<text x="{self.w - 24}" y="34" font-family="{FONT}" font-size="12" '
-            f'text-anchor="end" fill="{GRAY}">{esc("HomeGreen · " + VERSION)}</text>\n'
+            f'<text x="{self.w - 24}" y="34" font-family="{FONT}" font-size="{fmt(12 * self.fs)}" '
+            f'text-anchor="end" fill="{GRAY}">{esc(ver)}</text>\n'
             f'<line x1="24" y1="64" x2="{self.w - 24}" y2="64" stroke="{INK}" stroke-width="1"/>\n'
         )
         return head + title + "\n".join(self.parts) + "\n</svg>\n"
@@ -431,7 +547,7 @@ def lg_float(s, cx, cy):
 
 
 def lg_sensor(s, cx, cy):
-    s.sensor(cx, cy, "pH", r=10)
+    s.sensor(cx, cy, "pH", r=12)
 
 
 def lg_pipe(s, cx, cy):
@@ -488,21 +604,23 @@ def build_riego() -> Sheet:
 
     # entrada de captación pluvial (izquierda, por la tapa)
     s.multiline(30, 84, ["de captación pluvial", "(captacion-pluvial.svg)"], size=11, fill=GREEN)
-    s.water([(30, 104), (30, 212), (tx + 30, 212), (tx + 30, ty)], arrows=[1])
+    s.water([(30, 116), (30, 212), (tx + 30, 212), (tx + 30, ty)], arrows=[1])
 
     # nivel LT-1 en la tapa
     s.sensor(tx + 80, ty - 34, "L", "LT-1", [], r=14, label="left")
     s.line(tx + 80, ty - 20, tx + 80, ty, width=1.4, dash="3 2")
-    s.multiline(tx + 102, ty - 44, [
+    s.multiline(tx + 102, ty - 52, [
         "JSN-SR04T en la tapa → nodo-riego-v1",
         "zona muerta ≈ 20 cm sobre nivel máx.",
         "adv. < 40 % · crítica < 20 % (interlock P-1)",
     ], size=11, fill=GRAY)
 
-    # red SACMEX por la pared derecha con válvula de flotador
+    # red SACMEX por la pared derecha con válvula de flotador.
+    # El rótulo va a la IZQUIERDA de la bajante: a la derecha empieza el carril
+    # del manifold y del rack, que con FS alto ya no deja hueco.
     s.pipe([(460, 104), (460, 250), (tx + tw, 250)], arrows=[0, 1])
-    s.multiline(468, 100, ["red SACMEX → válvula de flotador FV-1",
-                           "(solo rellena cuando hay presión)"], size=11, fill=GRAY)
+    s.multiline(452, 100, ["red SACMEX → flotador FV-1",
+                           "(solo rellena con presión)"], size=11, anchor="end", fill=GRAY)
     s.float_valve(tx + tw - 26, 250, "FV-1", [], label="left", mirror=True)
 
     # rebosadero
@@ -511,7 +629,8 @@ def build_riego() -> Sheet:
     s.text(296, 319, "→ coladera", size=11, fill=GRAY)
 
     # temperatura del agua
-    s.sensor(tx + 90, ty + th - 65, "T", "TT-1", ["DS18B20"], r=14, label="right")
+    # dentro del tinaco: a tx+90 el rótulo DS18B20 salía por la pared derecha
+    s.sensor(tx + 50, ty + th - 65, "T", "TT-1", ["DS18B20"], r=14, label="right")
 
     # ---- Línea de succión: válvula, filtro, bomba ----
     yl = ty + th - 30  # 430
@@ -525,21 +644,26 @@ def build_riego() -> Sheet:
         "4–6 L/min · ~20 W · relé CH1",
         "fuente 12 V 5 A Steren ELI-1260",
     ], r=18)
-    # control desde el nodo
-    s.signal([(480, yl - 18), (480, 350)])
-    s.rect(400, 290, 150, 60, fill=LIGHT, width=1.4, rx=4)
-    s.multiline(475, 312, ["nodo-riego-v1", "ESP32 · gabinete IP65", "(electrico/nodo-riego-v1.svg)"],
-                size=11, anchor="middle")
+    # control desde el nodo: la caja se dimensiona con el texto ya medido,
+    # así el rótulo nunca sobresale del recuadro al subir FS.
+    nb = ["nodo-riego-v1", "ESP32 · gabinete IP65", "electrico/nodo-riego-v1.svg"]
+    nb_w = max(s.tw(t, 10) for t in nb) + 26
+    nb_h = len(nb) * 15 * s.fs + 16 * s.fs
+    nb_x, nb_y = 475 - nb_w / 2, 276
+    s.signal([(480, yl - 18), (480, nb_y + nb_h)])
+    s.rect(nb_x, nb_y, nb_w, nb_h, fill=LIGHT, width=1.4, rx=4)
+    s.multiline(475, nb_y + 21 * s.fs, nb, size=10, anchor="middle")
 
     # ---- Subida al manifold ----
     mx = 580
     s.pipe([(498, yl), (mx, yl), (mx, 150)], arrows=[1])
-    s.multiline(mx + 10, 140, ["manifold · 1 válvula por nivel", "manguera flexible del kit"],
+    # Rótulo del manifold en el cintillo libre bajo el título: dentro del carril
+    # del rack lo cruzarían el riel izquierdo y las bajadas por nivel.
+    s.multiline(mx + 10, 86, ["manifold · 1 válvula por nivel", "manguera flexible del kit"],
                 size=11, fill=GRAY)
-    s.text(mx + 10, 168, "[POR VERIFICAR: Ø manguera]", size=11, fill=AMBER)
 
     # ---- Rack de 5 niveles con nebulizadores ----
-    rx, ry, rw = 760, 130, 300
+    rx, ry, rw = 700, 130, 290
     levels = [150, 230, 310, 390, 470]  # parrillas N5 (arriba) … N1 (abajo)
     names = [
         [("N5 germinación / oscuridad", GRAY), ("atomizar 1–2×/día a mano;", AMBER),
@@ -551,8 +675,9 @@ def build_riego() -> Sheet:
     ]
     s.line(rx, ry, rx, 500, width=3)
     s.line(rx + rw, ry, rx + rw, 500, width=3)
-    s.text(rx + rw / 2, ry - 10, "Rack Husky 183 × 91 × 46 cm · 5 niveles · ≥ 30 cm entre parrillas",
-           size=12, anchor="middle", weight="bold")
+    s.text(rx + rw, ry - 30, "Rack Husky 183 × 91 × 46 cm", size=11, anchor="end", weight="bold")
+    s.text(rx + rw, ry - 10, "5 niveles · ≥ 30 cm entre parrillas", size=11, anchor="end",
+           weight="bold")
     for i, ly in enumerate(levels):
         s.line(rx, ly, rx + rw, ly, width=2.5)
         s.tray(rx + 20, ly - 10, 110)    # doble charola: perforada dentro de lisa
@@ -564,24 +689,29 @@ def build_riego() -> Sheet:
             s.valve(mx + 60, ly - 50, size=8)
             s.sensor(rx - 30, ly - 12, "M", r=10)
         for k, (txt, col) in enumerate(names[i]):
-            s.text(rx + rw + 12, ly - 2 + k * 13, txt, size=11, fill=col)
-    s.text(rx - 30, 548, "MT-1…4 capacitivos", size=10, anchor="middle", fill=GRAY)
-    s.text(rx - 30, 561, "(ADC1, conector arriba)", size=10, anchor="middle", fill=GRAY)
+            s.text(rx + rw + 12, ly - 2 + k * 13 * s.fs, txt, size=11, fill=col)
+    s.multiline(rx - 30, 548, ["MT-1…4 capacitivos", "(ADC1, conector arriba)"], size=10,
+                lh=16, anchor="middle", fill=GRAY)
 
     # drenaje del rack → coladera (no recircula)
     s.rect(rx, 505, rw, 12, fill=LIGHT, width=1.4)
     s.text(rx + rw / 2, 530, "charola colectora de drenaje bajo el rack", size=11, anchor="middle", fill=GRAY)
     s.pipe([(rx + rw, 511), (rx + rw + 60, 511), (rx + rw + 60, 590)], arrows=[1])
-    s.drain(rx + rw + 60, 610, "coladera del patio", ["el drenaje NO recircula:", "agua con sustrato = moho"])
+    # el rótulo de la coladera baja con FS: la leyenda se coloca DEBAJO de él
+    # (antes la leyenda estaba fija en y=672 y su recuadro blanco, dibujado
+    # después, partía por la mitad el renglón "agua con sustrato = moho").
+    drain_y = s.drain(rx + rw + 60, 610, "coladera del patio",
+                      ["el drenaje NO recircula:", "agua con sustrato = moho"])
 
     # ---- Notas ----
-    y0 = s.note(30, 560, 520, [
+    y0 = s.note(30, 578, 660, [
         "Riego por histéresis (L0): 4 capacitivos → ON si < límite inferior, OFF si > superior,",
         "máx. N ciclos/h. Consumo estimado: bomba 20 W × 15 min/día ≈ 0.2 kWh/mes.",
         "Interlock: P-1 no arranca con LT-1 < 20 % (bomba en seco) ni con nodo caído.",
         "Todo el riego sale del tinaco, NUNCA de la toma directa (tandeo).",
+        "[POR VERIFICAR: Ø de la manguera flexible del manifold].",
     ], kind="ok", title="Lógica y dimensionamiento")
-    s.note(30, y0 + 10, 520, [
+    y1 = s.note(30, y0 + 10, 660, [
         "Tras el destape, riego SOLO POR ABAJO (charola lisa debajo): mojar el follaje = moho.",
         "Los nebulizadores atomizan en germinación/oscuridad y en secas; en jun–sep (HR 70–89 %)",
         "subirrigación y ventilación forzada por HR > 70 %.",
@@ -589,7 +719,8 @@ def build_riego() -> Sheet:
     ], kind="warn", title="Errores típicos")
 
     # ---- Leyenda ----
-    s.legend(570, 690, 650, [
+    leg_y = max(drain_y + 14, y1 + 14)
+    leg_b = s.legend(30, leg_y, 1186, [
         (lg_tank, "tanque con nivel"),
         (lg_pump, "bomba (triángulo = sentido)"),
         (lg_filter, "filtro"),
@@ -601,9 +732,11 @@ def build_riego() -> Sheet:
         (lg_signal, "señal al ESP32"),
         (lg_nozzle, "nebulizador / microaspersor"),
         (lg_drain, "coladera"),
-    ], cols=3, row_h=28)
-    s.text(30, 850, "Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · "
+    ], cols=4, row_h=26)
+    foot = leg_b + 24 * s.fs
+    s.text(30, foot, "Fuentes: referencia/03-instalacion §1.2–1.3 · research/agua-captacion · "
            "research/electronica-automatizacion · bom/fase1.csv", size=10, fill=GRAY)
+    s.h = int(math.ceil(foot + 16 * s.fs))
     return s
 
 
@@ -612,14 +745,17 @@ def build_riego() -> Sheet:
 # ---------------------------------------------------------------------------
 def build_nft() -> Sheet:
     s = Sheet(
-        1360, 1000,
+        1240, 1080,
         "P&ID · NFT recirculante de hierbas (Fase 2)",
         "tambo 200 L → bomba diafragma 12 V (DC-first) → filtro malla 120 → manifold con válvulas → "
         "8 líneas PVC sanitario 4\" a 2–3 % → retorno 2\" → tambo · pH/EC en el retorno · nodo-nft-v2",
     )
 
     # ---- Manifold y 8 líneas (vista en planta) ----
-    hx0, hx1, hy = 520, 1250, 150
+    # hx1 se recortó de 1250 a 1108: MEDIDO, la columna "caudal" necesita 85 u
+    # a su derecha (cxr = hx1 + 22) y el margen derecho está en 1216, así que
+    # el lienzo baja de 1360 a 1240 u y cada letra gana 9.7 % en pantalla.
+    hx0, hx1, hy = 520, 1108, 150
     s.pipe([(455, hy), (hx1, hy)], arrows=[0], width=3)
     s.text(460, 136, "manifold ¾\" · 1 válvula por línea (ajuste con botella de 1 L + cronómetro)",
            size=11, fill=GRAY)
@@ -642,8 +778,9 @@ def build_nft() -> Sheet:
     s.polygon([(sx, ly1 - 2), (sx - 5, ly1 - 12), (sx + 5, ly1 - 12)], fill=AMBER, stroke=AMBER, width=1)
     s.text(sx - 6, (ly0 + ly1) / 2, "pendiente 2–3 %", size=11, anchor="middle", fill=AMBER,
            weight="bold", rotate=-90)
-    # anotaciones de las líneas
-    s.multiline(440, 250, [
+    # anotaciones de las líneas (suben para dejar libre el rótulo de F-2, que
+    # crece hacia arriba desde el filtro dúplex)
+    s.multiline(440, 190, [
         "8 líneas × 3 m · PVC SANITARIO 4\" Amanco blanco",
         "$415 / 6 m (½ tramo por línea) · NO C-40 ($1,401)",
         "10 sitios / línea · canastilla 3\" ($12.80)",
@@ -667,30 +804,41 @@ def build_nft() -> Sheet:
     # ---- Retorno 2" con sondas → tambo (por la pared derecha) ----
     bx, by, bw, bh = 170, 600, 160, 200
     s.pipe([(hx1, ret_y), (350, ret_y), (350, 640), (bx + bw, 640)], arrows=[0, 1], width=3)
-    s.text(900, ret_y + 18, "retorno por gravedad · PVC sanitario 2\" (codos 90° $28.80 · 45° $18.31)",
-           size=11, fill=GRAY)
+    # Bloque único anclado al margen derecho, en el hueco que dejó la columna de
+    # notas. Suelto a media hoja lo cruzaban la subida al manifold (y=630) y el
+    # rótulo del retorno.
+    s.multiline(1216, ret_y + 18, ["retorno por gravedad · PVC sanitario 2\"",
+                                   "(codos 90° $28.80 · 45° $18.31)",
+                                   "sondas en el RETORNO (solución mezclada),",
+                                   "nunca junto a la dosificación"], size=11, anchor="end",
+                fill=GRAY)
     s.sensor(700, ret_y, "pH", "AT-1", ["pH 5.8–6.2"], r=15, accent=True)
     s.sensor(600, ret_y, "EC", "AT-2", ["1.2–1.8 mS/cm"], r=15, accent=True)
-    s.multiline(760, 600, ["sondas en el RETORNO (solución mezclada),",
-                           "nunca junto a la dosificación"], size=11, fill=GRAY)
 
     # ---- Tambo TK-2 ----
-    s.tank(bx, by, bw, bh, "TK-2 · Tambo 200 L", [
+    tk_y = s.tank(bx, by, bw, bh, "TK-2 · Tambo 200 L", [
         "HDPE alimenticio $450–900",
         "tapado y a la sombra",
         "18–22 °C · > 25 °C cae el O₂",
         "cambio total cada 2–3 sem.",
     ], level=0.6)
-    s.sensor(bx + 50, by + 60, "T", "TT-2", ["DS18B20"], r=14, label="right")
-    s.sensor(bx + 40, by - 28, "L", "LT-2", [], r=13, label="left")
-    s.line(bx + 40, by - 15, bx + 40, by, width=1.4, dash="3 2")
-    s.text(160, 566, "nivel del tambo (interlock)", size=10, anchor="end", fill=GRAY)
-    s.text(160, 579, "[POR VERIFICAR: no en BOM]", size=10, anchor="end", fill=AMBER)
+    # TT-2 baja 30 u: a by+60 el rótulo DS18B20 quedaba justo sobre la línea
+    # de nivel del tambo. LT-2 se corre a bx+100 para dejar libre la columna
+    # de rótulos de la dosificación (x 40-220).
+    s.sensor(bx + 50, by + 110, "T", "TT-2", ["DS18B20"], r=14, label="right")
+    # LT-2 se corre a bx+110 y su texto se ancla a la derecha en x=250: en la
+    # tapa izquierda el círculo y el rótulo caían sobre la columna de la
+    # dosificación (x 40-220), que se ensanchó con la letra.
+    s.sensor(bx + 110, by - 28, "L", "LT-2", [], r=13, label="left")
+    s.line(bx + 110, by - 15, bx + 110, by, width=1.4, dash="3 2")
+    s.text(250, 540, "nivel del tambo (interlock)", size=10, anchor="end", fill=GRAY)
+    s.text(250, 556, "[POR VERIFICAR: no en BOM]", size=10, anchor="end", fill=AMBER)
 
     # ---- Succión: P-1 principal + P-2 respaldo → F-1 → FT-1 → subida ----
     sy = by + bh - 60  # 740
     s.pipe([(bx + bw, sy), (369, sy)], arrows=True)
-    s.valve(380, sy, "V-0", ["paso"], size=10)
+    # rótulo arriba: abajo lo cruza la bajada de purga del tambo
+    s.valve(380, sy, "V-0", ["paso"], size=10, label="above")
     s.pipe([(391, sy), (420, sy), (420, sy - 40), (452, sy - 40)], arrows=False)
     s.pipe([(420, sy), (420, sy + 40), (452, sy + 40)], arrows=False)
     s.pump(468, sy - 40, "P-1", [], r=16, label="above")
@@ -699,19 +847,23 @@ def build_nft() -> Sheet:
     s.pipe([(484, sy + 40), (520, sy + 40), (520, sy)], arrows=False)
     s.pipe([(520, sy), (610, sy)], arrows=True)
     s.filter_(632, sy, "F-1", ["malla 120 mesh 1\" ($230)", "lavar cada semana"])
-    s.pipe([(654, sy), (775, sy)], arrows=True)
-    s.sensor(790, sy, "F", "FT-1", ["YF-S201 · 450 pulsos/L", "alarma: ON y < 2 L/min 60 s"],
+    # FT-1 se corre de 790 a 860: sus dos renglones y los de F-1 (centrados
+    # bajo cada símbolo) se tocaban y se leían pegados ("($230)YF-S201").
+    s.pipe([(654, sy), (845, sy)], arrows=True)
+    s.sensor(860, sy, "F", "FT-1", ["YF-S201 · 450 pulsos/L", "alarma: ON y < 2 L/min 60 s"],
              r=15, accent=True)
-    s.pipe([(805, sy), (840, sy), (840, sy - 80)], arrows=False)
-    s.valve(840, sy - 40, size=9, orient="v")
-    s.text(826, sy - 36, "V-8 purga a coladera / bypass", size=10, anchor="end", fill=GRAY)
-    s.text(826, sy - 24, "(cambio de solución)", size=10, anchor="end", fill=GRAY)
+    s.pipe([(875, sy), (900, sy), (900, sy - 80)], arrows=False)
+    s.valve(900, sy - 40, size=9, orient="v")
+    s.text(886, sy - 39, "V-8 purga a coladera / bypass", size=10, anchor="end", fill=GRAY)
+    s.text(886, sy - 24, "(cambio de solución)", size=10, anchor="end", fill=GRAY)
     # subida al manifold: cruza el retorno con salto
-    s.pipe([(840, sy - 80), (840, 630), (455, 630), (455, ret_y + 6)], arrows=[1])
+    s.pipe([(900, sy - 80), (900, 630), (455, 630), (455, ret_y + 6)], arrows=[1])
     s.jump(455, ret_y)
     s.pipe([(455, ret_y - 6), (455, hy)], arrows=[0])
-    s.text(462, 622, "subida ¾\" al manifold · distribución ½\"–¾\"", size=11, fill=GRAY)
-    s.multiline(430, 836, [
+    # bajo el tramo horizontal de la subida (y=630): arriba lo alcanzaban los
+    # rótulos de AT-1/AT-2, que crecen hacia abajo con FS
+    s.text(462, 652, "subida ¾\" al manifold · distribución ½\"–¾\"", size=11, fill=GRAY)
+    s.multiline(490, 836, [
         "P-1 principal + P-2 respaldo: diafragma 12 V 40–60 W (4–6 L/min c/u)",
         "en bus de batería LiFePO4 12.8 V 100 Ah → 28–30 h sin CFE (DC-first).",
         "Relevador de transferencia por ESP32: FT-1 sin flujo → arranca P-2.",
@@ -720,8 +872,10 @@ def build_nft() -> Sheet:
     ], size=11, fill=GRAY)
 
     # ---- Dosificación: 3 peristálticas al tambo, cerca de la succión ----
+    # El encabezado va ARRIBA del tambo (x 170–330): a la altura de las bombas
+    # el rótulo, ya más ancho, entraba en la pared del tambo.
     dx0 = 40
-    s.text(dx0, 620, "DP-1/2/3 peristálticas 12 V", size=11, weight="bold")
+    s.text(dx0, 588, "DP-1/2/3 peristálticas 12 V", size=10, weight="bold")
     for j, nm in enumerate(["A", "B", "pH−"]):
         yy = 640 + j * 50
         s.rect(dx0, yy - 12, 30, 26, fill=LIGHT, width=1.3, rx=3)
@@ -730,50 +884,67 @@ def build_nft() -> Sheet:
         s.circle(dx0 + 62, yy, 3, fill=INK)
         s.pipe([(dx0 + 30, yy), (dx0 + 53, yy)], arrows=False, width=1.4)
         s.pipe([(dx0 + 71, yy), (bx, yy)], arrows=False, width=1.4, dash="2 2")
-    s.text(dx0, 770, "A y B en botes separados", size=10, fill=GRAY)
-    s.text(dx0, 783, "(Ca precipita con PO₄ / SO₄)", size=10, fill=GRAY)
-    s.text(dx0, 796, "pH−: AquAcid ($516)", size=10, fill=GRAY)
+    # bajo el rótulo del tambo (a la altura de la pared del tambo lo cruzaban)
+    s.multiline(dx0, 915, ["A y B en botes separados", "(Ca precipita con PO₄ / SO₄)",
+                           "pH−: AquAcid ($516)"], size=10, lh=14, fill=GRAY)
 
     # ---- Llenado desde tinaco: solenoide + dúplex ----
     fy = 470
     s.water([(30, fy), (139, fy)], arrows=True)
-    s.multiline(30, fy - 26, ["de TK-1 tinaco", "750 L (lluvia / red)"], size=11, fill=GREEN)
+    # el segundo renglón llegaba a la cajita "S" de SV-1 (x 141-159)
+    s.multiline(30, fy - 46, ["de TK-1 tinaco 750 L", "(lluvia / red)"], size=11, fill=GREEN)
     s.solenoid(150, fy, "SV-1", ["½\" NC 12 V"])
-    s.pipe([(161, fy), (210, fy)], arrows=False)
-    s.filter_(235, fy, "F-2", ["dúplex 10\": sedimento 5 µm +", "carbón activado (quita cloro)",
-                               "cartuchos cada 4–6 meses"], w=50, h=32, label="above")
-    s.pipe([(260, fy), (300, fy), (300, by)], arrows=[1])
-    s.text(308, fy + 22, "SV-1 cerrada sin luz:", size=10, fill=GRAY)
-    s.text(308, fy + 34, "no vacía el tinaco", size=10, fill=GRAY)
+    s.pipe([(161, fy), (235, fy)], arrows=False)
+    # F-2 se corre a la derecha y se queda con UN renglón: sus tres líneas
+    # llegaban a la caja "S" del solenoide SV-1 y al bloque de las 8 líneas.
+    # El detalle (cartuchos y periodicidad) pasó a la nota de errores típicos.
+    s.filter_(260, fy, "F-2", ["dúplex 10\" (2 cartuchos)"], w=50, h=32, label="above")
+    s.pipe([(285, fy), (300, fy), (300, by)], arrows=[1])
+    # a la derecha de la bajada al tambo (x=300): encima la partía en dos
+    s.multiline(310, fy + 22, ["SV-1 cerrada sin luz:", "no vacía el tinaco"], size=10,
+                lh=16, fill=GRAY)
 
     # ---- Purga del tambo → coladera ----
-    s.pipe([(bx + bw, by + bh - 15), (370, by + bh - 15), (370, 830)], arrows=False)
-    s.solenoid(370, 845, "SV-2", [], orient="v", label="left")
-    s.pipe([(370, 856), (370, 876)], arrows=False)
-    s.drain(370, 890, "coladera", ["purga NC · vaciado", "cada 2–3 semanas"])
+    # La columna de purga se corrió de x=370 a x=410: con la letra más grande,
+    # el rótulo SV-2 quedaba encima del rótulo del tambo.
+    px = 410
+    s.pipe([(bx + bw, by + bh - 15), (px, by + bh - 15), (px, 830)], arrows=False)
+    s.solenoid(px, 845, "SV-2", [], orient="v", label="left")
+    s.pipe([(px, 856), (px, 876)], arrows=False)
+    dr_y = s.drain(px, 890, "coladera", ["purga NC · vaciado", "cada 2–3 semanas"])
 
-    # ---- Notas ----
-    y0 = s.note(880, 620, 450, [
+    # ---- Banda inferior de texto ----
+    # Todas las cajas van DEBAJO del dibujo, en dos columnas de 640 u. Antes la
+    # columna derecha empezaba en x=880 y y=620, en medio del área de bombas y
+    # del caudalímetro FT-1: al crecer la letra los rótulos de esos equipos se
+    # metían bajo los recuadros blancos de las notas.
+    band = max(dr_y, tk_y, 960, 836 + 5 * 15 * s.fs) + 16
+    cw, cxa, cxb = 576, 30, 636
+    y0 = s.note(cxa, band, cw, [
         "Sin recirculación las raíces (película 1–3 mm) se marchitan en 2–4 h",
         "con el túnel caliente: la bomba cuelga del bus de batería, no de HA.",
         "Watchdogs: FT-1 sin flujo → arranca P-2 + alarma crítica;",
         "sonda que no cambia en 24 h o salta > 1.5 en 5 min → 'no confiable'.",
         "Commissioning: 48 h con agua sola, sin fugas, caudal en rango por línea.",
     ], kind="ok", title="Continuidad y watchdogs")
-    y1 = s.note(880, y0 + 10, 450, [
+    y1 = s.note(cxb, band, cw, [
         "Panza a media línea (soporte > 1.5 m) = agua estancada = raíces podridas.",
         "Perforar antes de tener las canastillas → hoyo de 2\" exacto: se cae.",
         "Peat pellets / turba tapan la malla 120. Tambo al sol > 25 °C: algas y sin O₂.",
         "Periférica 0.5 HP 24/7 = 324 kWh/mes → tarifa DAC.",
+        "F-2 dúplex 10\": sedimento 5 µm + carbón activado (quita el cloro);",
+        "cambiar cartuchos cada 4–6 meses.",
     ], kind="warn", title="Errores típicos")
-    s.note(430, 905, 440, [
+
+    band2 = max(y0, y1) + 12
+    d_b = s.note(cxa, band2, cw, [
         "dosis fija pequeña → esperar 10–15 min de mezcla → re-medir (histéresis).",
         "Interlock: sin dosis con LT-2 bajo o bomba OFF; dosificar AL TAMBO, no a una línea.",
         "Calibrar cada 15 días: pH 4.01 / 6.86 y EC 1.413 mS/cm (evento en HA).",
     ], kind="ok", title="Dosificación (L0)")
 
     # ---- Leyenda ----
-    s.legend(880, y1 + 10, 450, [
+    leg_b = s.legend(cxb, band2, cw, [
         (lg_tank, "tanque con nivel"),
         (lg_pump, "bomba"),
         (lg_filter, "filtro"),
@@ -783,8 +954,10 @@ def build_nft() -> Sheet:
         (lg_line_nft, "línea NFT 4\" con canastillas"),
         (lg_signal, "señal al ESP32"),
     ], cols=2, row_h=26)
-    s.text(30, 991, "Fuentes: referencia/03-instalacion §2.1–2.3 · research/hidroponia-nft · "
+    foot = max(d_b, leg_b) + 24 * s.fs
+    s.text(30, foot, "Fuentes: referencia/03-instalacion §2.1–2.3 · research/hidroponia-nft · "
            "research/electrico-respaldo-seguridad §2 · referencia/06 L0 · bom/fase2.csv", size=10, fill=GRAY)
+    s.h = int(math.ceil(foot + 16 * s.fs))
     return s
 
 
@@ -829,8 +1002,8 @@ def build_captacion() -> Sheet:
     ], size=11, fill=GRAY)
     bxx = 490
     s.water([(bxx, 248), (bxx, 300)], arrows=True)
-    s.text(500, 268, "bajante PVC 3\"", size=11, fill=GRAY)
-    s.text(500, 282, "(o manguera reforzada)", size=11, fill=GRAY)
+    s.text(500, 276, "bajante PVC 3\"", size=11, fill=GRAY)
+    s.text(500, 294, "(o manguera reforzada)", size=11, fill=GRAY)
 
     # ---- Filtro de hojas ----
     s.filter_(bxx, 330, "F-3", ["filtro de hojas (malla inox)", "sólidos > 1 mm"], w=48, h=32,
@@ -846,8 +1019,8 @@ def build_captacion() -> Sheet:
     s.pipe([(tlx, tly + 170), (tlx, tly + 181)], arrows=False)
     s.valve(tlx, tly + 190, size=9, orient="v")
     s.pipe([(tlx, tly + 199), (tlx, tly + 230)], arrows=False)
-    s.text(tlx + 16, tly + 224, "V-P purga (tapón de registro)", size=10, fill=GRAY)
-    s.text(tlx + 16, tly + 236, "vaciar después de cada tormenta", size=10, fill=GRAY)
+    s.text(tlx + 16, tly + 238, "V-P purga (tapón de registro)", size=10, fill=GRAY)
+    s.text(tlx + 16, tly + 253, "vaciar después de cada tormenta", size=10, fill=GRAY)
     s.text(tlx - 28, tly + 40, "SP-1", size=12, anchor="end", weight="bold")
     s.multiline(tlx - 28, tly + 56, [
         "separador de primeras lluvias",
@@ -863,16 +1036,22 @@ def build_captacion() -> Sheet:
     kx, ky, kw, kh = 800, 300, 190, 300
     s.water([(tlx + 22, tly + 50), (700, tly + 50), (700, 260), (kx + 60, 260), (kx + 60, ky)],
             arrows=[0, 1, 2])
-    s.text(560, tly + 68, "lleno el separador → agua limpia al tinaco", size=11, fill=GREEN)
+    # anclado a la derecha justo antes de la pared del tinaco (x = kx = 800):
+    # de izquierda a derecha el rótulo la cruzaba.
+    s.text(790, tly + 68, "separador lleno → agua limpia al tinaco", size=11, anchor="end",
+           fill=GREEN)
 
     # ---- Tinaco ----
-    s.tank(kx, ky, kw, kh, "TK-1 · Tinaco 750 L", [
+    tk_y = s.tank(kx, ky, kw, kh, "TK-1 · Tinaco 750 L", [
         "Rotoplas Resistec 750 L ($2,051) · opaco",
         "sobre base firme al nivel del patio:",
         "lleno ≈ 750 kg · nunca sobre estructura ligera",
         "alcaldía con tandeo duro: 1,100 L ($3,774)",
     ], level=0.6)
-    s.text(kx + 68, ky + 18, "reductor de turbulencia (Axolote, F2)", size=10, fill=GRAY)
+    # en dos renglones: a una línea no cabe dentro del tinaco (190 u) y la
+    # pared derecha del tanque le pasaba por encima.
+    s.multiline(kx + kw / 2, ky + 92, ["reductor de turbulencia", "(Axolote, F2)"], size=10,
+                lh=15, anchor="middle", fill=GRAY)
     s.line(kx + 25, ky, kx + 25, ky - 22, width=1.6)
     s.text(kx + 19, ky - 12, "jarro de aire", size=10, anchor="end", fill=GRAY)
     # nivel y temperatura
@@ -880,16 +1059,18 @@ def build_captacion() -> Sheet:
     s.line(kx + 120, ky - 20, kx + 120, ky, width=1.4, dash="3 2")
     s.text(kx + 140, ky - 38, "JSN-SR04T", size=10, fill=GRAY)
     s.text(kx + 140, ky - 24, "alarma tinaco bajo en HA", size=10, fill=GRAY)
-    s.sensor(kx + 105, ky + kh - 70, "T", "TT-1", ["DS18B20"], r=14, label="right")
+    # dentro del tinaco: a kx+105 el rótulo DS18B20 salía por la pared derecha
+    s.sensor(kx + 60, ky + kh - 70, "T", "TT-1", ["DS18B20"], r=14, label="right")
     # red SACMEX por la pared derecha + flotador
     s.pipe([(1120, 160), (1120, 330), (kx + kw, 330)], arrows=[0, 1])
-    s.multiline(1000, 140, ["red SACMEX (toma domiciliaria)", "solo rellena cuando hay presión"],
-                size=11, fill=GRAY)
+    s.multiline(1108, 140, ["red SACMEX (toma domiciliaria)", "solo rellena cuando hay presión"],
+                size=11, anchor="end", fill=GRAY)
     s.float_valve(kx + kw - 26, 330, "FV-1", [], label="left", mirror=True)
     # rebosadero
-    s.pipe([(kx + kw, 370), (1060, 370), (1060, 560)], arrows=[1])
+    # la coladera sube 25 u: su rótulo tocaba el del tinaco, que baja con FS
+    s.pipe([(kx + kw, 370), (1060, 370), (1060, 535)], arrows=[1])
     s.text(1066, 392, "rebosadero", size=11, fill=GRAY)
-    s.drain(1060, 585, "coladera del patio", [])
+    dr_y = s.drain(1060, 560, "coladera del patio", [])
     # salida inferior → riego / NFT
     oy = ky + kh - 30
     s.pipe([(kx, oy), (751, oy)], arrows=True)
@@ -897,18 +1078,20 @@ def build_captacion() -> Sheet:
     s.pipe([(729, oy), (682, oy)], arrows=False)
     s.filter_(660, oy, "F-1", ["sedimentos"], w=44, h=28)
     s.pipe([(638, oy), (580, oy)], arrows=True)
-    s.text(578, oy - 34, "→ P-1 riego (riego-microgreens.svg)", size=11, fill=GREEN)
-    s.text(578, oy - 20, "→ llenado NFT (nft-recirculacion.svg)", size=11, fill=GREEN)
+    # anclados antes de la pared del tinaco (x = kx = 800), que los cruzaba
+    s.multiline(790, oy - 48, ["→ P-1 riego (riego-microgreens.svg)",
+                               "→ llenado NFT (nft-recirculacion.svg)"], size=11, lh=15,
+                anchor="end", fill=GREEN)
 
     # ---- Notas de dimensionamiento ----
-    y0 = s.note(30, 692, 560, [
+    y0 = s.note(30, 672, 700, [
         "Tacubaya (SMN 1991–2020): 847 mm/año · núcleo jun–sep 132–176 mm/mes · 118 días de lluvia.",
         "Tormenta de 30 mm sobre 15–20 m² ≈ 500–600 L: no dejarla caer al patio.",
         "Anual (650 mm × coef. 0.9): 15 m² ≈ 8,800 L · 30 m² ≈ 17,500 L.",
         "Consumo del sistema ~1–3 m³/mes ⇒ en lluvias cubre 80–100 %; 750–1,100 L = 2–4 semanas.",
         "Agua de lluvia: EC 0.02–0.06 mS/cm, sin cloro (V7: medir pH/EC cada temporada).",
     ], kind="ok", title="Dimensionamiento")
-    s.note(30, y0 + 10, 560, [
+    y1 = s.note(30, y0 + 10, 700, [
         "Sin separador: la primera lluvia mete hollín y polvo al tinaco. Tinaco al sol: algas.",
         "Canalón sin pendiente o con panza: se desborda en la tormenta vespertina.",
         "No tapar coladeras del patio con placas ni con el tinaco; rebosadero SIEMPRE a coladera.",
@@ -916,7 +1099,9 @@ def build_captacion() -> Sheet:
     ], kind="warn", title="Errores típicos y atajo")
 
     # ---- Leyenda ----
-    s.legend(620, 692, 590, [
+    # Debajo del rótulo del tinaco y de la coladera: los dos bajan con FS y
+    # antes el recuadro blanco de la leyenda les pasaba por encima.
+    leg_b = s.legend(750, max(tk_y + 14, dr_y + 14, 672), 466, [
         (lg_gutter, "canaleta / canalón"),
         (lg_filter, "filtro (hojas / sedimentos)"),
         (lg_tank, "tanque / separador con nivel"),
@@ -927,8 +1112,10 @@ def build_captacion() -> Sheet:
         (lg_pipe, "tubería con flecha de flujo"),
         (lg_drain, "coladera"),
     ], cols=2, row_h=26)
-    s.text(30, 910, "Fuentes: research/instalacion-tunel-detalle §4 · research/agua-captacion §b · "
+    foot = max(y1, leg_b) + 24 * s.fs
+    s.text(30, foot, "Fuentes: research/instalacion-tunel-detalle §4 · research/agua-captacion §b · "
            "research/clima-agronomia §4–5 · referencia/03-instalacion §1.1–1.2 · bom/fase1.csv", size=10, fill=GRAY)
+    s.h = int(math.ceil(foot + 16 * s.fs))
     return s
 
 

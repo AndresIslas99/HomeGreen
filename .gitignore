@@ -17,3 +17,7 @@ firmware/esphome/secrets.yaml
 # docs/referencia/enlaces.md, la página de la wiki).
 /enlaces.md
 /resumen.txt
+
+# Configuracion local del servidor de previsualizacion: la ruta del entorno virtual
+# es de cada maquina, asi que no se versiona.
+.claude/launch.json

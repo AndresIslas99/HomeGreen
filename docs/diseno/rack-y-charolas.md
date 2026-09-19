@@ -21,13 +21,19 @@ ilumina y se riega cada nivel, y por dónde circulan las charolas.
 
 ## Vista general
 
-![Alzado del rack Husky 183 × 91 × 46 cm a escala 1:10: vista frontal con 5 niveles y 3 charolas 1020 por nivel, N5 zona blackout con pilas tapadas y peso, N1–N4 en luz con 2 tubos T8 y línea de nebulizadores por nivel, sensores MT-1…4, charola colectora a coladera; vista lateral con riser de riego; planta de un nivel; tablas de capacidad, cargas, iluminación y riego; leyenda](../assets/diagramas/layout/rack-alzado.svg)
+![Alzado del rack Husky 183 × 91 × 46 cm a escala 1:10: vista frontal con 5 niveles y 3 charolas 1020 por nivel, N5 zona blackout con pilas tapadas y peso, N1–N4 en luz con 2 tubos T8 y línea de nebulizadores por nivel, sensores MT-1…4, charola colectora a coladera; vista lateral con riser de riego; planta de un nivel con las tres charolas y los dos tubos T8](../assets/diagramas/layout/rack-alzado.svg)
+
+??? note "Leyenda, flujo de charolas y tablas del alzado"
+
+    --8<-- "assets/diagramas/layout/rack-alzado.notas.md"
 
 **Cómo leerlo.** Verde = charolas y dosel (achurado más alto = más días de cultivo); ámbar =
 tubos T8 y sensores; azul = línea de nebulizadores, boquillas y charola colectora; gris oscuro
-translúcido = zona de oscuridad (N5); gris = entrepaños de MDF forrados. La columna de texto
-a la derecha del rack es el flujo de charolas: ① siembra arriba → ⑤ cosecha abajo. Cotas en cm;
-el dibujo se genera con `hardware/cad/layout.py` (constantes `RACK_*`, `SHELF_TOPS`, `CANOPY`).
+translúcido = zona de oscuridad (N5); gris = entrepaños de MDF forrados. La columna de
+etiquetas a la derecha del rack marca el flujo de charolas: ① siembra arriba → ⑤ cosecha
+abajo; cada etapa se explica completa en el desplegable de arriba, junto con la leyenda y las
+tablas de capacidad, cargas, iluminación y riego. Cotas en cm; el dibujo se genera con
+`hardware/cad/layout.py` (constantes `RACK_*`, `SHELF_TOPS`, `CANOPY`).
 
 | Modelo | Qué decide | Render | Archivo |
 |---|---|---|---|

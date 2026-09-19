@@ -1,6 +1,6 @@
 # Fase 0: validar que los chefs pagan
 
-**En una línea:** en 6 semanas, con un rack bajo techo y ~$6,700–9,500 de equipo, produces
+**En una línea:** en 6 semanas, con un rack bajo techo y $8,814 de equipo, produces
 microgreens reales, se los llevas a 15 restaurantes y mides si al menos 2 te compran 3 semanas
 seguidas pagando por SPEI — antes de gastar un peso en túnel, agua o electrónica.
 
@@ -8,7 +8,7 @@ seguidas pagando por SPEI — antes de gastar un peso en túnel, agua o electró
     | | |
     |---|---|
     | **Objetivo** | Probar con dinero real que hay demanda: ≥ 2 clientes recurrentes **y** margen variable ≥ 55 % |
-    | **Inversión** | $4,000–6,000 según el [plan maestro](../../referencia/00-plan-maestro.md); BOM real ~$9,500 con sanitización y libros, ~$6,700 versión austera ([compras](compras.md)) |
+    | **Inversión** | **$8,814** calculados desde [`bom/partidas.csv`](../../referencia/bom.md); $8,095 en versión austera (rack Adir). El plan maestro decía $4,000–6,000 y se quedaba corto ([compras](compras.md)) |
     | **Meta** | 2 clientes con ≥ 3 compras semanales consecutivas, cobradas |
     | **Duración** | Semanas 1–6: semanas 1–2 producir y pesar, semanas 3–6 vender y medir el embudo |
     | **Pérdida si falla** | ~$6k acotados; el rack, las básculas y los libros se quedan contigo |
@@ -21,6 +21,10 @@ Todo lo demás (túnel, tinaco, ESP32, NFT) se compra solo si el gate pasa.
 ## Cómo se verá
 
 ![Planta del patio en Fase 0: rack Husky bajo el cobertizo pegado a la pared sur, mesa de siembra junto a la toma de agua, reserva del túnel 3×6 trazada](../../assets/diagramas/layout/patio-fase-0.svg)
+
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-0.notas.md"
 
 Un solo rack Husky de 5 niveles bajo techo, pegado a la pared sur (luz indirecta, sin sol de
 mediodía ni goteo), una mesa de siembra de 1.2 × 0.6 m junto a la toma de agua (a < 10 m) y un

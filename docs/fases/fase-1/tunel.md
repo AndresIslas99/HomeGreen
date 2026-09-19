@@ -16,6 +16,10 @@ racha de 50–80 km/h y la primera granizada de agosto no se lleven la producci�
 
 ![Planta del patio en Fase 1: túnel de 6 × 3 m con cumbrera este–oeste y puerta al norte, 3 racks adentro, tinaco de 750 L con canalón y bajantes, gabinete IP65 en el poste sureste, coladera libre](../../assets/diagramas/layout/patio-fase-1.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-1.notas.md"
+
 | Parámetro | Valor | Por qué |
 |---|---|---|
 | Planta | 6.00 × 3.00 m = 18 m²; cumbrera este–oeste; puerta 0.90 × 1.90 m en la cabecera norte | Acceso del patio al norte; laterales largos N y S con faldones enrollables |

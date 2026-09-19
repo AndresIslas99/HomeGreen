@@ -35,6 +35,10 @@ manipulación agtech, con presupuesto discrecional y cero presión comercial. No
 
 ![Planta del patio en Fase 3: la Fase 2 completa más camas elevadas personales con goteo desde HA, gantry XY tipo FarmBot sobre una cama y cámara fija de visión](../../assets/diagramas/layout/patio-fase-3.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-3.notas.md"
+
 Todo lo de Fase 2 sigue en su lugar (túnel 5 × 6 m con racks y 8 líneas NFT, tambo, gabinetes,
 tinaco con tlaloque, refrigerador y zona de cosecha). Lo nuevo va **fuera del túnel y fuera de la
 ruta de producción**: camas elevadas con goteo, una de ellas con el gantry XY encima, y una

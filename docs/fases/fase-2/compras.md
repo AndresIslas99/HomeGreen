@@ -6,7 +6,7 @@ final), tres escenarios de presupuesto y la lista de lo que **no** se compra aun
 recomiende un video.
 
 !!! info "Antes de empezar"
-    - **Tiempo:** 3 h de pedidos en línea + 1 mañana en Home Depot/tlapalería + 1 visita a Hydro Environment (Tlalnepantla, evita paquetería con el PVC y el tambo) · **Costo:** ≈ $37,650 escenario recomendado / ≈ $39,000 completo / ≈ $26,800 austero de arranque (cálculo abajo) · **Personas:** 1
+    - **Tiempo:** 3 h de pedidos en línea + 1 mañana en Home Depot/tlapalería + 1 visita a Hydro Environment (Tlalnepantla, evita paquetería con el PVC y el tambo) · **Costo:** **$27,251** ([BOM](../../referencia/bom.md)) / $24,082 austero. No incluye lo que ya se pagó en la Fase 1 · **Personas:** 1
     - **Necesitas:** el resultado de [G1→2](../fase-1/gate.md) (Go), la lectura de EC/pH del agua de la llave en 3 días distintos (V7: decide si llenas con red filtrada, mezcla o lluvia), el recibo de CFE con el promedio anual de kWh, y 3 cotizaciones de electricista.
     - **Prerequisitos:** [Fase 1 · Compras](../fase-1/compras.md) (ya tienes gabinetes IP65, fuente 12 V, cerebro y tinaco); [Antes de gastar un peso](../../empieza-aqui/antes-de-gastar-un-peso.md).
 
@@ -168,7 +168,7 @@ Sumas de los bloques de arriba (sin la ampliación del túnel, que se cotiza apa
 | Escenario | Qué incluye | Total aprox. |
 |---|---|---|
 | **Recomendado (día 1)** | Bloques 1–8 con LiFePO4 100 Ah, EPEVER + panel, breaker QO120GFI, refri, Tláloc y Resh; sin DFRobot etapa 2 ni seguro | **≈ $37,650** |
-| **Completo** | Recomendado + kit DFRobot Gravity ($1,250) | ≈ $38,900 (la fila TOTAL del CSV dice ~$39,000) |
+| **Completo** | Recomendado + kit DFRobot Gravity ($1,250, etapa 2) | $28,501 |
 | **Austero de arranque** | Recomendado con: variante AGM 24 Ah + BR-700 + 1 bomba + contacto GFCI en vez de LiFePO4/EPEVER/panel/2.ª bomba/breaker; sin refri hasta vender cortado; sin Resh | ≈ $26,800 (≈ $21,500 si SEDEMA pone el Tláloc) |
 
 [POR VERIFICAR: la fila TOTAL de `bom/fase2.csv` estima ~$34,000 "sin seguro ni DFRobot etapa 2

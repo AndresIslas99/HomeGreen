@@ -13,6 +13,10 @@
 
 ![Planta del patio en Fase 1: túnel con canalón en ambos aleros, bajante noreste directa al tinaco y bajante sureste con colector aéreo hacia el tinaco; coladera libre](../assets/diagramas/layout/patio-fase-1.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-1.notas.md"
+
 Techo (18.6 m² a dos aguas en Fase 1 → **~19 L por cada mm de lluvia**; 31 m² en Fase 2 → ~31 L/mm) → canalón con pendiente 0.5–1 % → bajante 3" → **F-3 filtro de hojas** (sólidos > 1 mm) → **SP-1 separador de primeras lluvias** (los primeros 20–40 L, que lavan polvo y hollín, se quedan en un tubo ciego con purga) → **TK-1 tinaco 750 L** por la tapa → rebosadero a la coladera. Una tormenta de 30 mm son ~560 L en Fase 1 y ~940 L en Fase 2: **el rebosadero a la coladera no es opcional** ([Estructura del túnel §2](../diseno/estructura-tunel.md)).
 
 ## Pasos

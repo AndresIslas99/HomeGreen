@@ -1,559 +1,480 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1210" viewBox="0 0 1600 1210" role="img" aria-label="Planta · Fase 3 · escala 1:50 · supuesto 10×8 m">
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="1040" viewBox="0 0 1220 1040" role="img" aria-label="Planta · Fase 3 · escala 1:50 · supuesto 10×8 m">
 <title>Planta · Fase 3 · escala 1:50 · supuesto 10×8 m</title>
 <defs><marker id="arrInk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1f2937"/></marker><marker id="arrBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#1d4ed8"/></marker><marker id="arrAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#b45309"/></marker><marker id="arrGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#2e7d32"/></marker><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#1f2937" stroke-width="1.2"/></pattern><pattern id="hatchGreen" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#2e7d32" stroke-width="0.8"/></pattern><pattern id="roof" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#6b7280" stroke-width="0.6"/></pattern></defs>
-<rect x="0" y="0" width="1600" height="1210" fill="#ffffff" stroke="none" stroke-width="1.5"/>
-<text x="24" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="18" fill="#1f2937" text-anchor="start" font-weight="bold">Planta · Fase 3 · escala 1:50 · supuesto 10×8 m</text>
-<text x="24" y="54" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280" text-anchor="start">Fase 2 + camas elevadas con goteo desde HA + gantry XY tipo FarmBot + cámara fija · mes 10+ · cero presión comercial</text>
-<text x="1576" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#6b7280" text-anchor="end">HomeGreen · v1 · 2026-09</text>
-<line x1="24" y1="64" x2="1576" y2="64" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<rect x="95" y="125" width="1030" height="15" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
-<rect x="95" y="140" width="15" height="800" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
-<rect x="1110" y="140" width="15" height="800" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
-<rect x="95" y="940" width="1030" height="45" fill="url(#hatch)" stroke="#1f2937" stroke-width="1.5"/>
-<text x="125" y="970" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" fill="#1f2937" text-anchor="start" font-weight="bold">CASA (pared sur)</text>
-<rect x="110" y="140" width="1000" height="800" fill="none" stroke="#1f2937" stroke-width="2"/>
-<rect x="780" y="125" width="100" height="15" fill="#ffffff" stroke="none" stroke-width="1.5"/>
-<line x1="780" y1="125" x2="780" y2="140" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="880" y1="125" x2="880" y2="140" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="780" y1="140" x2="785" y2="65" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<path d="M785,65 A80,80 0 0 1 880,135" fill="none" stroke="#1f2937" stroke-width="1" stroke-dasharray="3 3"/>
-<text x="830" y="110" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="middle" font-weight="bold">ACCESO · zaguán 1.0 m (abre hacia afuera)</text>
-<rect x="550" y="940" width="90" height="45" fill="#ffffff" stroke="none" stroke-width="1.5"/>
-<line x1="550" y1="940" x2="550" y2="985" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="640" y1="940" x2="640" y2="985" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="550" y1="940" x2="555" y2="850" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<path d="M555,850 A90,90 0 0 1 640,935" fill="none" stroke="#1f2937" stroke-width="1" stroke-dasharray="3 3"/>
-<text x="595" y="842" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="middle">puerta casa→patio 0.9 m</text>
-<line x1="110" y1="79" x2="110" y2="91" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="106" y1="89" x2="114" y2="81" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="1110" y1="79" x2="1110" y2="91" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="1106" y1="89" x2="1114" y2="81" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="110" y1="85" x2="1110" y2="85" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="610" y="81" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" fill="#1f2937" text-anchor="middle">10.00 m (supuesto)</text>
-<line x1="44" y1="140" x2="56" y2="140" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="46" y1="144" x2="54" y2="136" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="44" y1="940" x2="56" y2="940" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="46" y1="944" x2="54" y2="936" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="50" y1="140" x2="50" y2="940" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="46" y="540" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="11" fill="#1f2937" text-anchor="middle" transform="rotate(-90 46 540)">8.00 m (supuesto)</text>
-<circle cx="1170" cy="920" r="22" fill="none" stroke="#1f2937" stroke-width="1.2"/>
-<polygon points="1170,900 1162,930 1170,923 1178,930" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="1170" y="893" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13" fill="#1f2937" text-anchor="middle" font-weight="bold">N</text>
-<text x="1125" y="1002" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="end">sol de mediodía: desde el SUR, casi vertical (19° N) · UV 11+ de marzo a septiembre</text>
-<rect x="1055" y="165" width="30" height="30" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<line x1="1062.5" y1="165" x2="1062.5" y2="195" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1055" y1="172.5" x2="1085" y2="172.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1070" y1="165" x2="1070" y2="195" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1055" y1="180" x2="1085" y2="180" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1077.5" y1="165" x2="1077.5" y2="195" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1055" y1="187.5" x2="1085" y2="187.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<text x="1048" y="186" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#1d4ed8" text-anchor="end">coladera</text>
-<circle cx="1085" cy="932" r="9" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.8"/>
-<text x="1085" y="936" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1d4ed8" text-anchor="middle" font-weight="bold">T</text>
-<rect x="750" y="770" width="350" height="170" fill="url(#roof)" stroke="none" stroke-width="1.5"/>
-<rect x="750" y="770" width="350" height="170" fill="#ffffff" stroke="none" stroke-width="1.5" fill-opacity="0.65"/>
-<rect x="750" y="770" width="350" height="170" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6 4"/>
-<text x="1095" y="786" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#6b7280" text-anchor="end">COBERTIZO existente (supuesto) 3.5×1.7 m</text>
-<rect x="655" y="948" width="95" height="32" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
-<text x="702.5" y="961" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle">centro de carga</text>
-<rect x="250" y="948" width="230" height="30" fill="#ffffff" stroke="#b45309" stroke-width="1.2" stroke-dasharray="2 3"/>
-<text x="365" y="968" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#b45309" text-anchor="middle">cerebro (interior): mini-PC HA + router + UPS</text>
-<rect x="170" y="220" width="600" height="500" fill="url(#roof)" stroke="none" stroke-width="1.5"/>
-<rect x="170" y="220" width="600" height="500" fill="#ffffff" stroke="none" stroke-width="1.5" fill-opacity="0.6"/>
-<rect x="170" y="220" width="600" height="500" fill="none" stroke="#1f2937" stroke-width="2.5"/>
-<line x1="170" y1="470" x2="770" y2="470" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="10 4 2 4"/>
-<text x="470" y="465" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#6b7280" text-anchor="middle">cumbrera E–O · dos aguas ≥ 25 %</text>
-<line x1="220" y1="458" x2="220" y2="242" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<line x1="220" y1="482" x2="220" y2="698" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<line x1="720" y1="458" x2="720" y2="242" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<line x1="720" y1="482" x2="720" y2="698" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<rect x="165.5" y="215.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="165.5" y="715.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="365.5" y="215.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="365.5" y="715.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="565.5" y="215.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="565.5" y="715.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="765.5" y="215.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="765.5" y="715.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="166.5" y="466.5" width="7" height="7" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="766.5" y="466.5" width="7" height="7" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<line x1="770" y1="330" x2="770" y2="420" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
-<line x1="770" y1="330" x2="850" y2="370" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<path d="M850,370 A90,90 0 0 1 772,420" fill="none" stroke="#1f2937" stroke-width="0.9" stroke-dasharray="3 3"/>
-<text x="180" y="192" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start" font-weight="bold">TÚNEL 6×5 m = 30 m² · PTR 1½" cal. 14 · 4 pórticos · placa + 4 anclas 3/8"×5" por columna</text>
-<rect x="350" y="240" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
-<rect x="353.8" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="383" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="412.2" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<text x="395.7" y="300.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle">rack 1</text>
-<rect x="475" y="240" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
-<rect x="478.8" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="508" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="537.2" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<text x="520.7" y="300.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle">rack 2</text>
-<rect x="600" y="240" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
-<rect x="603.8" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="633" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<rect x="662.2" y="237.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
-<text x="645.7" y="300.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle">rack 3 (testigo MT-1…4)</text>
-<line x1="441.4" y1="257" x2="441.4" y2="269" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="437.4" y1="267" x2="445.4" y2="259" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="475" y1="257" x2="475" y2="269" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="471" y1="267" x2="479" y2="259" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="441.4" y1="263" x2="475" y2="263" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="458.2" y="259" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle">0.34</text>
-<rect x="220" y="240" width="91.4" height="45.7" fill="#ffffff" stroke="#2e7d32" stroke-width="1.8" stroke-dasharray="6 4"/>
-<text x="265.7" y="300.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle">rack 4 (opc.)</text>
-<polyline points="170,212 770,212" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
-<polyline points="170,728 770,728" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
-<polyline points="786,728 786,212" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
-<polyline points="770,212 900,212 900,190" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
-<text x="180" y="206" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="start">canalón PVC · 6 m · pendiente 0.5–1 % → bajante NE</text>
-<text x="180" y="750" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="start">canalón sur · 6 m → bajante SE → colector 2" por la cabecera este (2 m)</text>
-<rect x="885" y="190" width="30" height="40" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<text x="900" y="205" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">SP-1</text>
-<text x="900" y="214.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">tlaloque</text>
-<text x="900" y="224" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">+ filtro</text>
-<rect x="860" y="235" width="130" height="130" fill="none" stroke="#1d4ed8" stroke-width="0.8" stroke-dasharray="3 2"/>
-<circle cx="925" cy="300" r="55" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
-<circle cx="925" cy="300" r="39.6" fill="none" stroke="#1d4ed8" stroke-width="0.9"/>
-<text x="925" y="278" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle">TK-1 tinaco</text>
-<text x="925" y="289" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle">750 L · opaco</text>
-<text x="925" y="300" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle">base firme</text>
-<text x="925" y="311" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle">LT-1 · TT-1</text>
-<text x="925" y="322" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle">en la tapa</text>
-<polyline points="970,260 1065,195" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<polyline points="1085,923 1100,923 1100,300 980,300" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<text x="1108" y="600" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle" transform="rotate(-90 1108 600)">red ½" ≈ 7.58 m → FV-1 flotador (solo rellena, tandeo)</text>
-<line x1="925" y1="355" x2="925" y2="391" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
-<line x1="905" y1="391" x2="945" y2="391" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
-<text x="932" y="383" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1d4ed8" text-anchor="start">V-1 + F-1</text>
-<rect x="865" y="385" width="40" height="25" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<text x="885" y="396" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">P-1 diafragma 12 V</text>
-<text x="885" y="405.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">+ presostato (IP65)</text>
-<polyline points="865,391 752,391 752,242 350,242" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<line x1="395.7" y1="242" x2="395.7" y2="270" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<line x1="520.7" y1="242" x2="520.7" y2="270" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<line x1="645.7" y1="242" x2="645.7" y2="270" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<polyline points="350,230 742,230 742,450 1095,450 1095,200 1080,190" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<text x="785" y="467" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1d4ed8" text-anchor="start">drenaje 2" a piso ≈ 12.4 m → coladera (pendiente ≥ 1 %)</text>
-<text x="702.5" y="974" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">+ QO120GFI 20 A</text>
-<rect x="805" y="927" width="20" height="20" fill="#ffffff" stroke="#b45309" stroke-width="1.8"/>
-<line x1="811" y1="932" x2="811" y2="942" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="819" y1="932" x2="819" y2="942" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<circle cx="660" cy="910" r="7" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
-<line x1="653" y1="920" x2="667" y2="920" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="655.5" y1="924.5" x2="664.5" y2="924.5" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="658" y1="929" x2="662" y2="929" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="660" y1="910" x2="660" y2="948" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
-<rect x="760" y="895" width="40" height="35" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
-<line x1="763" y1="898" x2="797" y2="927" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="797" y1="898" x2="763" y2="927" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<text x="780" y="888" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">GAB-A (CA)</text>
-<line x1="815" y1="927" x2="800" y2="915" stroke="#b45309" stroke-width="1.6" stroke-linecap="round"/>
-<polyline points="780,895 780,770 780,720 778,720 778,239" fill="none" stroke="#b45309" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrAmber)"/>
-<rect x="775" y="765" width="10" height="10" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<rect x="740" y="225" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
-<line x1="743" y1="228" x2="765" y2="250" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="765" y1="228" x2="743" y2="250" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<text x="754" y="266" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">GAB-1 (CC)</text>
-<polyline points="760,233 195,233 195,455" fill="none" stroke="#b45309" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrAmber)"/>
-<line x1="370" y1="233" x2="370" y2="238" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
-<line x1="495" y1="233" x2="495" y2="238" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
-<line x1="620" y1="233" x2="620" y2="238" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
-<circle cx="170" cy="470" r="14" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
-<path d="M170,470 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(0 170 470)"/>
-<path d="M170,470 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(120 170 470)"/>
-<path d="M170,470 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(240 170 470)"/>
-<text x="190" y="475" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="start">extractor</text>
-<polyline points="760,253 760,397 865,397" fill="none" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
-<circle cx="415" cy="537" r="5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
-<text x="425" y="541" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="start">SHT31 T/HR a 1.5 m</text>
-<line x1="895" y1="280" x2="768" y2="245" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
-<rect x="230" y="380" width="300" height="112" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4 2"/>
-<rect x="230" y="388.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="394" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="416.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="422" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="444.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="450" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="472.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="478" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<text x="235" y="374" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="start">bancada A · 4 × PVC 4" × 3 m · alto O → bajo E (2–3 %)</text>
-<rect x="230" y="582" width="300" height="112" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4 2"/>
-<rect x="230" y="590.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="596" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="618.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="624" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="646.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="652" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<rect x="230" y="674.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
-<circle cx="250" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="270" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="290" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="310" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="330" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="350" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="370" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="390" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="410" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="430" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="450" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="470" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="490" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<circle cx="510" cy="680" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
-<text x="235" y="576" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="start">bancada B · 4 × PVC 4" × 3 m · alto O → bajo E (2–3 %)</text>
-<line x1="215" y1="380" x2="215" y2="694" stroke="#1d4ed8" stroke-width="2.4" stroke-linecap="round"/>
-<line x1="215" y1="394" x2="230" y2="394" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="394" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="422" x2="230" y2="422" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="422" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="450" x2="230" y2="450" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="450" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="478" x2="230" y2="478" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="478" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="596" x2="230" y2="596" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="596" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="624" x2="230" y2="624" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="624" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="652" x2="230" y2="652" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="652" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<line x1="215" y1="680" x2="230" y2="680" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<circle cx="215" cy="680" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
-<text x="205" y="531" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle" transform="rotate(-90 205 531)">manifold ¾" · 8 válvulas · 1–2 L/min por línea</text>
-<line x1="538" y1="380" x2="538" y2="508" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round"/>
-<line x1="538" y1="694" x2="538" y2="566" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round"/>
-<line x1="538" y1="508" x2="580" y2="508" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<line x1="538" y1="566" x2="580" y2="566" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<text x="532" y="440" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1d4ed8" text-anchor="middle" transform="rotate(-90 532 440)">retorno 2"</text>
-<circle cx="538" cy="502" r="4.5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
-<circle cx="585" cy="537" r="29" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
-<circle cx="585" cy="537" r="17.4" fill="none" stroke="#1d4ed8" stroke-width="0.9" stroke-dasharray="3 2"/>
-<text x="585" y="540" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1d4ed8" text-anchor="middle" font-weight="bold">TK-2</text>
-<rect x="625" y="525" width="40" height="25" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<text x="645" y="536" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">P-1/P-2 12 V</text>
-<text x="645" y="545.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">F-1 malla · FT-1</text>
-<line x1="614" y1="537" x2="625" y2="537" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<polyline points="635,525 635,504 215,504" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<rect x="945" y="385" width="40" height="25" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<text x="965" y="396" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">F-2 dúplex</text>
-<text x="965" y="405.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1d4ed8" text-anchor="middle">+ SV-1 NC</text>
-<polyline points="965,410 965,435 730,435 730,500 615,500 615,508" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
-<polyline points="600,566 600,576 742,576 742,450" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<rect x="660" y="605" width="60" height="110" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
-<rect x="664" y="609" width="52" height="102" fill="none" stroke="#1f2937" stroke-width="0.7"/>
-<text x="690" y="647.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">mesa</text>
-<text x="690" y="658.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">germinación</text>
-<text x="690" y="669.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">(foami) y</text>
-<text x="690" y="680.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">trasplante</text>
-<line x1="344" y1="492" x2="356" y2="492" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="346" y1="496" x2="354" y2="488" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="344" y1="582" x2="356" y2="582" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="346" y1="586" x2="354" y2="578" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="350" y1="492" x2="350" y2="582" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="346" y="537" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" transform="rotate(-90 346 537)">0.90 pasillo</text>
-<line x1="624" y1="285.7" x2="636" y2="285.7" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="626" y1="289.7" x2="634" y2="281.7" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="624" y1="380" x2="636" y2="380" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="626" y1="384" x2="634" y2="376" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="630" y1="285.7" x2="630" y2="380" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="626" y="332.85" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" transform="rotate(-90 626 332.85)">0.94</text>
-<line x1="230" y1="356" x2="230" y2="368" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="226" y1="366" x2="234" y2="358" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="530" y1="356" x2="530" y2="368" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="526" y1="366" x2="534" y2="358" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="230" y1="362" x2="530" y2="362" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="380" y="358" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">3.00</text>
-<rect x="840" y="875" width="120" height="60" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
-<rect x="844" y="879" width="112" height="52" fill="none" stroke="#1f2937" stroke-width="0.7"/>
-<text x="900" y="903.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">mesa cosecha/empaque</text>
-<text x="900" y="914.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">inox o polietileno</text>
-<rect x="995" y="870" width="60" height="65" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
-<line x1="995" y1="890" x2="1055" y2="890" stroke="#1f2937" stroke-width="0.8" stroke-linecap="round"/>
-<text x="1025" y="908" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle">refri</text>
-<text x="1025" y="918" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle">4–5 °C</text>
-<rect x="1000" y="927" width="20" height="20" fill="#ffffff" stroke="#b45309" stroke-width="1.8"/>
-<line x1="1006" y1="932" x2="1006" y2="942" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="1014" y1="932" x2="1014" y2="942" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<circle cx="1080" cy="840" r="22" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<line x1="1085" y1="923" x2="1080" y2="862" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round"/>
-<text x="1050" y="844" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1d4ed8" text-anchor="end">tina + lavamanos</text>
-<rect x="870" y="800" width="35" height="30" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
-<text x="887.5" y="843" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle">hielera 45–50 L</text>
-<line x1="750" y1="770" x2="1100" y2="770" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4"/>
-<line x1="750" y1="770" x2="750" y2="940" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4"/>
-<rect x="760" y="835" width="40" height="35" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
-<line x1="763" y1="838" x2="797" y2="867" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="797" y1="838" x2="763" y2="867" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<text x="780" y="828" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">GAB-DC</text>
-<rect x="560" y="692" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
-<line x1="563" y1="695" x2="585" y2="717" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="585" y1="695" x2="563" y2="717" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<text x="574" y="733" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">GAB-2 (CC)</text>
-<polyline points="780,835 780,770 780,720 755,714 645,714 645,550" fill="none" stroke="#b45309" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
-<polyline points="645,714 588,714" fill="none" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
-<line x1="543" y1="506" x2="574" y2="692" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
-<text x="550" y="500" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">AT-1 pH · AT-2 EC · TT-2</text>
-<text x="600" y="595" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">DP-1/2/3 A·B·pH− al tambo</text>
-<line x1="815" y1="927" x2="800" y2="915" stroke="#b45309" stroke-width="1.6" stroke-linecap="round"/>
-<rect x="840" y="948" width="50" height="28" fill="#ffffff" stroke="#b45309" stroke-width="1.2" stroke-dasharray="6 4"/>
-<text x="865" y="967" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="middle">PV 100 W opc.</text>
-<text x="900" y="967" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">en la azotea, nunca sobre el plástico</text>
-<line x1="840" y1="960" x2="800" y2="865" stroke="#b45309" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="6 4"/>
-<polygon points="770,220 840,310 880,235" fill="#fff7ed" stroke="#b45309" stroke-width="0.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
-<circle cx="770" cy="220" r="7" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
-<text x="825" y="240" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">ESP32-CAM</text>
-<circle cx="155" cy="895" r="29" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
-<circle cx="155" cy="895" r="17.4" fill="none" stroke="#2e7d32" stroke-width="0.9" stroke-dasharray="3 2"/>
-<text x="155" y="939" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">composta</text>
-<rect x="800" y="480" width="100" height="280" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
-<rect x="806" y="486" width="88" height="268" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
-<text x="850" y="617" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">cama 1</text>
-<text x="850" y="628" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">1×2.8 = 2.8 m²</text>
-<rect x="995" y="480" width="100" height="280" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
-<rect x="1001" y="486" width="88" height="268" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
-<text x="1045" y="617" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">cama 2</text>
-<text x="1045" y="628" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">1×2.8 = 2.8 m²</text>
-<rect x="210" y="790" width="310" height="100" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
-<rect x="216" y="796" width="298" height="88" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
-<text x="365" y="837" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">cama 3</text>
-<text x="365" y="848" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#2e7d32" text-anchor="middle">3.1×1 = 3.1 m²</text>
-<polyline points="975,410 975,425 850,425 850,510" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<polyline points="975,425 1045,425 1045,510" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<polyline points="778,425 778,738 520,738 520,820" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
-<line x1="210" y1="784" x2="520" y2="784" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
-<line x1="210" y1="896" x2="520" y2="896" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
-<rect x="395" y="778" width="10" height="124" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<circle cx="400" cy="855" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
-<line x1="240" y1="768" x2="490" y2="768" stroke="#1f2937" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<line x1="490" y1="768" x2="240" y2="768" stroke="#1f2937" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
-<text x="365" y="764" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">gantry XY: rieles V-slot en los bordes largos · puente Y · NEMA17 · GRBL/Klipper</text>
-<rect x="500" y="902" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
-<line x1="503" y1="905" x2="525" y2="927" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="525" y1="905" x2="503" y2="927" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<text x="514" y="943" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#b45309" text-anchor="middle" font-weight="bold">GAB-3</text>
-<polyline points="760,850 528,850" fill="none" stroke="#b45309" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
-<circle cx="540" cy="770" r="7" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
-<polygon points="540,770 450,830 480,900" fill="#fff7ed" stroke="#b45309" stroke-width="0.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
-<text x="550" y="764" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#b45309" text-anchor="start">cámara fija (poste 2 m)</text>
-<line x1="185" y1="880" x2="210" y2="870" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrGreen)"/>
-<line x1="770" y1="761" x2="770" y2="773" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="766" y1="771" x2="774" y2="763" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="800" y1="761" x2="800" y2="773" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="796" y1="771" x2="804" y2="763" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="770" y1="767" x2="800" y2="767" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="785" y="763" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1f2937" text-anchor="middle"></text>
-<text x="804" y="770" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8" fill="#1f2937" text-anchor="start">0.30</text>
-<line x1="900" y1="761" x2="900" y2="773" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="896" y1="771" x2="904" y2="763" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="995" y1="761" x2="995" y2="773" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="991" y1="771" x2="999" y2="763" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="900" y1="767" x2="995" y2="767" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="947.5" y="763" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle">0.95 pasillo</text>
-<line x1="184" y1="720" x2="196" y2="720" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="186" y1="724" x2="194" y2="716" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="184" y1="790" x2="196" y2="790" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="186" y1="794" x2="194" y2="786" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="190" y1="720" x2="190" y2="790" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="186" y="755" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="8.5" fill="#1f2937" text-anchor="middle" transform="rotate(-90 186 755)">0.70</text>
-<line x1="170" y1="174" x2="170" y2="186" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="166" y1="184" x2="174" y2="176" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="770" y1="174" x2="770" y2="186" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="766" y1="184" x2="774" y2="176" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="170" y1="180" x2="770" y2="180" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="470" y="176" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle">6.00</text>
-<line x1="134" y1="220" x2="146" y2="220" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="136" y1="224" x2="144" y2="216" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="134" y1="720" x2="146" y2="720" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<line x1="136" y1="724" x2="144" y2="716" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
-<line x1="140" y1="220" x2="140" y2="720" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
-<text x="136" y="470" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" transform="rotate(-90 136 470)">5.00</text>
-<circle cx="850" cy="530" r="9" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
-<text x="850" y="533.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle" font-weight="bold">1</text>
-<line x1="965" y1="397" x2="1040" y2="437" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<circle cx="1040" cy="437" r="9" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.4"/>
-<text x="1040" y="440.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#1d4ed8" text-anchor="middle" font-weight="bold">2</text>
-<line x1="400" y1="840" x2="470" y2="840" stroke="#1f2937" stroke-width="0.8" stroke-linecap="round"/>
-<circle cx="470" cy="840" r="9" fill="#ffffff" stroke="#1f2937" stroke-width="1.4"/>
-<text x="470" y="843.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#1f2937" text-anchor="middle" font-weight="bold">3</text>
-<line x1="540" y1="770" x2="585" y2="810" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<circle cx="585" cy="810" r="9" fill="#ffffff" stroke="#b45309" stroke-width="1.4"/>
-<text x="585" y="813.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#b45309" text-anchor="middle" font-weight="bold">4</text>
-<line x1="190" y1="855" x2="230" y2="855" stroke="#2e7d32" stroke-width="0.8" stroke-linecap="round"/>
-<circle cx="230" cy="855" r="9" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
-<text x="230" y="858.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#2e7d32" text-anchor="middle" font-weight="bold">5</text>
-<line x1="514" y1="877" x2="564" y2="877" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
-<circle cx="564" cy="877" r="9" fill="#ffffff" stroke="#b45309" stroke-width="1.4"/>
-<text x="564" y="880.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9.5" fill="#b45309" text-anchor="middle" font-weight="bold">6</text>
-<text x="1150" y="88" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">LEYENDA</text>
-<line x1="1150" y1="101" x2="1180" y2="101" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
-<text x="1188" y="105" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">agua a presión · red ½" · llenado</text>
-<line x1="1150" y1="117.5" x2="1180" y2="117.5" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 4"/>
-<text x="1188" y="121.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">drenaje · rebosadero · purga → coladera</text>
-<line x1="1150" y1="134" x2="1180" y2="134" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-dasharray="10 4 2 4"/>
-<text x="1188" y="138" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">canalón / bajante pluvial (0.5–1 %)</text>
-<line x1="1150" y1="150.5" x2="1180" y2="150.5" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
-<text x="1188" y="154.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">127 V CA (circuito GFCI del patio)</text>
-<line x1="1150" y1="167" x2="1180" y2="167" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 4"/>
-<text x="1188" y="171" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">12 V CC (fuente / bus de batería)</text>
-<line x1="1150" y1="183.5" x2="1180" y2="183.5" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3"/>
-<text x="1188" y="187.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">señal de sensor · Wi-Fi</text>
-<rect x="1150" y="193" width="30" height="13" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2"/>
-<text x="1188" y="204" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">cultivo: rack · bancada NFT · cama</text>
-<rect x="1150" y="209.5" width="30" height="13" fill="#fff7ed" stroke="#b45309" stroke-width="1.2"/>
-<text x="1188" y="220.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">gabinete IP65 (GAB-x)</text>
-<rect x="1150" y="226" width="30" height="13" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.2"/>
-<text x="1188" y="237" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">tinaco TK-1 · tambo TK-2</text>
-<rect x="1150" y="242.5" width="30" height="13" fill="url(#roof)" stroke="#6b7280" stroke-width="1.2"/>
-<text x="1188" y="253.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">techo (túnel / cobertizo)</text>
-<line x1="1150" y1="266" x2="1180" y2="266" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 4"/>
-<text x="1188" y="270" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">reserva de una fase posterior</text>
-<rect x="1155" y="271.5" width="20" height="20" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
-<line x1="1160" y1="271.5" x2="1160" y2="291.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1155" y1="276.5" x2="1175" y2="276.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1165" y1="271.5" x2="1165" y2="291.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1155" y1="281.5" x2="1175" y2="281.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1170" y1="271.5" x2="1170" y2="291.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<line x1="1155" y1="286.5" x2="1175" y2="286.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
-<text x="1188" y="286.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">coladera</text>
-<circle cx="1270" cy="281.5" r="9" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.8"/>
-<text x="1270" y="285.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1d4ed8" text-anchor="middle" font-weight="bold">T</text>
-<text x="1285" y="286.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">toma de agua</text>
-<rect x="1380" y="271.5" width="20" height="20" fill="#ffffff" stroke="#b45309" stroke-width="1.8"/>
-<line x1="1386" y1="276.5" x2="1386" y2="286.5" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<line x1="1394" y1="276.5" x2="1394" y2="286.5" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
-<text x="1405" y="286.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">contacto GFCI in-use</text>
-<rect x="1160.5" y="294" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
-<text x="1188" y="303.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">columna PTR anclada</text>
-<circle cx="1335" cy="298.5" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
-<text x="1335" y="302" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">n</text>
-<text x="1350" y="303.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">nota clave (abajo)</text>
-<text x="1150" y="331.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">NOTAS CLAVE</text>
-<circle cx="1158" cy="345.5" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="349" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">1</text>
-<text x="1172" y="349.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Camas 1–2 (1.0 m: se atienden por un lado) al este, sobre la línea de</text>
-<text x="1172" y="362.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">drenaje; cama 3 (gantry) al sur. Total 8.7 m² de 8.7: es lo que cabe con</text>
-<text x="1172" y="375.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">pasillos ≥ 0.7 m. Meta 15–20 m²: ver layout-patio.md §5.</text>
-<circle cx="1158" cy="391" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="394.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">2</text>
-<text x="1172" y="395" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Goteo colgado de HA: SV-3 (12 V NC) en la caja F-2 desde el tinaco;</text>
-<text x="1172" y="408" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">ramal este ≈ 3.8 m y ramal sur por la troncal y el alero sur ≈ 6.53 m.</text>
-<circle cx="1158" cy="422" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="425.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">3</text>
-<text x="1172" y="426" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Gantry XY tipo FarmBot sobre la cama 3 (la más larga): carrera ≈ 3.0 × 0.9 m,</text>
-<text x="1172" y="439" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">GAB-3 con driver + cámara en la pared de la casa, 12 V desde GAB-DC.</text>
-<circle cx="1158" cy="453" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="456.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">4</text>
-<text x="1172" y="457" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Cámara fija en poste de 2 m: cobertura foliar, plagas y timelapse</text>
-<text x="1172" y="470" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">de la cama 3 (visión = juguete de F3, no el negocio).</text>
-<circle cx="1158" cy="484" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="487.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">5</text>
-<text x="1172" y="488" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">La composta del tambo alimenta las camas (07 §12); nunca charola con</text>
-<text x="1172" y="501" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">fusarium. Ruta corta, sin cruzar el cuarto de cosecha.</text>
-<circle cx="1158" cy="515" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.1"/>
-<text x="1158" y="518.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="9" fill="#1f2937" text-anchor="middle" font-weight="bold">6</text>
-<text x="1172" y="519" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Regla de oro F3: ningún cable ni manguera nueva cruza pasillos a nivel</text>
-<text x="1172" y="532" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">de piso; todo aéreo (2 m) o pegado a barda/cama.</text>
-<text x="1150" y="558" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start" font-weight="bold">QUÉ CAMBIA VS. FASE 2</text>
-<text x="1150" y="572" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start">· 3 camas elevadas = 8.7 m² (alt. 0.7–0.9 m [POR VERIFICAR]).</text>
-<text x="1150" y="586" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start">· SV-3 + goteo por cama (timer + humedad en HA).</text>
-<text x="1150" y="600" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start">· Gantry sobre la cama 3; GAB-3 driver; cámara fija.</text>
-<text x="1150" y="614" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10" fill="#1f2937" text-anchor="start">· Nada de esto es el negocio: sólo si F1–F2 se pagan.</text>
-<text x="90" y="1035" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" font-weight="bold">SUPUESTOS Y REGLAS</text>
-<text x="90" y="1053" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">SUPUESTO: patio 10 × 8 m (80 m²), casa al SUR, zaguán al NORTE, coladera en la esquina NE, losa de concreto, cobertizo de 3.5 × 1.7 m en la esquina SE. Si tu patio difiere, cambia las constantes de GEOMETRIA en hardware/cad/layout.py y regenera; las reglas de abajo deben sobrevivir al cambio.</text>
-<text x="90" y="1067.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Las camas van pegadas a la barda este y a la casa y se atienden por un solo lado: por eso miden ≤ 1.0 m de ancho. Cama 3 deja libre la puerta casa→patio y 0.7 m de paso frente al túnel.</text>
-<text x="90" y="1082" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">[POR VERIFICAR] altura y material de cama (0.7–0.9 m: madera tratada/PTR + geomembrana), perfil V-slot y carrera del gantry, caudal de goteo por cama: no están en la fuente de verdad; el plan maestro sólo fija 'camas elevadas con goteo colgado de HA' y 'gantry XY V-slot + NEMA17 + GRBL/Klipper'.</text>
-<text x="90" y="1096.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="10.5" fill="#1f2937" text-anchor="start">Fuentes: referencia/00-plan-maestro §Fase 3 · referencia/07 §12 y §14 · research/hidroponia-nft (periférica sólo para riego presurizado de camas) · plantas de Fases 1–2.</text>
+<rect x="0" y="0" width="1220" height="1040" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="24" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="27" fill="#1f2937" text-anchor="start" stroke="#ffffff" stroke-width="5.94" stroke-linejoin="round" paint-order="stroke" font-weight="bold">Planta · Fase 3 · escala 1:50 · supuesto 10×8 m</text>
+<text x="24" y="58" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="18" fill="#6b7280" text-anchor="start" stroke="#ffffff" stroke-width="3.96" stroke-linejoin="round" paint-order="stroke">Fase 2 + camas elevadas con goteo desde HA + gantry XY tipo FarmBot + cámara fija · mes 10+ · cero presión comercial</text>
+<text x="1196" y="34" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="18" fill="#6b7280" text-anchor="end" stroke="#ffffff" stroke-width="3.96" stroke-linejoin="round" paint-order="stroke">HomeGreen · v1 · 2026-09</text>
+<line x1="24" y1="72" x2="1196" y2="72" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<rect x="95" y="135" width="1030" height="15" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
+<rect x="95" y="150" width="15" height="800" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
+<rect x="1110" y="150" width="15" height="800" fill="#e5e7eb" stroke="#1f2937" stroke-width="1"/>
+<rect x="95" y="950" width="1030" height="45" fill="url(#hatch)" stroke="#1f2937" stroke-width="1.5"/>
+<text x="125" y="980" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16.5" fill="#1f2937" text-anchor="start" stroke="#ffffff" stroke-width="3.63" stroke-linejoin="round" paint-order="stroke" font-weight="bold">CASA (pared sur)</text>
+<rect x="110" y="150" width="1000" height="800" fill="none" stroke="#1f2937" stroke-width="2"/>
+<rect x="780" y="135" width="100" height="15" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<line x1="780" y1="135" x2="780" y2="150" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="880" y1="135" x2="880" y2="150" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="780" y1="150" x2="785" y2="75" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M785,75 A80,80 0 0 1 880,145" fill="none" stroke="#1f2937" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="830" y="120" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="15.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="3.46" stroke-linejoin="round" paint-order="stroke" font-weight="bold">ACCESO · zaguán 1.0 m (abre hacia afuera)</text>
+<rect x="550" y="950" width="90" height="45" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<line x1="550" y1="950" x2="550" y2="995" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="640" y1="950" x2="640" y2="995" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="550" y1="950" x2="555" y2="860" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M555,860 A90,90 0 0 1 640,945" fill="none" stroke="#1f2937" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="595" y="852" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#6b7280" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">puerta casa→patio 0.9 m</text>
+<line x1="110" y1="89" x2="110" y2="101" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="106" y1="99" x2="114" y2="91" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="1110" y1="89" x2="1110" y2="101" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="1106" y1="99" x2="1114" y2="91" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="110" y1="95" x2="1110" y2="95" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="610" y="91" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="3.63" stroke-linejoin="round" paint-order="stroke">10.00 m (supuesto)</text>
+<line x1="44" y1="150" x2="56" y2="150" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="46" y1="154" x2="54" y2="146" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="44" y1="950" x2="56" y2="950" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="46" y1="954" x2="54" y2="946" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="50" y1="150" x2="50" y2="950" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="46" y="550" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="16.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="3.63" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 46 550)">8.00 m (supuesto)</text>
+<circle cx="1170" cy="930" r="22" fill="none" stroke="#1f2937" stroke-width="1.2"/>
+<polygon points="1170,910 1162,940 1170,933 1178,940" fill="#1f2937" stroke="#1f2937" stroke-width="1" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="1170" y="903" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="19.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="4.29" stroke-linejoin="round" paint-order="stroke" font-weight="bold">N</text>
+<text x="1125" y="1012" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#6b7280" text-anchor="end" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">sol de mediodía: desde el SUR, casi vertical (19° N) · UV 11+ de marzo a septiembre</text>
+<rect x="1055" y="175" width="30" height="30" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<line x1="1062.5" y1="175" x2="1062.5" y2="205" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="1055" y1="182.5" x2="1085" y2="182.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="1070" y1="175" x2="1070" y2="205" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="1055" y1="190" x2="1085" y2="190" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="1077.5" y1="175" x2="1077.5" y2="205" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="1055" y1="197.5" x2="1085" y2="197.5" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<text x="1048" y="196" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#1d4ed8" text-anchor="end" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">coladera</text>
+<rect x="750" y="780" width="350" height="170" fill="url(#roof)" stroke="none" stroke-width="1.5"/>
+<rect x="750" y="780" width="350" height="170" fill="#ffffff" stroke="none" stroke-width="1.5" fill-opacity="0.65"/>
+<rect x="750" y="780" width="350" height="170" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="6 4"/>
+<circle cx="1085" cy="942" r="9" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.8"/>
+<text x="1085" y="946" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="15" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="3.3" stroke-linejoin="round" paint-order="stroke" font-weight="bold">T</text>
+<text x="1095" y="796" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#6b7280" text-anchor="end" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">COBERTIZO existente (supuesto) 3.5×1.7 m</text>
+<rect x="650" y="953" width="125" height="40" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+<text x="712.5" y="966" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">centro de carga</text>
+<rect x="268" y="953" width="230" height="40" fill="#ffffff" stroke="#b45309" stroke-width="1.2" stroke-dasharray="2 3"/>
+<text x="383" y="968.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">cerebro (interior):</text>
+<text x="383" y="984.25" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">mini-PC HA + router + UPS</text>
+<rect x="170" y="230" width="600" height="500" fill="url(#roof)" stroke="none" stroke-width="1.5"/>
+<rect x="170" y="230" width="600" height="500" fill="#ffffff" stroke="none" stroke-width="1.5" fill-opacity="0.6"/>
+<rect x="170" y="230" width="600" height="500" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="170" y1="480" x2="770" y2="480" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="10 4 2 4"/>
+<text x="708" y="450" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#6b7280" text-anchor="end" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">cumbrera E–O</text>
+<text x="708" y="472" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#6b7280" text-anchor="end" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">dos aguas ≥ 25 %</text>
+<line x1="220" y1="468" x2="220" y2="252" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<line x1="220" y1="492" x2="220" y2="708" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<line x1="720" y1="468" x2="720" y2="252" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<line x1="720" y1="492" x2="720" y2="708" stroke="#6b7280" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<rect x="165.5" y="225.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="165.5" y="725.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="365.5" y="225.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="365.5" y="725.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="565.5" y="225.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="565.5" y="725.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="765.5" y="225.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="765.5" y="725.5" width="9" height="9" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="166.5" y="476.5" width="7" height="7" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="766.5" y="476.5" width="7" height="7" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<line x1="770" y1="340" x2="770" y2="430" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+<line x1="770" y1="340" x2="850" y2="380" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M850,380 A90,90 0 0 1 772,430" fill="none" stroke="#1f2937" stroke-width="0.9" stroke-dasharray="3 3"/>
+<text x="180" y="202" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="15.75" fill="#1f2937" text-anchor="start" stroke="#ffffff" stroke-width="3.46" stroke-linejoin="round" paint-order="stroke" font-weight="bold">TÚNEL 6×5 m = 30 m² · PTR 1½" cal. 14 · 4 pórticos</text>
+<rect x="350" y="250" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
+<rect x="353.8" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="383" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="412.2" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<text x="395.7" y="310.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">rack 1</text>
+<rect x="475" y="250" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
+<rect x="478.8" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="508" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="537.2" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<text x="520.7" y="310.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">rack 2</text>
+<rect x="600" y="250" width="91.4" height="45.7" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.8"/>
+<rect x="603.8" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="633" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<rect x="662.2" y="247.5" width="25.4" height="50.8" fill="none" stroke="#2e7d32" stroke-width="0.9"/>
+<text x="645.7" y="310.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">rack 3 (testigo MT-1…4)</text>
+<line x1="441.4" y1="267" x2="441.4" y2="279" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="437.4" y1="277" x2="445.4" y2="269" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="475" y1="267" x2="475" y2="279" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="471" y1="277" x2="479" y2="269" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="441.4" y1="273" x2="475" y2="273" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="458.2" y="269" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">0.34</text>
+<rect x="220" y="250" width="91.4" height="45.7" fill="#ffffff" stroke="#2e7d32" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text x="265.7" y="310.7" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke">rack 4 (opc.)</text>
+<polyline points="170,222 770,222" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
+<polyline points="170,738 770,738" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
+<polyline points="786,738 786,222" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
+<polyline points="770,222 893,222 893,192" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 4 2 4" marker-end="url(#arrBlue)"/>
+<text x="180" y="216" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="start" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">canalón PVC · 6 m · pendiente 0.5–1 % → bajante NE</text>
+<text x="180" y="760" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="start" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">canalón sur · 6 m → bajante SE → colector 2" (cabecera este, 2 m)</text>
+<rect x="878" y="192" width="48" height="46" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="902" y="206" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">SP-1</text>
+<text x="902" y="220.25" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">tlaloque</text>
+<text x="902" y="234.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">+ filtro</text>
+<rect x="860" y="245" width="130" height="130" fill="none" stroke="#1d4ed8" stroke-width="0.8" stroke-dasharray="3 2"/>
+<circle cx="925" cy="310" r="55" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<circle cx="925" cy="310" r="39.6" fill="none" stroke="#1d4ed8" stroke-width="0.9"/>
+<text x="925" y="277" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">TK-1 tinaco</text>
+<text x="925" y="293.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">750 L · opaco</text>
+<text x="925" y="310" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">base firme</text>
+<text x="925" y="326.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">LT-1 · TT-1</text>
+<text x="925" y="343" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">en la tapa</text>
+<polyline points="970,270 1065,205" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<polyline points="1085,933 1100,933 1100,310 980,310" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<text x="1108" y="610" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 1108 610)">red ½" ≈ 7.58 m → FV-1 flotador (solo rellena, tandeo)</text>
+<line x1="925" y1="365" x2="925" y2="396" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
+<line x1="918" y1="396" x2="942" y2="396" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/>
+<text x="932" y="382" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1d4ed8" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">V-1 + F-1</text>
+<rect x="846" y="390" width="72" height="30" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="882" y="400.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">P-1 12 V</text>
+<text x="882" y="414.75" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">+ F-1</text>
+<polyline points="846,396 752,396 752,252 350,252" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<line x1="395.7" y1="252" x2="395.7" y2="280" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<line x1="520.7" y1="252" x2="520.7" y2="280" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<line x1="645.7" y1="252" x2="645.7" y2="280" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<polyline points="350,240 742,240 742,460 1095,460 1095,210 1080,200" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<text x="785" y="477" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1d4ed8" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">drenaje 2" ≈ 12.4 m → coladera (≥ 1 %)</text>
+<text x="712.5" y="985" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">+ QO120GFI 20 A</text>
+<rect x="805" y="937" width="20" height="20" fill="#ffffff" stroke="#b45309" stroke-width="1.8"/>
+<line x1="811" y1="942" x2="811" y2="952" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="819" y1="942" x2="819" y2="952" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="660" cy="920" r="7" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+<line x1="653" y1="930" x2="667" y2="930" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="655.5" y1="934.5" x2="664.5" y2="934.5" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="658" y1="939" x2="662" y2="939" stroke="#b45309" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="660" y1="920" x2="655" y2="953" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="760" y="905" width="40" height="35" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+<line x1="763" y1="908" x2="797" y2="937" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="797" y1="908" x2="763" y2="937" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<text x="744" y="926.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="end" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">GAB-A (CA)</text>
+<line x1="815" y1="937" x2="800" y2="925" stroke="#b45309" stroke-width="1.6" stroke-linecap="round"/>
+<polyline points="780,905 780,780 780,730 778,730 778,249" fill="none" stroke="#b45309" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrAmber)"/>
+<rect x="775" y="775" width="10" height="10" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<rect x="740" y="235" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+<line x1="743" y1="238" x2="765" y2="260" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="765" y1="238" x2="743" y2="260" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<text x="755" y="276" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="end" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">GAB-1 (CC)</text>
+<polyline points="760,243 195,243 195,465" fill="none" stroke="#b45309" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrAmber)"/>
+<line x1="370" y1="243" x2="370" y2="248" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
+<line x1="495" y1="243" x2="495" y2="248" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
+<line x1="620" y1="243" x2="620" y2="248" stroke="#b45309" stroke-width="1.1" stroke-linecap="round" marker-end="url(#arrAmber)"/>
+<circle cx="170" cy="480" r="14" fill="#ffffff" stroke="#b45309" stroke-width="1.5"/>
+<path d="M170,480 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(0 170 480)"/>
+<path d="M170,480 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(120 170 480)"/>
+<path d="M170,480 l11,0 a5,5 0 0 1 -5.5,9 z" fill="#b45309" fill-opacity="0.5" stroke="none" transform="rotate(240 170 480)"/>
+<text x="155" y="480" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 155 480)">extractor</text>
+<polyline points="760,263 760,402 846,402" fill="none" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
+<circle cx="415" cy="547" r="5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<text x="425" y="551" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="start" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">SHT31 T/HR a 1.5 m</text>
+<line x1="895" y1="290" x2="768" y2="255" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="230" y="390" width="300" height="112" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4 2"/>
+<rect x="230" y="398.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="404" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="426.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="432" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="454.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="460" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="482.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="488" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<text x="235" y="384" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="start" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">bancada A · 4 × PVC 4" × 3 m · alto O → bajo E (2–3 %)</text>
+<rect x="230" y="592" width="300" height="112" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4 2"/>
+<rect x="230" y="600.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="606" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="628.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="634" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="656.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="662" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<rect x="230" y="684.5" width="300" height="11" fill="#ffffff" stroke="#2e7d32" stroke-width="1.6"/>
+<circle cx="250" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="270" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="290" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="310" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="330" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="350" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="370" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="390" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="410" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="430" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="450" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="470" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="490" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<circle cx="510" cy="690" r="3" fill="#c8e6c9" stroke="#2e7d32" stroke-width="0.6"/>
+<text x="235" y="586" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="start" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">bancada B · 4 × PVC 4" × 3 m · alto O → bajo E (2–3 %)</text>
+<line x1="215" y1="390" x2="215" y2="704" stroke="#1d4ed8" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="215" y1="404" x2="230" y2="404" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="404" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="432" x2="230" y2="432" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="432" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="460" x2="230" y2="460" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="460" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="488" x2="230" y2="488" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="488" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="606" x2="230" y2="606" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="606" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="634" x2="230" y2="634" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="634" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="662" x2="230" y2="662" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="662" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<line x1="215" y1="690" x2="230" y2="690" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<circle cx="215" cy="690" r="3" fill="#ffffff" stroke="#1d4ed8" stroke-width="1"/>
+<text x="205" y="541" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 205 541)">manifold ¾" · 8 válvulas · 1–2 L/min por línea</text>
+<line x1="538" y1="390" x2="538" y2="518" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round"/>
+<line x1="538" y1="704" x2="538" y2="576" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round"/>
+<line x1="538" y1="518" x2="580" y2="518" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<line x1="538" y1="576" x2="580" y2="576" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<text x="532" y="422" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 532 422)">retorno 2"</text>
+<circle cx="538" cy="512" r="4.5" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<circle cx="585" cy="547" r="29" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+<circle cx="585" cy="547" r="17.4" fill="none" stroke="#1d4ed8" stroke-width="0.9" stroke-dasharray="3 2"/>
+<text x="585" y="550" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">TK-2</text>
+<rect x="622" y="530" width="72" height="30" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="658" y="540.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">P-1/P-2 12 V</text>
+<text x="658" y="554.75" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">F-1 · FT-1</text>
+<line x1="614" y1="547" x2="622" y2="547" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<polyline points="632,530 632,514 215,514" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<rect x="942" y="390" width="72" height="30" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="978" y="400.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">F-2 dúplex</text>
+<text x="978" y="414.75" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">+ SV-1 NC</text>
+<polyline points="962,420 962,445 730,445 730,510 615,510 615,518" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#arrBlue)"/>
+<polyline points="600,576 600,586 742,586 742,460" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<rect x="660" y="615" width="60" height="110" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="664" y="619" width="52" height="102" fill="none" stroke="#1f2937" stroke-width="0.7"/>
+<text x="685.24" y="670" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 685.24 670)">germinación</text>
+<text x="701.74" y="670" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 701.74 670)">y trasplante</text>
+<line x1="344" y1="502" x2="356" y2="502" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="346" y1="506" x2="354" y2="498" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="344" y1="592" x2="356" y2="592" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="346" y1="596" x2="354" y2="588" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="350" y1="502" x2="350" y2="592" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="346" y="547" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 346 547)">0.90</text>
+<line x1="624" y1="295.7" x2="636" y2="295.7" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="626" y1="299.7" x2="634" y2="291.7" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="624" y1="390" x2="636" y2="390" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="626" y1="394" x2="634" y2="386" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="630" y1="295.7" x2="630" y2="390" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="626" y="342.85" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 626 342.85)">0.94</text>
+<line x1="230" y1="366" x2="230" y2="378" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="226" y1="376" x2="234" y2="368" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="530" y1="366" x2="530" y2="378" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="526" y1="376" x2="534" y2="368" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="230" y1="372" x2="530" y2="372" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="380" y="368" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">3.00</text>
+<rect x="840" y="885" width="120" height="60" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="844" y="889" width="112" height="52" fill="none" stroke="#1f2937" stroke-width="0.7"/>
+<text x="900" y="904.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">mesa cosecha</text>
+<text x="900" y="921" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">y empaque</text>
+<text x="900" y="937.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">inox/polietileno</text>
+<rect x="995" y="880" width="60" height="65" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="995" y1="900" x2="1055" y2="900" stroke="#1f2937" stroke-width="0.8" stroke-linecap="round"/>
+<text x="1025" y="914" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">refri</text>
+<text x="1025" y="929" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">4–5 °C</text>
+<rect x="1000" y="937" width="20" height="20" fill="#ffffff" stroke="#b45309" stroke-width="1.8"/>
+<line x1="1006" y1="942" x2="1006" y2="952" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="1014" y1="942" x2="1014" y2="952" stroke="#b45309" stroke-width="1.5" stroke-linecap="round"/>
+<circle cx="1080" cy="850" r="22" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.5"/>
+<line x1="1085" y1="933" x2="1080" y2="872" stroke="#1d4ed8" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1050" y="816" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1d4ed8" text-anchor="end" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">tina + lavamanos</text>
+<rect x="870" y="810" width="35" height="30" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
+<text x="887.5" y="853" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">hielera 45–50 L</text>
+<line x1="750" y1="780" x2="1100" y2="780" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4"/>
+<line x1="750" y1="780" x2="750" y2="950" stroke="#2e7d32" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 4"/>
+<rect x="760" y="845" width="40" height="35" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+<line x1="763" y1="848" x2="797" y2="877" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="797" y1="848" x2="763" y2="877" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<text x="780" y="838" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">GAB-DC</text>
+<rect x="560" y="702" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+<line x1="563" y1="705" x2="585" y2="727" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="585" y1="705" x2="563" y2="727" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<text x="574" y="743" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">GAB-2 (CC)</text>
+<polyline points="780,845 780,780 780,730 755,724 645,724 645,560" fill="none" stroke="#b45309" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
+<polyline points="645,724 588,724" fill="none" stroke="#b45309" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
+<line x1="543" y1="516" x2="574" y2="702" stroke="#b45309" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<text x="550" y="510" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#b45309" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">AT-1 pH · AT-2 EC · TT-2</text>
+<text x="600" y="605" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#b45309" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">DP-1/2/3 A·B·pH− al tambo</text>
+<line x1="815" y1="937" x2="800" y2="925" stroke="#b45309" stroke-width="1.6" stroke-linecap="round"/>
+<rect x="835" y="955" width="95" height="34" fill="#ffffff" stroke="#b45309" stroke-width="1.2" stroke-dasharray="6 4"/>
+<text x="882.5" y="977" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">PV 100 W opc.</text>
+<line x1="835" y1="972" x2="800" y2="875" stroke="#b45309" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="6 4"/>
+<polygon points="770,230 840,320 880,245" fill="#fff7ed" stroke="#b45309" stroke-width="0.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<circle cx="770" cy="230" r="7" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<text x="800" y="250" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#b45309" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">ESP32-CAM</text>
+<circle cx="155" cy="905" r="29" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<circle cx="155" cy="905" r="17.4" fill="none" stroke="#2e7d32" stroke-width="0.9" stroke-dasharray="3 2"/>
+<text x="155" y="949" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">composta</text>
+<rect x="800" y="490" width="100" height="280" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
+<rect x="806" y="496" width="88" height="268" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
+<text x="850" y="625.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">cama 1</text>
+<text x="850" y="642" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">1×2.8 = 2.8 m²</text>
+<rect x="995" y="490" width="100" height="280" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
+<rect x="1001" y="496" width="88" height="268" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
+<text x="1045" y="625.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">cama 2</text>
+<text x="1045" y="642" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">1×2.8 = 2.8 m²</text>
+<rect x="210" y="800" width="310" height="100" fill="url(#hatchGreen)" stroke="#2e7d32" stroke-width="2"/>
+<rect x="216" y="806" width="298" height="88" fill="none" stroke="#2e7d32" stroke-width="0.8"/>
+<text x="295" y="845.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">cama 3</text>
+<text x="295" y="862" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">3.1×1 = 3.1 m²</text>
+<polyline points="972,420 972,435 850,435 850,520" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<polyline points="972,435 1045,435 1045,520" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<polyline points="778,435 778,748 520,748 520,830" fill="none" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrBlue)"/>
+<line x1="210" y1="794" x2="520" y2="794" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="210" y1="906" x2="520" y2="906" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
+<rect x="395" y="788" width="10" height="124" fill="#1f2937" stroke="#1f2937" stroke-width="1"/>
+<circle cx="400" cy="865" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="240" y1="778" x2="490" y2="778" stroke="#1f2937" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<line x1="490" y1="778" x2="240" y2="778" stroke="#1f2937" stroke-width="1" stroke-linecap="round" marker-end="url(#arrInk)"/>
+<text x="365" y="774" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">gantry XY · V-slot · NEMA17</text>
+<rect x="500" y="912" width="28" height="28" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+<line x1="503" y1="915" x2="525" y2="937" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<line x1="525" y1="915" x2="503" y2="937" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<text x="514" y="953" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" font-weight="bold">GAB-3</text>
+<polyline points="760,860 528,860" fill="none" stroke="#b45309" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arrAmber)"/>
+<circle cx="540" cy="780" r="7" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<polygon points="540,780 450,840 480,910" fill="#fff7ed" stroke="#b45309" stroke-width="0.8" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<text x="550" y="774" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#b45309" text-anchor="start" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">cámara fija (poste 2 m)</text>
+<line x1="185" y1="890" x2="210" y2="880" stroke="#2e7d32" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrGreen)"/>
+<line x1="770" y1="771" x2="770" y2="783" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="766" y1="781" x2="774" y2="773" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="800" y1="771" x2="800" y2="783" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="796" y1="781" x2="804" y2="773" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="770" y1="777" x2="800" y2="777" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="785" y="773" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke"></text>
+<text x="804" y="780" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2937" text-anchor="start" stroke="#ffffff" stroke-width="2.64" stroke-linejoin="round" paint-order="stroke">0.30</text>
+<line x1="900" y1="771" x2="900" y2="783" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="896" y1="781" x2="904" y2="773" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="995" y1="771" x2="995" y2="783" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="991" y1="781" x2="999" y2="773" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="900" y1="777" x2="995" y2="777" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="947.5" y="773" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke">0.95 pasillo</text>
+<line x1="144" y1="730" x2="156" y2="730" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="146" y1="734" x2="154" y2="726" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="144" y1="800" x2="156" y2="800" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="146" y1="804" x2="154" y2="796" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="150" y1="730" x2="150" y2="800" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="146" y="765" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="12.75" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.81" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 146 765)">0.70</text>
+<line x1="170" y1="184" x2="170" y2="196" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="166" y1="194" x2="174" y2="186" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="770" y1="184" x2="770" y2="196" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="766" y1="194" x2="774" y2="186" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="170" y1="190" x2="770" y2="190" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="470" y="186" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke">6.00</text>
+<line x1="134" y1="230" x2="146" y2="230" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="136" y1="234" x2="144" y2="226" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="134" y1="730" x2="146" y2="730" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<line x1="136" y1="734" x2="144" y2="726" stroke="#1f2937" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="140" y1="230" x2="140" y2="730" stroke="#1f2937" stroke-width="1" stroke-linecap="round"/>
+<text x="136" y="480" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="2.97" stroke-linejoin="round" paint-order="stroke" transform="rotate(-90 136 480)">5.00</text>
+<circle cx="850" cy="540" r="9" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<text x="850" y="543.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">1</text>
+<line x1="1014" y1="402" x2="1069" y2="442" stroke="#1d4ed8" stroke-width="0.8" stroke-linecap="round"/>
+<circle cx="1069" cy="442" r="9" fill="#ffffff" stroke="#1d4ed8" stroke-width="1.4"/>
+<text x="1069" y="445.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#1d4ed8" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">2</text>
+<line x1="400" y1="850" x2="470" y2="850" stroke="#1f2937" stroke-width="0.8" stroke-linecap="round"/>
+<circle cx="470" cy="850" r="9" fill="#ffffff" stroke="#1f2937" stroke-width="1.4"/>
+<text x="470" y="853.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#1f2937" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">3</text>
+<line x1="540" y1="780" x2="585" y2="820" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<circle cx="585" cy="820" r="9" fill="#ffffff" stroke="#b45309" stroke-width="1.4"/>
+<text x="585" y="823.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">4</text>
+<line x1="190" y1="865" x2="230" y2="865" stroke="#2e7d32" stroke-width="0.8" stroke-linecap="round"/>
+<circle cx="230" cy="865" r="9" fill="#ffffff" stroke="#2e7d32" stroke-width="1.4"/>
+<text x="230" y="868.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#2e7d32" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">5</text>
+<line x1="514" y1="887" x2="564" y2="887" stroke="#b45309" stroke-width="0.8" stroke-linecap="round"/>
+<circle cx="564" cy="887" r="9" fill="#ffffff" stroke="#b45309" stroke-width="1.4"/>
+<text x="564" y="890.5" font-family="Helvetica, Arial, 'Liberation Sans', sans-serif" font-size="14.25" fill="#b45309" text-anchor="middle" stroke="#ffffff" stroke-width="3.14" stroke-linejoin="round" paint-order="stroke" font-weight="bold">6</text>
 </svg>

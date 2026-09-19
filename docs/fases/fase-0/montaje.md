@@ -14,6 +14,10 @@ esquina = moho).
 
 ![Planta del patio en Fase 0 a escala 1:50: rack Husky bajo el cobertizo en la pared sur, mesa de siembra 1.2 × 0.6 m, cubeta de remojo y tina de lavado junto a la toma de agua, coladera libre, contacto existente y reserva del túnel 3 × 6 m trazada con hilo](../../assets/diagramas/layout/patio-fase-0.svg)
 
+??? note "Leyenda y notas clave del plano"
+
+    --8<-- "assets/diagramas/layout/patio-fase-0.notas.md"
+
 Lectura del plano (supuesto: patio de 10 × 8 m, casa al sur, acceso al norte, coladera en la
 esquina noreste, piso de losa; si el tuyo difiere, cambia las constantes de `GEOMETRIA` en
 `hardware/cad/layout.py` y regenera):
@@ -91,7 +95,11 @@ En verano, con más de 27 °C arriba, el SOP de [03 §0.2](../../referencia/03-i
 permite lo contrario: recién sembradas al nivel inferior, el más fresco. En septiembre–octubre
 no hace falta.
 
-![Alzado del rack Husky 183 × 91 × 46 cm: 5 niveles con paso de 43 cm, 3 charolas 1020 por nivel, N5 zona blackout con peso 2–4 kg, N4 destape, N3 desarrollo, N2 acabado, N1 cosecha; charola colectora a coladera; tubos T8 y nebulizadores son de Fase 1](../../assets/diagramas/layout/rack-alzado.svg)
+![Alzado del rack Husky 183 × 91 × 46 cm: 5 niveles con paso de 43 cm, 3 charolas 1020 por nivel, N5 zona blackout con peso 2–4 kg, N4 destape, N3 desarrollo, N2 acabado, N1 cosecha; charola colectora a coladera; vista lateral y planta de un nivel; tubos T8 y nebulizadores son de Fase 1](../../assets/diagramas/layout/rack-alzado.svg)
+
+??? note "Leyenda, flujo de charolas y tablas del alzado"
+
+    --8<-- "assets/diagramas/layout/rack-alzado.notas.md"
 
 ![Render 3D del rack con charolas en los cuatro estados del SOP (tapada, brote, desarrollo, cosecha), tubos T8 por nivel y riser de riego](../../assets/diagramas/cad/rack-charolas.png)
 
